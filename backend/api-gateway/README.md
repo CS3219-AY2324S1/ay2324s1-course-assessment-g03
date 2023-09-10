@@ -18,8 +18,5 @@
 
 ### Deploying with Pulumi
 
-- This utilizes `/app/Dockerfile`
-- Your AWS credentials will be used to provision the specified resources in `/infra/index.ts` on AWS
-
-1. Navigate to the `/api-gateway/infra` directory
-2. Run `pulumi up`
+- GitHub actions are configured to automatically `preview` your changes on a pull request and to `update` your changes on a push or merge
+- The actions utilize the `/app/Dockerfile`
