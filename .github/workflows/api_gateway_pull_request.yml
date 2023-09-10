@@ -1,10 +1,11 @@
-name: API Gateway with Pulumi
+name: API Gateway Pulumi Preview
 on:
   pull_request:
-    paths:
-      - "backend/api-gateway/**"
+    branches: ["staging", "master"]
+    paths: ["backend/api-gateway/**"]
 env:
   WORKING_DIRECTORY: ./backend/api-gateway/infra
+  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/api-gateway-infra/prod' || 'cs3219/api-gateway-infra/staging'}}
 jobs:
   preview:
     name: Preview
@@ -28,6 +29,6 @@ jobs:
         with:
           work-dir: ${{ env.WORKING_DIRECTORY }}
           command: preview
-          stack-name: cs3219/api-gateway-infra/dev # When using an individual account, only use stack-name.
+          stack-name: ${{ env.STACK_NAME}}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
