@@ -1,0 +1,33 @@
+name: Pulumi
+on:
+  push:
+    branches: ["staging"]
+    paths: ["backend/api-gateway/**"]
+env:
+  WORKING_DIRECTORY: ./backend/api-gateway/infra
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 16.15.0
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: npm install
+      - uses: pulumi/actions@v3
+        with:
+          work-dir: ${{ env.WORKING_DIRECTORY }}
+          command: up
+          stack-name: cs3219/api-gateway-infra/dev # When using an individual account, only use stack-name.
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
