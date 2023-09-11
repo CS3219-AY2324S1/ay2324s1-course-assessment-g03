@@ -6,12 +6,12 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 dotenv.config();
 
 const app: Application = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 const USERS_SERVICE_URL =
   process.env.USERS_SERVICE_URL || "http://localhost:8001";
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to PeerPrep!!");
+  res.send("Welcome to PeerPrep!!!");
 });
 
 app.use(
