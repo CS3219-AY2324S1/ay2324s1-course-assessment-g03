@@ -1,7 +1,7 @@
 # Use NodeJS server for the app
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install dependencies first, as they change less often than code.
 COPY package.json package-lock.json* ./

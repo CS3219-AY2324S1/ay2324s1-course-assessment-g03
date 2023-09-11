@@ -1,6 +1,6 @@
 # Use NodeJS server for the app
 FROM node:18-alpine AS builder
-WORKDIR /usr/src/app
+WORKDIR /app
 # Install dependencies first, as they change less often than code.
 COPY package.json package-lock.json* ./
 RUN npm install
@@ -8,9 +8,9 @@ COPY . .
 RUN npm run build
 
 FROM node:18-alpine as server
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev
-COPY --from=builder ./usr/src/app/dist ./dist
+COPY --from=builder ./app/dist ./dist
 EXPOSE 80
 CMD ["npm", "run", "start"]

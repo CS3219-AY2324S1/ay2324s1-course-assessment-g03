@@ -8,10 +8,10 @@ dotenv.config();
 const app: Application = express();
 const PORT = 80;
 const USERS_SERVICE_URL =
-  process.env.USERS_SERVICE_URL || "http://localhost:8001";
+  process.env.USERS_SERVICE_URL || "http://localhost:8002";
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to PeerPrep!!!");
+  res.send("Welcome to PeerPrep!");
 });
 
 app.use(

@@ -3,17 +3,20 @@ version: "3"
 services:
   frontend:
     build:
-      context: ./frontend/
+      context: ./frontend/app/
       dockerfile: Dockerfile.dev
     volumes:
-      - ./frontend/:/app
+      - ./frontend/app:/app:delegated
+      - /app/node_modules
     ports:
       - "8000:5173"
+
   api-gateway:
     build:
       context: ./backend/api-gateway/app/
       dockerfile: Dockerfile.dev
     volumes:
-      - ./backend/api-gateway/app/:/usr/src/app
+      - ./backend/api-gateway/app:/app:delegated
+      - /app/node_modules
     ports:
       - "8001:80"
