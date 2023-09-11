@@ -1,5 +1,6 @@
 config:
-  api-gateway-infra:containerPort: "80"
+  api-gateway-infra:hostPort: "80"
+  api-gateway-infra:containerPort: "8080"
   api-gateway-infra:cpu: "512"
   api-gateway-infra:memory: "128"
   api-gateway-infra:path: ../app
