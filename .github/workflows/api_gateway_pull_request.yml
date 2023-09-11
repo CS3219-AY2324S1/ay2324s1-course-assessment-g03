@@ -4,7 +4,7 @@ on:
     branches: ["staging", "master"]
     paths: ["backend/api-gateway/**"]
 env:
-  WORKING_DIRECTORY: ./backend/api-gateway/infra
+  WORKING_DIRECTORY_INFRA: ./backend/api-gateway/infra
   STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/api-gateway-infra/prod' || 'cs3219/api-gateway-infra/staging'}}
 jobs:
   preview:
@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        working-directory: ${{ env.WORKING_DIRECTORY_INFRA }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3.5.0
         with:
           node-version: 16.15.0
@@ -27,7 +27,7 @@ jobs:
       - run: npm install
       - uses: pulumi/actions@v3
         with:
-          work-dir: ${{ env.WORKING_DIRECTORY }}
+          work-dir: ${{ env.WORKING_DIRECTORY_INFRA }}
           command: preview
           stack-name: ${{ env.STACK_NAME}}
         env:

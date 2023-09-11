@@ -1,3 +1,19 @@
 version: "3"
-include:
-  - ./backend/api-gateway/app/docker-compose.dev.yml
+
+services:
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend/:/app
+    ports:
+      - "8000:5173"
+  api-gateway:
+    build:
+      context: ./backend/api-gateway/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/api-gateway/app/:/usr/src/app
+    ports:
+      - "8001:80"

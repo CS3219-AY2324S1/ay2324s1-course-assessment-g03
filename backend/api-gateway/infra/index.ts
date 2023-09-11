@@ -4,7 +4,7 @@ import * as awsx from "@pulumi/awsx";
 
 const config = new pulumi.Config();
 const containerPort = config.getNumber("containerPort") || 80;
-const cpu = config.getNumber("cpu") || 512;
+const cpu = config.getNumber("cpu") || 256;
 const memory = config.getNumber("memory") || 128;
 
 // An ECS cluster to deploy into
