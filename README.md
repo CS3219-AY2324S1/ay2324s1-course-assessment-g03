@@ -14,3 +14,9 @@
 2. Visit the following endpoints for the respective services
    - Frontend: http://localhost:8000
    - API Gateway: http://localhost:8001
+
+## Known issues
+
+### Installing new dependencies
+
+- Installing new dependencies sometimes causes the Docker image to not build properly. If this happens, run `docker-compose down` and then `docker-compose up --build` again.
