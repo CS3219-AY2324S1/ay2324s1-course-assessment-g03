@@ -6,7 +6,7 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 dotenv.config();
 
 const app: Application = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 const USERS_SERVICE_URL =
   process.env.USERS_SERVICE_URL || "http://localhost:8001";
 

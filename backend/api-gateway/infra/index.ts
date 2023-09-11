@@ -3,8 +3,7 @@ import * as aws from "@pulumi/aws";
 import * as awsx from "@pulumi/awsx";
 
 const config = new pulumi.Config();
-const hostPort = config.getNumber("hostPort") || 80;
-const containerPort = config.getNumber("containerPort") || 8080;
+const containerPort = config.getNumber("containerPort") || 80;
 const cpu = config.getNumber("cpu") || 512;
 const memory = config.getNumber("memory") || 128;
 
@@ -38,7 +37,6 @@ const service = new awsx.ecs.FargateService("service", {
       essential: true,
       portMappings: [
         {
-          hostPort: hostPort,
           containerPort: containerPort,
           targetGroup: loadbalancer.defaultTargetGroup,
         },

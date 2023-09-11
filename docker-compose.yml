@@ -1,3 +1,3 @@
 version: "3"
 include:
-  - ./backend/api-gateway/app/docker-compose.yml
+  - ./backend/api-gateway/app/docker-compose.dev.yml
