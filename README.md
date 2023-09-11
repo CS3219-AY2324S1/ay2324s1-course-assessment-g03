@@ -7,3 +7,10 @@
 ### Pre-requisites
 
 - Ensure you have Docker Desktop (>= v4.22.\*) installed (https://docs.docker.com/desktop/install/mac-install/)
+
+### Running all services locally with Docker
+
+1. Run `docker-compose up`
+2. Visit the following endpoints for the respective services
+   - Frontend: http://localhost:8000
+   - API Gateway: http://localhost:8001
