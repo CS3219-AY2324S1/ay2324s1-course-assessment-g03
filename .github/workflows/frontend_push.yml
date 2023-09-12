@@ -4,33 +4,11 @@ on:
     branches: ["staging", "master"]
     paths: ["frontend/**"]
 env:
-  WORKING_DIRECTORY_APP: ./frontend/app
   WORKING_DIRECTORY_INFRA: ./frontend/infra
   STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/frontend-infra/prod' || 'cs3219/frontend-infra/staging'}}
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIRECTORY_APP }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3.5.0
-        with:
-          node-version: 16.15.0
-      - run: npm install
-        working-directory: ${{ env.WORKING_DIRECTORY_APP }}
-      - run: npm run build
-        working-directory: ${{ env.WORKING_DIRECTORY_APP }}
-      - uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: frontend/app/dist
-
   update:
     name: Update
-    needs: build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,11 +18,6 @@ jobs:
       - uses: actions/setup-node@v3.5.0
         with:
           node-version: 16.15.0
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: frontend/app/dist
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

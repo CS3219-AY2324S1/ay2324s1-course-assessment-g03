@@ -1,11 +1,28 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as synced_folder from "@pulumi/synced-folder";
+import { local } from "@pulumi/command";
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
 const path = config.get("path") || "../app/dist";
 const indexDocument = config.get("indexDocument") || "index.html";
+const nodeEnv = config.get("nodeEnv") || "staging";
+
+// Reference the API Gateway stack
+const apiGatewayStack = new pulumi.StackReference(
+  `cs3219/api-gateway-infra/${nodeEnv}`
+);
+const apiGatewayUrl = apiGatewayStack.getOutput("url");
+
+// Build the Vite application.
+const build = new local.Command("build", {
+  create: `npm run build`,
+  dir: "../app/",
+  environment: {
+    VITE_BACKEND_URL: apiGatewayUrl,
+  },
+});
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("bucket", {

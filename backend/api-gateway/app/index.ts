@@ -38,8 +38,7 @@ app.get("/api/auth/github/authorize", async (req: Request, res: Response) => {
   const queryString = new URLSearchParams(queryParams).toString();
 
   const response = await fetch(`${GITHUB_AUTH_ENDPOINT}?${queryString}`);
-  // console.log("Response:", JSON.stringify(response));
-  // console.log("URL:", JSON.stringify);
+
   res.send({ url: response.url });
 });
 

@@ -15,6 +15,7 @@ function HomePage() {
 
         throw new Error(`Error: ${error} - ${error_message}`);
       }
+      console.log(res);
       const data = await res.json();
       return data;
     },
