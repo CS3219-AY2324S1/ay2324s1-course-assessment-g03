@@ -2,8 +2,6 @@ version: "3"
 
 services:
   frontend:
-    environment:
-      VITE_BACKEND_URL: http://localhost:8001
     build:
       context: ./frontend/app/
       dockerfile: Dockerfile.dev

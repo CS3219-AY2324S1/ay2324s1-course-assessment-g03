@@ -5,13 +5,25 @@ import { local } from "@pulumi/command";
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
+
 const path = config.get("path") || "../app/dist";
 const indexDocument = config.get("indexDocument") || "index.html";
-const nodeEnv = config.get("nodeEnv") || "staging";
+
+// For custom domain
+const subdomainConfig = config.get("subdomain");
+const subdomain = subdomainConfig !== undefined ? subdomainConfig : "staging."; // As 'subdomain' can be defined as an empty string for prod
+const rootDomain = config.get("domainName") || "peerprep.net";
+
+const hostedZoneId = config.requireSecret("hostedZoneId");
+const domainName = `${subdomain}${rootDomain}`;
+
+const acmCertificateArn = config.requireSecret("acmCloudfrontCertificateArn");
+
+const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 
 // Reference the API Gateway stack
 const apiGatewayStack = new pulumi.StackReference(
-  `cs3219/api-gateway-infra/${nodeEnv}`
+  `cs3219/api-gateway-infra/${currentEnv}`
 );
 const apiGatewayUrl = apiGatewayStack.getOutput("url");
 
@@ -67,6 +79,7 @@ const bucketFolder = new synced_folder.S3BucketFolder(
 // Create a CloudFront CDN to distribute and cache the website.
 const cdn = new aws.cloudfront.Distribution("cdn", {
   enabled: true,
+  aliases: [domainName],
   origins: [
     {
       originId: bucket.arn,
@@ -107,9 +120,25 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
       restrictionType: "none",
     },
   },
+  // Use the ACM certificate for the custom domain.
   viewerCertificate: {
-    cloudfrontDefaultCertificate: true,
+    sslSupportMethod: "sni-only",
+    acmCertificateArn: acmCertificateArn,
   },
+});
+
+// Create a Route53 Record which points the custom domain to the cloudfront distribution.
+const record = new aws.route53.Record(domainName, {
+  name: subdomain,
+  zoneId: hostedZoneId,
+  type: "A",
+  aliases: [
+    {
+      name: cdn.domainName,
+      zoneId: cdn.hostedZoneId,
+      evaluateTargetHealth: true,
+    },
+  ],
 });
 
 // Export the URLs and hostnames of the bucket and distribution.
@@ -117,3 +146,4 @@ export const originURL = pulumi.interpolate`http://${bucket.websiteEndpoint}`;
 export const originHostname = bucket.websiteEndpoint;
 export const cdnURL = pulumi.interpolate`https://${cdn.domainName}`;
 export const cdnHostname = cdn.domainName;
+export { domainName };

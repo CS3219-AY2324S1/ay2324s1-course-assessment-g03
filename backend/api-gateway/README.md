@@ -1,24 +1,16 @@
-# Api Gateway
+# Frontend
 
 ## Instructions to run
 
-### Pre-requisites
+- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the API gateway service
 
-- Ensure you have Docker installed (https://docs.docker.com/desktop/install/mac-install/)
-- To deploy with Pulumi
-  - Ensure you have Pulumi installed and your AWS CLI is configured with your access keys (https://www.pulumi.com/docs/clouds/aws/get-started/begin/)
+## New environment variables
 
-### Running locally in development mode without Docker
+If you need to add new environment variables, please add them to the following locations:
 
-1. Navigate to the `/api-gateway/app` directory
-2. Run `npm run dev` up
-3. Visit `http://localhost:80`
+1. `/backend/api-gateway/app/.env.example` file and commit it. For others to run the service locally.
 
-### Running all services locally with Docker
+   1. If the value is a secret, leave it blank and store it with the team's vault (e.g. an API key, secret key, access token, ARN, etc.)
+   2. If the value is not a secret, you can leave in the value in the `.env.example` file (e.g. http://localhost:8000, staging, 32, etc.)
 
-- View the [`README.md`](../../README.md) in the root of the project
-
-### Deploying with Pulumi
-
-- GitHub actions are configured to automatically `preview` your changes on a pull request and to `update` your changes on a push or merge
-- The actions utilize the `/app/Dockerfile`
+2. `/backend/api-gateway/infra/index.ts` under the `Build and publish our application's container image from ./app to the ECR repository` comment under the `env` object. For Pulumi to inject the appropriate environment variables during deployment.
