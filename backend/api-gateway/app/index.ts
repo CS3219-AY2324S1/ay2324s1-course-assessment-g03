@@ -23,7 +23,9 @@ import { authMiddleware } from "./libs/middleware";
 /**
  * Validate env variables (Do not allow deployment if env variables are not valid)
  */
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+if (process.env.NODE_ENV === "development") {
+  dotenv.config({ path: `.env.development` });
+}
 const envServerParsed = envSchema.safeParse(process.env);
 if (!envServerParsed.success) {
   console.error(envServerParsed.error.issues);

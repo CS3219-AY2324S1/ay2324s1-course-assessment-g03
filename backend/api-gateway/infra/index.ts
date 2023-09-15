@@ -114,7 +114,9 @@ const image = new awsx.ecr.Image("image", {
     JWT_SECRET: jwtSecret,
     GITHUB_CLIENT_ID: githubClientId,
     GITHUB_CLIENT_SECRET: githubClientSecret,
-    GITHUB_CALLBACK_URL: `${frontendDomainName}${githubCallbackPath}`,
+    GITHUB_CALLBACK_URL: frontendDomainName.apply(
+      (domain) => `${domain}${githubCallbackPath}`
+    ),
 
     // TODO: Update as the services are built
     // USERS_SERVICE_URL:userServiceDomainName,
