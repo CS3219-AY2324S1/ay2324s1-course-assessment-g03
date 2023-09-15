@@ -2,10 +2,13 @@ import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
 import "../App.css";
 import { useQuery } from "react-query";
+import { useAuth } from "../hooks/useAuth";
 
 export const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
 function HomePage() {
+  const { user, logout } = useAuth();
+
   const { refetch } = useQuery({
     queryKey: ["github-auth-url"],
     queryFn: async () => {
@@ -13,9 +16,8 @@ function HomePage() {
       if (!res.ok) {
         const { error, error_message } = await res.json();
 
-        throw new Error(`Error: ${error} - ${error_message}`);
+        throw new Error(`${error}: ${error_message}`);
       }
-      console.log(res);
       const data = await res.json();
       return data;
     },
@@ -38,7 +40,14 @@ function HomePage() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => refetch()}>Login with GitHub</button>
+        {user ? (
+          <>
+            <h2>You are signed in as {user.email}</h2>
+            <button onClick={() => logout()}>Sign out</button>
+          </>
+        ) : (
+          <button onClick={() => refetch()}>Login with GitHub</button>
+        )}
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>

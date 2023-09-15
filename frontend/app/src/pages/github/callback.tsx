@@ -12,7 +12,8 @@ function GitHubCallbackPage() {
     queryKey: ["github-login"],
     queryFn: async () => {
       const res = await fetch(
-        `${API_URL}/auth/github/login?${searchParams.toString()}`
+        `${API_URL}/auth/github/login?${searchParams.toString()}`,
+        { credentials: "include" }
       );
       if (!res.ok) {
         const { error, error_message } = await res.json();
