@@ -39,7 +39,7 @@ const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const frontendStack = new pulumi.StackReference(
   `cs3219/frontend-infra/${currentEnv}`
 );
-const frontendDomainName = frontendStack.getOutput("domainName");
+const frontendWebsiteUrl = frontendStack.getOutput("websiteURL");
 
 // TODO: Reference the User service stack
 // const userServiceStack = new pulumi.StackReference(
@@ -109,12 +109,12 @@ const image = new awsx.ecr.Image("image", {
   env: {
     NODE_ENV: currentEnv === "prod" ? "production" : currentEnv,
     PORT: "80",
-    FRONTEND_ORIGIN: frontendDomainName,
+    FRONTEND_ORIGIN: frontendWebsiteUrl,
     JWT_COOKIE_NAME: jwtCookieName,
     JWT_SECRET: jwtSecret,
     GITHUB_CLIENT_ID: githubClientId,
     GITHUB_CLIENT_SECRET: githubClientSecret,
-    GITHUB_CALLBACK_URL: frontendDomainName.apply(
+    GITHUB_CALLBACK_URL: frontendWebsiteUrl.apply(
       (domain) => `${domain}${githubCallbackPath}`
     ),
 
