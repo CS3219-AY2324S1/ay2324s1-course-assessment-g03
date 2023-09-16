@@ -31,7 +31,7 @@ const apiGatewayUrl = apiGatewayStack.getOutput("url").apply((url) => {
 
 // Build the Vite application.
 const build = new local.Command("build", {
-  create: `npm run build`,
+  create: `npm install && npm run build`,
   dir: "../app/",
   environment: {
     VITE_BACKEND_URL: apiGatewayUrl,
