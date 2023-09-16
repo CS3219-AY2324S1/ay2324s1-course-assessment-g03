@@ -51,7 +51,7 @@ const cookieConfig: CookieOptions = {
   sameSite: process.env.NODE_ENV !== "development" ? "none" : false,
   domain:
     process.env.NODE_ENV !== "development"
-      ? process.env.FRONTEND_ORIGIN
+      ? new URL(process.env.FRONTEND_ORIGIN).host
       : undefined,
 };
 
