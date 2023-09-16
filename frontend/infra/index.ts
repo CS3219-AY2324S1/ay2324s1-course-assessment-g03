@@ -25,7 +25,9 @@ const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const apiGatewayStack = new pulumi.StackReference(
   `cs3219/api-gateway-infra/${currentEnv}`
 );
-const apiGatewayUrl = apiGatewayStack.getOutput("url");
+const apiGatewayUrl = apiGatewayStack.getOutput("url").apply((url) => {
+  return `${url || "https://api.staging.peerprep.net"}`;
+});
 
 // Build the Vite application.
 const build = new local.Command("build", {
@@ -73,7 +75,7 @@ const bucketFolder = new synced_folder.S3BucketFolder(
     bucketName: bucket.bucket,
     acl: "public-read",
   },
-  { dependsOn: [ownershipControls, publicAccessBlock] }
+  { dependsOn: [ownershipControls, publicAccessBlock, build] }
 );
 
 // Create a CloudFront CDN to distribute and cache the website.
@@ -139,6 +141,7 @@ const record = new aws.route53.Record(domainName, {
       evaluateTargetHealth: true,
     },
   ],
+  allowOverwrite: true,
 });
 
 // Export the URLs and hostnames of the bucket and distribution.

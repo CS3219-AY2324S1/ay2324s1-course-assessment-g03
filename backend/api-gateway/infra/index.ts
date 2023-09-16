@@ -40,30 +40,41 @@ const frontendStack = new pulumi.StackReference(
   `cs3219/frontend-infra/${currentEnv}`
 );
 const frontendWebsiteUrl = frontendStack.getOutput("websiteURL");
+const githubCallbackUrl = frontendWebsiteUrl.apply((domain) => {
+  return `${domain || "https://staging.peerprep.net"}${githubCallbackPath}`;
+});
 
 // TODO: Reference the User service stack
 // const userServiceStack = new pulumi.StackReference(
 //   `cs3219/user-service-infra/${currentEnv}`
 // );
-// const userServiceDomainName = userServiceStack.getOutput("domainName");
+// const userServiceUrl = userServiceStack.getOutput("url").apply((domain) => {
+//  return `${domain || 'https://users.staging.peerprep.net}`;
+// });
 
 // TODO: Reference the Question service stack
 // const questionServiceStack = new pulumi.StackReference(
 //   `cs3219/question-service-infra/${currentEnv}`
 // );
-// const questionServiceDomainName = questionServiceStack.getOutput("domainName");
+// const questionServiceUrl = questionServiceStack.getOutput("url").apply((domain) => {
+//  return `${domain || 'https://questions.staging.peerprep.net}`;
+// });
 
 // TODO: Reference the Matching service stack
 // const matchingServiceStack = new pulumi.StackReference(
 //   `cs3219/matching-service-infra/${currentEnv}`
 // );
-// const matchingServiceDomainName = matchingServiceStack.getOutput("domainName");
+// const matchingServiceUrl = matchingServiceStack.getOutput("url").apply((domain) => {
+//  return `${domain || 'https://matching.staging.peerprep.net}`;
+// });
 
 // TODO: Reference the Collaboration service stack
 // const collaborationServiceStack = new pulumi.StackReference(
 //   `cs3219/collaboration-service-infra/${currentEnv}`
 // );
-// const collaborationServiceDomainName = collaborationServiceStack.getOutput(
+// const collaborationServiceUrl = collaborationServiceStack.getOutput("url").apply((domain) => {
+//  return `${domain || 'https://collaboration.staging.peerprep.net}`;
+// });
 
 // An ECS cluster to deploy into
 const cluster = new aws.ecs.Cluster("cluster", {});
@@ -106,24 +117,6 @@ const repo = new awsx.ecr.Repository("repo", {
 const image = new awsx.ecr.Image("image", {
   repositoryUrl: repo.url,
   path: "../app",
-  env: {
-    NODE_ENV: currentEnv === "prod" ? "production" : currentEnv,
-    PORT: "80",
-    FRONTEND_ORIGIN: frontendWebsiteUrl,
-    JWT_COOKIE_NAME: jwtCookieName,
-    JWT_SECRET: jwtSecret,
-    GITHUB_CLIENT_ID: githubClientId,
-    GITHUB_CLIENT_SECRET: githubClientSecret,
-    GITHUB_CALLBACK_URL: frontendWebsiteUrl.apply(
-      (domain) => `${domain}${githubCallbackPath}`
-    ),
-
-    // TODO: Update as the services are built
-    // USERS_SERVICE_URL:userServiceDomainName,
-    // QUESTIONS_SERVICE_URL:questionServiceDomainName,
-    // MATCHING_SERVICE_URL:matchingServiceDomainName,
-    // COLLABORATION_SERVICE_URL:collaborationServiceDomainName,
-  },
 });
 
 // Deploy an ECS Service on Fargate to host the application container
@@ -131,6 +124,11 @@ const service = new awsx.ecs.FargateService("service", {
   cluster: cluster.arn,
   assignPublicIp: true,
   taskDefinitionArgs: {
+    // Only include `runtimePlatform` if deploying locally from an ARM64 machine
+    // runtimePlatform: {
+    //   cpuArchitecture: "ARM64",
+    //   operatingSystemFamily: "LINUX",
+    // },
     container: {
       name: "api-gateway-container",
       image: image.imageUri,
@@ -143,10 +141,43 @@ const service = new awsx.ecs.FargateService("service", {
           targetGroup: loadbalancer.defaultTargetGroup,
         },
       ],
+      environment: [
+        {
+          name: "NODE_ENV",
+          value: currentEnv === "prod" ? "production" : currentEnv,
+        },
+        { name: "PORT", value: "80" },
+        { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
+        { name: "JWT_COOKIE_NAME", value: jwtCookieName },
+        { name: "JWT_SECRET", value: jwtSecret },
+        { name: "GITHUB_CLIENT_ID", value: githubClientId },
+        { name: "GITHUB_CLIENT_SECRET", value: githubClientSecret },
+        {
+          name: "GITHUB_CALLBACK_URL",
+          value: githubCallbackUrl,
+        },
+
+        // TODO: Update as the services are built
+        // {
+        //   name: "USERS_SERVICE_URL",
+        //   value: userServiceUrl,
+        // },
+        // {
+        //   name: "QUESTIONS_SERVICE_URL",
+        //   value: questionServiceUrl,
+        // },
+        // {
+        //   name: "MATCHING_SERVICE_URL",
+        //   value: matchingServiceUrl,
+        // },
+        // {
+        //   name: "COLLABORATION_SERVICE_URL",
+        //   value: collaborationServiceUrl,
+        // },
+      ],
     },
   },
 });
 
 // The URL at which the container's HTTP endpoint will be available
-export const url = pulumi.interpolate`http://${loadbalancer.loadBalancer.dnsName}`;
-export { domainName };
+export const url = pulumi.interpolate`https://${domainName}`;
