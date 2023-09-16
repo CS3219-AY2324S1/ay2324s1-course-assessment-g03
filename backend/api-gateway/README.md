@@ -13,4 +13,4 @@ If you need to add new environment variables, please add them to the following l
    1. If the value is a secret, leave it blank and store it with the team's vault (e.g. an API key, secret key, access token, ARN, etc.)
    2. If the value is not a secret, you can leave in the value in the `.env.example` file (e.g. http://localhost:8000, staging, 32, etc.)
 
-2. `/backend/api-gateway/infra/index.ts` under the `Build and publish our application's container image from ./app to the ECR repository` comment under the `env` object. For Pulumi to inject the appropriate environment variables during deployment.
+2. `/backend/api-gateway/infra/index.ts` under the `Deploy an ECS Service on Fargate to host the application container` comment under the `env` object. For Pulumi to inject the appropriate environment variables during deployment.

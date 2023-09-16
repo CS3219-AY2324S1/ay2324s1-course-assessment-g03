@@ -32,6 +32,12 @@ const githubCallbackPath =
 
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 
+// Fallback `frontendWebsiteUrl` if the frontend stack is not deployed
+const fallbackFrontendWebsiteUrl =
+  pulumi.getStack() === "prod"
+    ? "https://peerprep.net"
+    : "https://staging.peerprep.net";
+
 /**
  * Reference the other stacks
  */
@@ -39,10 +45,12 @@ const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const frontendStack = new pulumi.StackReference(
   `cs3219/frontend-infra/${currentEnv}`
 );
-const frontendWebsiteUrl = frontendStack.getOutput("websiteURL");
-const githubCallbackUrl = frontendWebsiteUrl.apply((domain) => {
-  return `${domain || "https://staging.peerprep.net"}${githubCallbackPath}`;
-});
+const frontendWebsiteUrl = frontendStack
+  .getOutput("websiteURL")
+  .apply((url) => `${url || fallbackFrontendWebsiteUrl}`);
+const githubCallbackUrl = frontendWebsiteUrl.apply(
+  (url) => `${url || fallbackFrontendWebsiteUrl}${githubCallbackPath}`
+);
 
 // TODO: Reference the User service stack
 // const userServiceStack = new pulumi.StackReference(
@@ -146,7 +154,7 @@ const service = new awsx.ecs.FargateService("service", {
           name: "NODE_ENV",
           value: currentEnv === "prod" ? "production" : currentEnv,
         },
-        { name: "PORT", value: "80" },
+        { name: "PORT", value: containerPort.toString() },
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
         { name: "JWT_COOKIE_NAME", value: jwtCookieName },
         { name: "JWT_SECRET", value: jwtSecret },
