@@ -1,6 +1,6 @@
 import time
 from typing import Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pymongo import MongoClient
 from fastapi.responses import RedirectResponse
 from pymongo.errors import ConnectionFailure
@@ -31,6 +31,16 @@ print("Successfully connected to MongoDB!")
 db = client['leetcode_db']
 collection = db['problems']
 
+
+def jsend_response(status: str, data=None, message=None):
+    """Returns a JSend-style response object as a FastAPI server response"""
+    response = {"status": status}
+    if data is not None:
+        response["data"] = data
+    if message is not None:
+        response["message"] = message
+    return response
+
 @app.get("/", include_in_schema=False)
 async def root():
     return RedirectResponse(url="/docs")
@@ -41,7 +51,6 @@ async def get_questions(
     topic: Optional[str] = None,
     language: Optional[str] = None
 ):
-    # Create a filter based on the provided query parameters.
     query_filter = {
         "paid_only": False
     }
@@ -53,24 +62,29 @@ async def get_questions(
     if language:
         query_filter["languages"] = language
 
-    # Fetch data from MongoDB based on the filter
-    cursor = collection.find(query_filter, {"_id": 0, "id": 1, "title": 1, "description": 1})
+    cursor = collection.find(query_filter, {"_id": 0, "id": 1, "title": 1})
     questions = list(cursor)
 
-    return questions
+    return jsend_response("success", questions)
 
 @app.get("/questions/all")
 async def get_all_questions():
     questions = list(collection.find({}))
     for question in questions:
-        question["_id"] = str(question["_id"])  # Convert ObjectID to string
-    return {"questions": questions}
+        question["_id"] = str(question["_id"])
+    return jsend_response("success", {"questions": questions})
 
 @app.get("/question/{question_id}")
 async def get_one_question(question_id: str):
     question = collection.find_one({"id": question_id})
     if question:
         question["_id"] = str(question["_id"])
-        return {"question": question}
+        return jsend_response("success", {"question": question})
     else:
-        raise HTTPException(status_code=404, detail="Question not found")
+        return jsend_response("fail", message="Question not found")
+
+
+@app.exception_handler(HTTPException)
+async def custom_http_exception_handler(request: Request, exc: HTTPException):
+    """Custom exception handler to return JSend-style responses for HTTPExceptions"""
+    return jsend_response("error", message=exc.detail)
