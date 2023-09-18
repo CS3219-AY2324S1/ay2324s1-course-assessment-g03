@@ -1,11 +1,19 @@
 from pulumi import Config, Output, export
 import pulumi_aws as aws
 import pulumi_awsx as awsx
+import os
+from dotenv import load_dotenv
 
+# Read the configuration for this stack
 config = Config()
 container_port = config.get_int("containerPort", 80)
 cpu = config.get_int("cpu", 512)
 memory = config.get_int("memory", 128)
+
+# Get Environment Variables
+load_dotenv()
+MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
+MONGO_PORT = os.environ.get('MONGO_PORT', '27017')
 
 # An ECS cluster to deploy into
 cluster = aws.ecs.Cluster("cluster")
@@ -40,6 +48,16 @@ service = awsx.ecs.FargateService(
                 container_port=container_port,
                 target_group=loadbalancer.default_target_group,
             )],
+            environment=[
+                {
+                    "name": "MONGO_HOST",
+                    "value": MONGO_HOST
+                },
+                {
+                    "name": "MONGO_PORT",
+                    "value": MONGO_PORT
+                }
+            ]
         ),
     ))
 

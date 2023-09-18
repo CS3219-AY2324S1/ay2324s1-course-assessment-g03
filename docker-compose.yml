@@ -34,7 +34,7 @@ services:
       question-service-db:
         condition: service_healthy
     ports:
-      - "8003:8003"
+      - "8003:80"
   
   question-service-db:
     image: mongo:latest
