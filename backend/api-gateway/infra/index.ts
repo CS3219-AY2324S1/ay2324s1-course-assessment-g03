@@ -132,7 +132,7 @@ const service = new awsx.ecs.FargateService("service", {
   cluster: cluster.arn,
   assignPublicIp: true,
   taskDefinitionArgs: {
-    // Only include `runtimePlatform` if deploying locally from an ARM64 machine
+    // Only uncomment `runtimePlatform` if deploying locally from an ARM64 machine
     // runtimePlatform: {
     //   cpuArchitecture: "ARM64",
     //   operatingSystemFamily: "LINUX",

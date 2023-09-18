@@ -1,18 +1,18 @@
 config:
   api-gateway-infra:acmEcsCertificateArn:
-    secure: AAABADfhdRHPazyTJ72bNZtsj7WS8m1o9VmPi2VqKymQpdu5TCfe3zS0mGkZgLyoXEgW0YLtumuVl7CA8+DK1/aWJT9O195mFireu9+3hlxwrBUuIQ6n9sOuuq1ZN2CNpucmDtja9QWc2G4w+CFKzaODQlI4dxXB
+    secure: AAABAIxphTfkUXOxnGaXpfZUVzosuGrSVCKPVj5q5isiYoNkxHY/K+nGr+GfseDD9TWGYU3E5rSU0e5vvh3sPUJSGt/iKKBXyaFrbxQ2Q5d8iKaNwDIL3C6MU2XNcTDq9LqbJiCknKJLu85u7PWTYyrqJLdxMoUR
   api-gateway-infra:containerPort: "80"
   api-gateway-infra:cpu: "256"
   api-gateway-infra:githubCallbackPath: /github/callback
   api-gateway-infra:githubClientId:
-    secure: AAABAEwAVbHigtiT+5o7BAD+Tr6fFQ4/Cl/kF3RtzPXXFIPhE6WANKeMHvrCMxUalEXKuA==
+    secure: AAABAGOzumqCz55+oq7l4hwoyGofSJSTDBzf70S2pyKC8GSLgR4pJKDxXm1VBkH5kBHBmw==
   api-gateway-infra:githubClientSecret:
-    secure: AAABAM53eoylfCgeNnH9oSS9h8GG41eCmHw/lACynTeRxohbavjNHNjnd1x0txHZ/MAG3IJcdPCUAEJRhkySAF0477yt9qQ5
+    secure: AAABAAZ/45Ov89TK58DwbOJiGqE9wG6UANnPJ5RwcUNJ4tZTX4vDwJHf2COPlCGrANedpTpDKAro4VjoYhHDSLYSnia95Hql
   api-gateway-infra:hostedZoneId:
-    secure: AAABACOmTdWw0QoBWYqxni+7HJUcVvufqhcbHUDeRDVap99pTQ/Y3Fi6vCN5bLU2kJj4Yg==
+    secure: AAABAE1KmEFtMp8lP6AmtrVlMeemkUPyHOsaXXhrmDC5yxPfxCpMTkkhclABbLDxKnVbPA==
   api-gateway-infra:jwtCookieName: peerprep-token
   api-gateway-infra:jwtSecret:
-    secure: AAABAAe7LjS1F4qQFRbncGpO+UPS/AyOuR7mFPFh+KrSp+69v/iUHVo5GAY/tM/rjaQS7wkYSmL7cW12LFYTLDqyAN1wxocfvlgqi/5gROaMgf5QrHmvMvVxYpervLXK
+    secure: AAABAFGBIVojQPLoFgzLprz9MBV2whOat0pk6UQP7LnABBrzovDBDFuT9BulKPowO9T6Q3j0X2ceMCRlbusClHln5btWGMDnL+9jSSFlfzVYD7/BWkVYIJUMKoLQhE/r
   api-gateway-infra:memory: "128"
   api-gateway-infra:path: ../app
   api-gateway-infra:rootDomain: peerprep.net
