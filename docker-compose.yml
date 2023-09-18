@@ -20,3 +20,13 @@ services:
       - /app/node_modules
     ports:
       - "8001:80"
+
+  template-service:
+    build:
+      context: ./backend/template-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/template-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8009:80"

@@ -21,13 +21,18 @@ const acmCertificateArn = config.requireSecret("acmCloudfrontCertificateArn");
 
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 
+const fallbackApiGatewayUrl =
+  currentEnv === "prod"
+    ? "https://api.peerprep.net"
+    : "https://api.staging.peerprep.net";
+
 // Reference the API Gateway stack
 const apiGatewayStack = new pulumi.StackReference(
   `cs3219/api-gateway-infra/${currentEnv}`
 );
-const apiGatewayUrl = apiGatewayStack.getOutput("url").apply((url) => {
-  return `${url || "https://api.staging.peerprep.net"}`;
-});
+const apiGatewayUrl = apiGatewayStack
+  .getOutput("url")
+  .apply((url) => `${url || fallbackApiGatewayUrl}`);
 
 // Build the Vite application.
 const build = new local.Command("build", {

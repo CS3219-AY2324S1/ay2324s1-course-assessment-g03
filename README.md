@@ -71,3 +71,7 @@
 ### 3.2. API Gateway (`/backend/api-gateway`)
 
 1. Cannot be done locally as the mismatch in OS (Linux vs AMD64) will cause it to fail
+
+## 4. Instructions to create your own service
+
+- Please refer to the [README.md](./backend/template-service/README.md) in the `/backend/template-service` directory for instructions to create your own service
