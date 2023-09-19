@@ -48,6 +48,16 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
-  
+
+  template-service:
+    build:
+      context: ./backend/template-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/template-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8009:80"
+
 volumes:
     question-service-db-data:
