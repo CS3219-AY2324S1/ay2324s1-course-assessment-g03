@@ -65,7 +65,7 @@ async def get_questions(
     cursor = collection.find(query_filter, {"_id": 0, "id": 1, "title": 1})
     questions = list(cursor)
 
-    return jsend_response("success", questions)
+    return jsend_response("success", {"questions": questions})
 
 @app.get("/questions/all")
 async def get_all_questions():
