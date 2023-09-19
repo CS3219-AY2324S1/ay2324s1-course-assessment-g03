@@ -60,13 +60,15 @@ const githubCallbackUrl = frontendWebsiteUrl.apply(
 //  return `${domain || 'https://users.staging.peerprep.net}`;
 // });
 
-// TODO: Reference the Question service stack
-// const questionServiceStack = new pulumi.StackReference(
-//   `cs3219/question-service-infra/${currentEnv}`
-// );
-// const questionServiceUrl = questionServiceStack.getOutput("url").apply((domain) => {
-//  return `${domain || 'https://questions.staging.peerprep.net}`;
-// });
+// Reference the Question service stack
+const questionServiceStack = new pulumi.StackReference(
+  `cs3219/question-service-infra/${currentEnv}`
+);
+const questionServiceUrl = questionServiceStack
+  .getOutput("url")
+  .apply((domain) => {
+    return `${domain || "https://questions.staging.peerprep.net"}`;
+  });
 
 // TODO: Reference the Matching service stack
 // const matchingServiceStack = new pulumi.StackReference(
@@ -170,10 +172,10 @@ const service = new awsx.ecs.FargateService("service", {
         //   name: "USERS_SERVICE_URL",
         //   value: userServiceUrl,
         // },
-        // {
-        //   name: "QUESTIONS_SERVICE_URL",
-        //   value: questionServiceUrl,
-        // },
+        {
+          name: "QUESTIONS_SERVICE_URL",
+          value: questionServiceUrl,
+        },
         // {
         //   name: "MATCHING_SERVICE_URL",
         //   value: matchingServiceUrl,
