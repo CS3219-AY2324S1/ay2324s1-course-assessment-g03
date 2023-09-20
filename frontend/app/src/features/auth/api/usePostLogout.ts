@@ -12,7 +12,7 @@ const postLogout = async () => {
   const { data } = await backendApi.post<PostLogoutRespose>(
     "/auth/logout",
     {},
-    { withCredentials: true }
+    { withCredentials: true },
   );
 
   return data.data;

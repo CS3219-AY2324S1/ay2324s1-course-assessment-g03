@@ -18,7 +18,7 @@ type GetGithubAuthUrlResponse =
 const getGithubAuthUrl = async () => {
   try {
     const { data } = await backendApi.get<GetGithubAuthUrlResponse>(
-      "/auth/github/authorize"
+      "/auth/github/authorize",
     );
     if (data.status === "fail") {
       throw new Error(data.message);

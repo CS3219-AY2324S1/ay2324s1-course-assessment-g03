@@ -5,7 +5,7 @@ interface ExampleState {
   modify: (value: number) => void;
 }
 
-export const useExampleStore = create<ExampleState>((set) => ({
+export const useExampleStore = create<ExampleState>(set => ({
   count: 0,
-  modify: (value) => set((state) => ({ count: state.count + value })),
+  modify: value => set(state => ({ count: state.count + value })),
 }));

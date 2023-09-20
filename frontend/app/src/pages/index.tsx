@@ -6,19 +6,33 @@ function HomePage() {
   const { data } = useAuth();
 
   return (
-    <VStack background="dark" h="100vh" justifyContent="center" gap="2rem">
-      <Text textStyle="heading-2xl" textAlign="center" color="white" w="50%">
-        Let your peers help you ace technical interviews
-      </Text>
-      {data?.user ? (
-        <>
-          <h2>You are signed in as {data.user.email}</h2>
-          <LogoutButton />
-        </>
-      ) : (
-        <LoginWithGithubButton />
-      )}
-      <Image src="/images/hero.svg" />
+    <VStack>
+      <Box h="100vh" display="grid" placeItems="center" position="relative">
+        <VStack position="relative" zIndex="1" gap="2rem">
+          <Text
+            textStyle="heading-3xl"
+            textAlign="center"
+            color="white"
+            w="75%"
+          >
+            Let your peers help you ace technical interviews
+          </Text>
+          {data?.user ? (
+            <>
+              <h2>You are signed in as {data.user.email}</h2>
+              <LogoutButton />
+            </>
+          ) : (
+            <LoginWithGithubButton />
+          )}
+        </VStack>
+        <Image
+          src="/images/hero.svg"
+          position="absolute"
+          bottom="0"
+          height="500px"
+        />
+      </Box>
     </VStack>
   );
 }

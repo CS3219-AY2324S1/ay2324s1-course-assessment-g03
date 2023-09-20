@@ -5,12 +5,8 @@ export const LoginWithGithubButton = () => {
   const { refetch: loginWithGithub } = useGetGithubAuthUrl();
 
   return (
-    <Button
-      background="primary.500"
-      color="white"
-      onClick={() => loginWithGithub()}
-    >
-      Login with GitHub
+    <Button colorScheme="primary" onClick={() => loginWithGithub()}>
+      Try with GitHub
     </Button>
   );
 };

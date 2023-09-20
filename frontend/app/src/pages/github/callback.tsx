@@ -1,5 +1,3 @@
-import reactLogo from "@/assets/react.svg";
-import viteLogo from "/vite.svg";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { API_URL } from "@/constants/api";
@@ -12,7 +10,7 @@ function GitHubCallbackPage() {
     queryFn: async () => {
       const res = await fetch(
         `${API_URL}/auth/github/login?${searchParams.toString()}`,
-        { credentials: "include" }
+        { credentials: "include" },
       );
       if (!res.ok) {
         const { error, error_message } = await res.json();
@@ -40,25 +38,8 @@ function GitHubCallbackPage() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Logged in!</h1>
       <p>User data: {JSON.stringify(data)}</p>
       <button onClick={() => (window.location.href = "/")}>Back</button>
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
