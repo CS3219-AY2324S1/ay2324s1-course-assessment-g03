@@ -34,7 +34,7 @@ authRouter.get("/github/authorize", async (req: Request, res: Response) => {
 
   const response = await fetch(`${GITHUB_AUTH_ENDPOINT}?${queryString}`);
 
-  res.send({ url: response.url });
+  res.send(successApiResponse({ url: response.url }));
 });
 
 authRouter.get("/github/login", async (req: Request, res: Response) => {
