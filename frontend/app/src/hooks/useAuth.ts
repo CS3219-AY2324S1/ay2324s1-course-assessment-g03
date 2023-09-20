@@ -1,42 +1,40 @@
-import { useQuery, useQueryClient } from "react-query";
-import { API_URL } from "../pages";
+import { backendApi } from "@/lib";
+import { User } from "@/types/user";
+import { useQuery } from "react-query";
+
+export const GET_AUTH_QUERY_KEY = "auth";
+
+type GetAuthResponse =
+  | {
+      status: "success";
+      data: {
+        user: User;
+      };
+    }
+  | {
+      status: "fail";
+      data: {
+        message: string;
+      };
+    };
+
+const getAuth = async () => {
+  try {
+    const { data } = await backendApi.get<GetAuthResponse>("/auth", {
+      withCredentials: true,
+    });
+    if (data.status === "fail") {
+      throw new Error(data.data.message);
+    }
+    return data.data;
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : "Unknown error");
+  }
+};
 
 export const useAuth = () => {
-  const queryClient = useQueryClient();
-
-  const { data } = useQuery({
-    queryKey: ["auth"],
-    queryFn: async () => {
-      const res = await fetch(`${API_URL}/auth`, {
-        credentials: "include",
-      });
-      const { data } = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message ?? "User not authenticated");
-      }
-      return data;
-    },
+  return useQuery({
+    queryKey: [GET_AUTH_QUERY_KEY],
+    queryFn: getAuth,
   });
-
-  const { refetch: logout } = useQuery({
-    queryKey: ["logout"],
-    queryFn: async () => {
-      const res = await fetch(`${API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-      const { data } = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message ?? "Could not log out");
-      }
-      return data;
-    },
-    enabled: false,
-    retry: false,
-    onSuccess: () => {
-      queryClient.setQueryData(["auth"], undefined);
-    },
-  });
-
-  return { user: data?.user, logout };
 };

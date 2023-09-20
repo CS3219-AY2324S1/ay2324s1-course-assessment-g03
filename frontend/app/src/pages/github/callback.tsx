@@ -1,9 +1,8 @@
-import reactLogo from "../../assets/react.svg";
+import reactLogo from "@/assets/react.svg";
 import viteLogo from "/vite.svg";
-import "../../App.css";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { API_URL } from "..";
+import { API_URL } from "@/constants/api";
 
 function GitHubCallbackPage() {
   const [searchParams] = useSearchParams();

@@ -1,7 +1,6 @@
-import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages";
-import GitHubCallbackPage from "./pages/github/callback";
+import HomePage from "@/pages";
+import GitHubCallbackPage from "@/pages/github/callback";
 
 function App() {
   return (
