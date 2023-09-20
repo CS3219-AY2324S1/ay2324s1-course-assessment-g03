@@ -20,6 +20,34 @@ services:
       - /app/node_modules
     ports:
       - "8001:80"
+  
+  question-service-server:
+    build:
+      context: ./backend/question-service/server/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/question-service/server/app:/app:delegated
+    environment:
+      - MONGO_HOST=question-service-db
+      - MONGO_PORT=27017
+    depends_on:
+      question-service-db:
+        condition: service_healthy
+    ports:
+      - "8003:80"
+  
+  question-service-db:
+    image: mongo:latest
+    volumes:
+      - question-service-db-data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep mongod"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   template-service:
     build:
@@ -30,3 +58,6 @@ services:
       - /app/node_modules
     ports:
       - "8009:80"
+
+volumes:
+    question-service-db-data:

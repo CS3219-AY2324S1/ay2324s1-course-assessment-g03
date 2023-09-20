@@ -1,0 +1,15 @@
+config:
+  aws:region: ap-southeast-1
+  question-service-infra:MONGO_HOST:
+    secure: AAABACsWLU0lTfORYPsnr2nzFVQ3eHH+crdTZBGoHnhg2ryS5uOAELHuFHovd8Pd9CdeEvHIBlSiiJwZPpDeeZCnsn7t4TUEI6QkUP5cDUfr4UlbZ1h/O2/lLUU5
+  question-service-infra:MONGO_PORT:
+    secure: AAABACIOcazvmS1EYjDdnVAoFMKTCFyTZQ5Fn3cjykM73j5f
+  question-service-infra:acmEcsCertificateArn:
+    secure: AAABAEPKI63kQJV4DYXAg1juSMmE+BzreNtOTVU1NBnf6XZJtZ53Hs64thD1gIS+6kZEbPdjppxSRBkxSOu+AwGwb3rgpOWgI5lqjMWPR8r6/LG5PAJ/7rG9h0BpT5vzkwAi/q+mjox25DQVBSE5/u9OM8m7zOk6
+  question-service-infra:hostedZoneId:
+    secure: AAABAHIleSxYEMghB30hmWedm0BN7TjJ9YQtKb5uo8oKC8xUsauoe3qhZtyshddizh+Fmw==
+  question-service:containerPort: "80"
+  question-service:cpu: "512"
+  question-service:memory: "128"
+  question-service-infra:rootDomain: peerprep.net
+  question-service-infra:subdomain: questions.

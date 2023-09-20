@@ -31,12 +31,31 @@ const githubCallbackPath =
   config.get("githubCallbackPath") || "/github/callback";
 
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
+const isProd = currentEnv === "prod";
 
 // Fallback `frontendWebsiteUrl` if the frontend stack is not deployed
-const fallbackFrontendWebsiteUrl =
-  pulumi.getStack() === "prod"
-    ? "https://peerprep.net"
-    : "https://staging.peerprep.net";
+const fallbackFrontendWebsiteUrl = isProd
+  ? "https://peerprep.net"
+  : "https://staging.peerprep.net";
+
+// TODO:
+// const fallbackUserServiceUrl = isProd
+//   ? "https://users.peerprep.net"
+//   : "https://users.staging.peerprep.net";
+
+const fallbackQuestionServiceUrl = isProd
+  ? "https://questions.peerprep.net"
+  : "https://questions.staging.peerprep.net";
+
+// TODO:
+// const fallbackMatchingServiceUrl = isProd
+//   ? "https://matching.peerprep.net"
+//   : "https://matching.staging.peerprep.net";
+
+// TODO:
+// const fallbackCollaborationServiceUrl = isProd
+//   ? "https://collaboration.peerprep.net"
+//   : "https://collaboration.staging.peerprep.net";
 
 /**
  * Reference the other stacks
@@ -56,33 +75,33 @@ const githubCallbackUrl = frontendWebsiteUrl.apply(
 // const userServiceStack = new pulumi.StackReference(
 //   `cs3219/user-service-infra/${currentEnv}`
 // );
-// const userServiceUrl = userServiceStack.getOutput("url").apply((domain) => {
-//  return `${domain || 'https://users.staging.peerprep.net}`;
-// });
+// const userServiceUrl = userServiceStack
+//   .getOutput("url")
+//   .apply((domain) => `${domain || fallbackUserServiceUrl}`);
 
-// TODO: Reference the Question service stack
-// const questionServiceStack = new pulumi.StackReference(
-//   `cs3219/question-service-infra/${currentEnv}`
-// );
-// const questionServiceUrl = questionServiceStack.getOutput("url").apply((domain) => {
-//  return `${domain || 'https://questions.staging.peerprep.net}`;
-// });
+// Reference the Question service stack
+const questionServiceStack = new pulumi.StackReference(
+  `cs3219/question-service-infra/${currentEnv}`
+);
+const questionServiceUrl = questionServiceStack
+  .getOutput("url")
+  .apply((domain) => `${domain || fallbackQuestionServiceUrl}`);
 
 // TODO: Reference the Matching service stack
 // const matchingServiceStack = new pulumi.StackReference(
 //   `cs3219/matching-service-infra/${currentEnv}`
 // );
-// const matchingServiceUrl = matchingServiceStack.getOutput("url").apply((domain) => {
-//  return `${domain || 'https://matching.staging.peerprep.net}`;
-// });
+// const matchingServiceUrl = matchingServiceStack
+//   .getOutput("url")
+//   .apply((domain) => `${domain || fallbackMatchingServiceUrl}`);
 
 // TODO: Reference the Collaboration service stack
 // const collaborationServiceStack = new pulumi.StackReference(
 //   `cs3219/collaboration-service-infra/${currentEnv}`
 // );
-// const collaborationServiceUrl = collaborationServiceStack.getOutput("url").apply((domain) => {
-//  return `${domain || 'https://collaboration.staging.peerprep.net}`;
-// });
+// const collaborationServiceUrl = collaborationServiceStack
+//   .getOutput("url")
+//   .apply((domain) => `${domain || fallbackCollaborationServiceUrl}`);
 
 // An ECS cluster to deploy into
 const cluster = new aws.ecs.Cluster("cluster", {});
@@ -152,7 +171,7 @@ const service = new awsx.ecs.FargateService("service", {
       environment: [
         {
           name: "NODE_ENV",
-          value: currentEnv === "prod" ? "production" : currentEnv,
+          value: isProd ? "production" : currentEnv,
         },
         { name: "PORT", value: containerPort.toString() },
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
@@ -170,10 +189,10 @@ const service = new awsx.ecs.FargateService("service", {
         //   name: "USERS_SERVICE_URL",
         //   value: userServiceUrl,
         // },
-        // {
-        //   name: "QUESTIONS_SERVICE_URL",
-        //   value: questionServiceUrl,
-        // },
+        {
+          name: "QUESTIONS_SERVICE_URL",
+          value: questionServiceUrl,
+        },
         // {
         //   name: "MATCHING_SERVICE_URL",
         //   value: matchingServiceUrl,

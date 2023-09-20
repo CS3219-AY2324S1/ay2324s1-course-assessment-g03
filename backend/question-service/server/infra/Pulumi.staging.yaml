@@ -1,0 +1,15 @@
+config:
+  aws:region: ap-southeast-1
+  question-service-infra:MONGO_HOST:
+    secure: AAABALkzV+US7nKD68RP1FUXONRK8ryHT6lz36hwVDe624UFXmMa+BCqa9V7mJhD1e4JNF/gmXGtgnGgmxn9fdhA+eewmlm3FPf/gpYBVpmrgELReaga1Xh4dbCo
+  question-service-infra:MONGO_PORT:
+    secure: AAABAPFwD+A1Nfi4ez17NVKrV1dLTSnvlSeB2pZAE84ekTmI
+  question-service-infra:acmEcsCertificateArn:
+    secure: AAABAL3u5v31yQUyf5uyt3JXgX/p/WPHDHc1bGg5h4Uts4wSKDYFYj21z/H4Chqam/ru9zzAizQTEzX6D6/N2HSj3UTOtKkCr0sU50OLOvDYOs0QLq7ddVuIJBbbzp7Mh6upprFOseeoWrFHK5926wa41rxTImGY
+  question-service-infra:containerPort: "80"
+  question-service-infra:cpu: "512"
+  question-service-infra:hostedZoneId:
+    secure: AAABAMJRo8I7u45mjDQoh/ZCIKYHCszeT4OAKLxLK5QjOtmSx6hyGlXlaAbSfTJAMJjGBA==
+  question-service-infra:memory: "128"
+  question-service-infra:rootDomain: peerprep.net
+  question-service-infra:subdomain: questions.staging.

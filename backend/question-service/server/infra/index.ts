@@ -11,8 +11,12 @@ const containerPort = config.getNumber("containerPort") || 80;
 const cpu = config.getNumber("cpu") || 256;
 const memory = config.getNumber("memory") || 128;
 
+// For Connection to MongoDB
+const MONGO_HOST = config.requireSecret("MONGO_HOST");
+const MONGO_PORT = config.requireSecret("MONGO_PORT");
+
 // For custom domain
-const subdomain = config.get("subdomain") || "template.staging."; // TODO: Update `template` placeholder
+const subdomain = config.get("subdomain") || "questions.staging.";
 const rootDomain = config.get("domainName") || "peerprep.net";
 
 const hostedZoneId = config.requireSecret("hostedZoneId");
@@ -108,7 +112,7 @@ const service = new awsx.ecs.FargateService("service", {
     //   operatingSystemFamily: "LINUX",
     // },
     container: {
-      name: "template-service-container", // TODO: Update `template` placeholder
+      name: "question-service-container",
       image: image.imageUri,
       cpu: cpu,
       memory: memory,
@@ -122,12 +126,14 @@ const service = new awsx.ecs.FargateService("service", {
       environment: [
         // Feel free to remove or add more environment variables as needed
         {
-          name: "NODE_ENV",
+          name: "ENV",
           value: isProd ? "production" : currentEnv,
         },
         { name: "PORT", value: containerPort.toString() },
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
         { name: "API_GATEWAY_URL", value: apiGatewayUrl },
+        { name: "MONGO_HOST", value: MONGO_HOST },
+        { name: "MONGO_PORT", value: MONGO_PORT },
       ],
     },
   },

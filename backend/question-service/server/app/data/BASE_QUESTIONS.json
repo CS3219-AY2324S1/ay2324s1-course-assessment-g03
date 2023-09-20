@@ -1,0 +1,1428 @@
+[
+  {
+    "_id": "6507e508864da362070ffea7",
+    "id": "1",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def twoSum(self, nums, target):\n        \"\"\"\n        :type nums: List[int]\n        :type target: int\n        :rtype: List[int]\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "/**\n * Note: The returned array must be malloced, assume caller calls free().\n */\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public int[] TwoSum(int[] nums, int target) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function twoSum(nums: number[], target: number): number[] {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param Integer[] $nums\n     * @param Integer $target\n     * @return Integer[]\n     */\n    function twoSum($nums, $target) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun twoSum(nums: IntArray, target: Int): IntArray {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  List<int> twoSum(List<int> nums, int target) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func twoSum(nums []int, target int) []int {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {Integer[]} nums\n# @param {Integer} target\n# @return {Integer[]}\ndef two_sum(nums, target)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def twoSum(nums: Array[Int], target: Int): Array[Int] = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (two-sum nums target)\n  (-> (listof exact-integer?) exact-integer? (listof exact-integer?))\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec two_sum(Nums :: [integer()], Target :: integer()) -> [integer()].\ntwo_sum(Nums, Target) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec two_sum(nums :: [integer], target :: integer) :: [integer]\n  def two_sum(nums, target) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\nYou can return the answer in any order.\n \nExample 1:\n\nInput: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].\n\nExample 2:\n\nInput: nums = [3,2,4], target = 6\nOutput: [1,2]\n\nExample 3:\n\nInput: nums = [3,3], target = 6\nOutput: [0,1]\n\n \nConstraints:\n\n2 <= nums.length <= 104\n-109 <= nums[i] <= 109\n-109 <= target <= 109\nOnly one valid answer exists.\n\n \nFollow-up: Can you come up with an algorithm that is less than O(n2) time complexity?",
+    "difficulty": "Easy",
+    "hints": [
+      "A really brute force way would be to search for all possible pairs of numbers but that would be too slow. Again, it's best to try out brute force solutions for just for completeness. It is from these brute force solutions that you can come up with optimizations.",
+      "So, if we fix one of the numbers, say x, we have to scan the entire array to find the next number y which is value - x where value is the input parameter. Can we change our array somehow so that this search becomes faster?",
+      "The second train of thought is, without changing the array, can we use additional space somehow? Like maybe a hash map to speed up the search?"
+    ],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["[2,7,11,15]\n9", "[3,2,4]\n6", "[3,3]\n6"],
+    "title": "Two Sum",
+    "topic_tags": ["Array", "Hash Table"],
+    "updated_at": 1695017039,
+    "url": "https://leetcode.com/problems/two-sum/"
+  },
+  {
+    "_id": "6507e508864da362070ffea8",
+    "id": "2",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "/**\n * Definition for singly-linked list.\n * struct ListNode {\n *     int val;\n *     ListNode *next;\n *     ListNode() : val(0), next(nullptr) {}\n *     ListNode(int x) : val(x), next(nullptr) {}\n *     ListNode(int x, ListNode *next) : val(x), next(next) {}\n * };\n */\nclass Solution {\npublic:\n    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     int val;\n *     ListNode next;\n *     ListNode() {}\n *     ListNode(int val) { this.val = val; }\n *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n * }\n */\nclass Solution {\n    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "# Definition for singly-linked list.\n# class ListNode(object):\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution(object):\n    def addTwoNumbers(self, l1, l2):\n        \"\"\"\n        :type l1: ListNode\n        :type l2: ListNode\n        :rtype: ListNode\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "/**\n * Definition for singly-linked list.\n * struct ListNode {\n *     int val;\n *     struct ListNode *next;\n * };\n */\nstruct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     public int val;\n *     public ListNode next;\n *     public ListNode(int val=0, ListNode next=null) {\n *         this.val = val;\n *         this.next = next;\n *     }\n * }\n */\npublic class Solution {\n    public ListNode AddTwoNumbers(ListNode l1, ListNode l2) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * Definition for singly-linked list.\n * function ListNode(val, next) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.next = (next===undefined ? null : next)\n * }\n */\n/**\n * @param {ListNode} l1\n * @param {ListNode} l2\n * @return {ListNode}\n */\nvar addTwoNumbers = function(l1, l2) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "/**\n * Definition for singly-linked list.\n * class ListNode {\n *     val: number\n *     next: ListNode | null\n *     constructor(val?: number, next?: ListNode | null) {\n *         this.val = (val===undefined ? 0 : val)\n *         this.next = (next===undefined ? null : next)\n *     }\n * }\n */\n\nfunction addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "/**\n * Definition for a singly-linked list.\n * class ListNode {\n *     public $val = 0;\n *     public $next = null;\n *     function __construct($val = 0, $next = null) {\n *         $this->val = $val;\n *         $this->next = $next;\n *     }\n * }\n */\nclass Solution {\n\n    /**\n     * @param ListNode $l1\n     * @param ListNode $l2\n     * @return ListNode\n     */\n    function addTwoNumbers($l1, $l2) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     public var val: Int\n *     public var next: ListNode?\n *     public init() { self.val = 0; self.next = nil; }\n *     public init(_ val: Int) { self.val = val; self.next = nil; }\n *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }\n * }\n */\nclass Solution {\n    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "/**\n * Example:\n * var li = ListNode(5)\n * var v = li.`val`\n * Definition for singly-linked list.\n * class ListNode(var `val`: Int) {\n *     var next: ListNode? = null\n * }\n */\nclass Solution {\n    fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "/**\n * Definition for singly-linked list.\n * class ListNode {\n *   int val;\n *   ListNode? next;\n *   ListNode([this.val = 0, this.next]);\n * }\n */\nclass Solution {\n  ListNode? addTwoNumbers(ListNode? l1, ListNode? l2) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\nfunc addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# Definition for singly-linked list.\n# class ListNode\n#     attr_accessor :val, :next\n#     def initialize(val = 0, _next = nil)\n#         @val = val\n#         @next = _next\n#     end\n# end\n# @param {ListNode} l1\n# @param {ListNode} l2\n# @return {ListNode}\ndef add_two_numbers(l1, l2)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "/**\n * Definition for singly-linked list.\n * class ListNode(_x: Int = 0, _next: ListNode = null) {\n *   var next: ListNode = _next\n *   var x: Int = _x\n * }\n */\nobject Solution {\n    def addTwoNumbers(l1: ListNode, l2: ListNode): ListNode = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "// Definition for singly-linked list.\n// #[derive(PartialEq, Eq, Clone, Debug)]\n// pub struct ListNode {\n//   pub val: i32,\n//   pub next: Option<Box<ListNode>>\n// }\n// \n// impl ListNode {\n//   #[inline]\n//   fn new(val: i32) -> Self {\n//     ListNode {\n//       next: None,\n//       val\n//     }\n//   }\n// }\nimpl Solution {\n    pub fn add_two_numbers(l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "; Definition for singly-linked list:\n#|\n\n; val : integer?\n; next : (or/c list-node? #f)\n(struct list-node\n  (val next) #:mutable #:transparent)\n\n; constructor\n(define (make-list-node [val 0])\n  (list-node val #f))\n\n|#\n\n(define/contract (add-two-numbers l1 l2)\n  (-> (or/c list-node? #f) (or/c list-node? #f) (or/c list-node? #f))\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "%% Definition for singly-linked list.\n%%\n%% -record(list_node, {val = 0 :: integer(),\n%%                     next = null :: 'null' | #list_node{}}).\n\n-spec add_two_numbers(L1 :: #list_node{} | null, L2 :: #list_node{} | null) -> #list_node{} | null.\nadd_two_numbers(L1, L2) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "# Definition for singly-linked list.\n#\n# defmodule ListNode do\n#   @type t :: %__MODULE__{\n#           val: integer,\n#           next: ListNode.t() | nil\n#         }\n#   defstruct val: 0, next: nil\n# end\n\ndefmodule Solution do\n  @spec add_two_numbers(l1 :: ListNode.t | nil, l2 :: ListNode.t | nil) :: ListNode.t | nil\n  def add_two_numbers(l1, l2) do\n\n  end\nend"
+      }
+    ],
+    "description": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.\nYou may assume the two numbers do not contain any leading zero, except the number 0 itself.\n \nExample 1:\n\n\nInput: l1 = [2,4,3], l2 = [5,6,4]\nOutput: [7,0,8]\nExplanation: 342 + 465 = 807.\n\nExample 2:\n\nInput: l1 = [0], l2 = [0]\nOutput: [0]\n\nExample 3:\n\nInput: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]\nOutput: [8,9,9,9,0,0,0,1]\n\n \nConstraints:\n\nThe number of nodes in each linked list is in the range [1, 100].\n0 <= Node.val <= 9\nIt is guaranteed that the list represents a number that does not have leading zeros.\n\n",
+    "difficulty": "Medium",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": [
+      "[2,4,3]\n[5,6,4]",
+      "[0]\n[0]",
+      "[9,9,9,9,9,9,9]\n[9,9,9,9]"
+    ],
+    "title": "Add Two Numbers",
+    "topic_tags": ["Linked List", "Math", "Recursion"],
+    "updated_at": 1695017040,
+    "url": "https://leetcode.com/problems/add-two-numbers/"
+  },
+  {
+    "_id": "6507e508864da362070ffea9",
+    "id": "3",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def lengthOfLongestSubstring(self, s):\n        \"\"\"\n        :type s: str\n        :rtype: int\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def lengthOfLongestSubstring(self, s: str) -> int:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "int lengthOfLongestSubstring(char * s){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public int LengthOfLongestSubstring(string s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function lengthOfLongestSubstring(s: string): number {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param String $s\n     * @return Integer\n     */\n    function lengthOfLongestSubstring($s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func lengthOfLongestSubstring(_ s: String) -> Int {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun lengthOfLongestSubstring(s: String): Int {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  int lengthOfLongestSubstring(String s) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func lengthOfLongestSubstring(s string) int {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {String} s\n# @return {Integer}\ndef length_of_longest_substring(s)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def lengthOfLongestSubstring(s: String): Int = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn length_of_longest_substring(s: String) -> i32 {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (length-of-longest-substring s)\n  (-> string? exact-integer?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec length_of_longest_substring(S :: unicode:unicode_binary()) -> integer().\nlength_of_longest_substring(S) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec length_of_longest_substring(s :: String.t) :: integer\n  def length_of_longest_substring(s) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given a string s, find the length of the longest substring without repeating characters.\n \nExample 1:\n\nInput: s = \"abcabcbb\"\nOutput: 3\nExplanation: The answer is \"abc\", with the length of 3.\n\nExample 2:\n\nInput: s = \"bbbbb\"\nOutput: 1\nExplanation: The answer is \"b\", with the length of 1.\n\nExample 3:\n\nInput: s = \"pwwkew\"\nOutput: 3\nExplanation: The answer is \"wke\", with the length of 3.\nNotice that the answer must be a substring, \"pwke\" is a subsequence and not a substring.\n\n \nConstraints:\n\n0 <= s.length <= 5 * 104\ns consists of English letters, digits, symbols and spaces.\n\n",
+    "difficulty": "Medium",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["\"abcabcbb\"", "\"bbbbb\"", "\"pwwkew\""],
+    "title": "Longest Substring Without Repeating Characters",
+    "topic_tags": ["Hash Table", "String", "Sliding Window"],
+    "updated_at": 1695017042,
+    "url": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+  },
+  {
+    "_id": "6507e508864da362070ffeaa",
+    "id": "4",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public double findMedianSortedArrays(int[] nums1, int[] nums2) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def findMedianSortedArrays(self, nums1, nums2):\n        \"\"\"\n        :type nums1: List[int]\n        :type nums2: List[int]\n        :rtype: float\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public double FindMedianSortedArrays(int[] nums1, int[] nums2) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number}\n */\nvar findMedianSortedArrays = function(nums1, nums2) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function findMedianSortedArrays(nums1: number[], nums2: number[]): number {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param Integer[] $nums1\n     * @param Integer[] $nums2\n     * @return Float\n     */\n    function findMedianSortedArrays($nums1, $nums2) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun findMedianSortedArrays(nums1: IntArray, nums2: IntArray): Double {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  double findMedianSortedArrays(List<int> nums1, List<int> nums2) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {Integer[]} nums1\n# @param {Integer[]} nums2\n# @return {Float}\ndef find_median_sorted_arrays(nums1, nums2)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def findMedianSortedArrays(nums1: Array[Int], nums2: Array[Int]): Double = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (find-median-sorted-arrays nums1 nums2)\n  (-> (listof exact-integer?) (listof exact-integer?) flonum?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec find_median_sorted_arrays(Nums1 :: [integer()], Nums2 :: [integer()]) -> float().\nfind_median_sorted_arrays(Nums1, Nums2) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec find_median_sorted_arrays(nums1 :: [integer], nums2 :: [integer]) :: float\n  def find_median_sorted_arrays(nums1, nums2) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.\nThe overall run time complexity should be O(log (m+n)).\n \nExample 1:\n\nInput: nums1 = [1,3], nums2 = [2]\nOutput: 2.00000\nExplanation: merged array = [1,2,3] and median is 2.\n\nExample 2:\n\nInput: nums1 = [1,2], nums2 = [3,4]\nOutput: 2.50000\nExplanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.\n\n \nConstraints:\n\nnums1.length == m\nnums2.length == n\n0 <= m <= 1000\n0 <= n <= 1000\n1 <= m + n <= 2000\n-106 <= nums1[i], nums2[i] <= 106\n\n",
+    "difficulty": "Hard",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["[1,3]\n[2]", "[1,2]\n[3,4]"],
+    "title": "Median of Two Sorted Arrays",
+    "topic_tags": ["Array", "Binary Search", "Divide and Conquer"],
+    "updated_at": 1695017043,
+    "url": "https://leetcode.com/problems/median-of-two-sorted-arrays/"
+  },
+  {
+    "_id": "6507e508864da362070ffeab",
+    "id": "5",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    string longestPalindrome(string s) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public String longestPalindrome(String s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def longestPalindrome(self, s):\n        \"\"\"\n        :type s: str\n        :rtype: str\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def longestPalindrome(self, s: str) -> str:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "char * longestPalindrome(char * s){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public string LongestPalindrome(string s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar longestPalindrome = function(s) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function longestPalindrome(s: string): string {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param String $s\n     * @return String\n     */\n    function longestPalindrome($s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func longestPalindrome(_ s: String) -> String {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun longestPalindrome(s: String): String {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  String longestPalindrome(String s) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func longestPalindrome(s string) string {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {String} s\n# @return {String}\ndef longest_palindrome(s)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def longestPalindrome(s: String): String = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn longest_palindrome(s: String) -> String {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (longest-palindrome s)\n  (-> string? string?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec longest_palindrome(S :: unicode:unicode_binary()) -> unicode:unicode_binary().\nlongest_palindrome(S) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec longest_palindrome(s :: String.t) :: String.t\n  def longest_palindrome(s) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given a string s, return the longest palindromic substring in s.\n \nExample 1:\n\nInput: s = \"babad\"\nOutput: \"bab\"\nExplanation: \"aba\" is also a valid answer.\n\nExample 2:\n\nInput: s = \"cbbd\"\nOutput: \"bb\"\n\n \nConstraints:\n\n1 <= s.length <= 1000\ns consist of only digits and English letters.\n\n",
+    "difficulty": "Medium",
+    "hints": [
+      "How can we reuse a previously computed palindrome to compute a larger palindrome?",
+      "If “aba” is a palindrome, is “xabax” a palindrome? Similarly is “xabay” a palindrome?",
+      "Complexity based hint:\r\nIf we use brute-force and check whether for every start and end position a substring is a palindrome we have O(n^2) start - end pairs and O(n) palindromic checks. Can we reduce the time for palindromic checks to O(1) by reusing some previous computation."
+    ],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["\"babad\"", "\"cbbd\""],
+    "title": "Longest Palindromic Substring",
+    "topic_tags": ["String", "Dynamic Programming"],
+    "updated_at": 1695017045,
+    "url": "https://leetcode.com/problems/longest-palindromic-substring/"
+  },
+  {
+    "_id": "6507e508864da362070ffeac",
+    "id": "6",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    string convert(string s, int numRows) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public String convert(String s, int numRows) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def convert(self, s, numRows):\n        \"\"\"\n        :type s: str\n        :type numRows: int\n        :rtype: str\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def convert(self, s: str, numRows: int) -> str:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "char * convert(char * s, int numRows){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public string Convert(string s, int numRows) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {string} s\n * @param {number} numRows\n * @return {string}\n */\nvar convert = function(s, numRows) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function convert(s: string, numRows: number): string {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param String $s\n     * @param Integer $numRows\n     * @return String\n     */\n    function convert($s, $numRows) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func convert(_ s: String, _ numRows: Int) -> String {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun convert(s: String, numRows: Int): String {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  String convert(String s, int numRows) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func convert(s string, numRows int) string {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {String} s\n# @param {Integer} num_rows\n# @return {String}\ndef convert(s, num_rows)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def convert(s: String, numRows: Int): String = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn convert(s: String, num_rows: i32) -> String {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (convert s numRows)\n  (-> string? exact-integer? string?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec convert(S :: unicode:unicode_binary(), NumRows :: integer()) -> unicode:unicode_binary().\nconvert(S, NumRows) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec convert(s :: String.t, num_rows :: integer) :: String.t\n  def convert(s, num_rows) do\n\n  end\nend"
+      }
+    ],
+    "description": "The string \"PAYPALISHIRING\" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)\n\nP   A   H   N\nA P L S I I G\nY   I   R\n\nAnd then read line by line: \"PAHNAPLSIIGYIR\"\nWrite the code that will take a string and make this conversion given a number of rows:\n\nstring convert(string s, int numRows);\n\n \nExample 1:\n\nInput: s = \"PAYPALISHIRING\", numRows = 3\nOutput: \"PAHNAPLSIIGYIR\"\n\nExample 2:\n\nInput: s = \"PAYPALISHIRING\", numRows = 4\nOutput: \"PINALSIGYAHRPI\"\nExplanation:\nP     I    N\nA   L S  I G\nY A   H R\nP     I\n\nExample 3:\n\nInput: s = \"A\", numRows = 1\nOutput: \"A\"\n\n \nConstraints:\n\n1 <= s.length <= 1000\ns consists of English letters (lower-case and upper-case), ',' and '.'.\n1 <= numRows <= 1000\n\n",
+    "difficulty": "Medium",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": [
+      "\"PAYPALISHIRING\"\n3",
+      "\"PAYPALISHIRING\"\n4",
+      "\"A\"\n1"
+    ],
+    "title": "Zigzag Conversion",
+    "topic_tags": ["String"],
+    "updated_at": 1695017046,
+    "url": "https://leetcode.com/problems/zigzag-conversion/"
+  },
+  {
+    "_id": "6507e508864da362070ffead",
+    "id": "7",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    int reverse(int x) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public int reverse(int x) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def reverse(self, x):\n        \"\"\"\n        :type x: int\n        :rtype: int\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def reverse(self, x: int) -> int:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "int reverse(int x){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public int Reverse(int x) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {number} x\n * @return {number}\n */\nvar reverse = function(x) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function reverse(x: number): number {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param Integer $x\n     * @return Integer\n     */\n    function reverse($x) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func reverse(_ x: Int) -> Int {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun reverse(x: Int): Int {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  int reverse(int x) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func reverse(x int) int {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {Integer} x\n# @return {Integer}\ndef reverse(x)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def reverse(x: Int): Int = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn reverse(x: i32) -> i32 {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (reverse x)\n  (-> exact-integer? exact-integer?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec reverse(X :: integer()) -> integer().\nreverse(X) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec reverse(x :: integer) :: integer\n  def reverse(x) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.\nAssume the environment does not allow you to store 64-bit integers (signed or unsigned).\n \nExample 1:\n\nInput: x = 123\nOutput: 321\n\nExample 2:\n\nInput: x = -123\nOutput: -321\n\nExample 3:\n\nInput: x = 120\nOutput: 21\n\n \nConstraints:\n\n-231 <= x <= 231 - 1\n\n",
+    "difficulty": "Medium",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["123", "-123", "120"],
+    "title": "Reverse Integer",
+    "topic_tags": ["Math"],
+    "updated_at": 1695017047,
+    "url": "https://leetcode.com/problems/reverse-integer/"
+  },
+  {
+    "_id": "6507e508864da362070ffeae",
+    "id": "8",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    int myAtoi(string s) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public int myAtoi(String s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def myAtoi(self, s):\n        \"\"\"\n        :type s: str\n        :rtype: int\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def myAtoi(self, s: str) -> int:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "int myAtoi(char * s){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public int MyAtoi(string s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar myAtoi = function(s) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function myAtoi(s: string): number {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param String $s\n     * @return Integer\n     */\n    function myAtoi($s) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func myAtoi(_ s: String) -> Int {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun myAtoi(s: String): Int {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  int myAtoi(String s) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func myAtoi(s string) int {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {String} s\n# @return {Integer}\ndef my_atoi(s)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def myAtoi(s: String): Int = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn my_atoi(s: String) -> i32 {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (my-atoi s)\n  (-> string? exact-integer?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec my_atoi(S :: unicode:unicode_binary()) -> integer().\nmy_atoi(S) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec my_atoi(s :: String.t) :: integer\n  def my_atoi(s) do\n\n  end\nend"
+      }
+    ],
+    "description": "Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer (similar to C/C++'s atoi function).\nThe algorithm for myAtoi(string s) is as follows:\n\nRead in and ignore any leading whitespace.\nCheck if the next character (if not already at the end of the string) is '-' or '+'. Read this character in if it is either. This determines if the final result is negative or positive respectively. Assume the result is positive if neither is present.\nRead in next the characters until the next non-digit character or the end of the input is reached. The rest of the string is ignored.\nConvert these digits into an integer (i.e. \"123\" -> 123, \"0032\" -> 32). If no digits were read, then the integer is 0. Change the sign as necessary (from step 2).\nIf the integer is out of the 32-bit signed integer range [-231, 231 - 1], then clamp the integer so that it remains in the range. Specifically, integers less than -231 should be clamped to -231, and integers greater than 231 - 1 should be clamped to 231 - 1.\nReturn the integer as the final result.\n\nNote:\n\nOnly the space character ' ' is considered a whitespace character.\nDo not ignore any characters other than the leading whitespace or the rest of the string after the digits.\n\n \nExample 1:\n\nInput: s = \"42\"\nOutput: 42\nExplanation: The underlined characters are what is read in, the caret is the current reader position.\nStep 1: \"42\" (no characters read because there is no leading whitespace)\n         ^\nStep 2: \"42\" (no characters read because there is neither a '-' nor '+')\n         ^\nStep 3: \"42\" (\"42\" is read in)\n           ^\nThe parsed integer is 42.\nSince 42 is in the range [-231, 231 - 1], the final result is 42.\n\nExample 2:\n\nInput: s = \"   -42\"\nOutput: -42\nExplanation:\nStep 1: \"   -42\" (leading whitespace is read and ignored)\n            ^\nStep 2: \"   -42\" ('-' is read, so the result should be negative)\n             ^\nStep 3: \"   -42\" (\"42\" is read in)\n               ^\nThe parsed integer is -42.\nSince -42 is in the range [-231, 231 - 1], the final result is -42.\n\nExample 3:\n\nInput: s = \"4193 with words\"\nOutput: 4193\nExplanation:\nStep 1: \"4193 with words\" (no characters read because there is no leading whitespace)\n         ^\nStep 2: \"4193 with words\" (no characters read because there is neither a '-' nor '+')\n         ^\nStep 3: \"4193 with words\" (\"4193\" is read in; reading stops because the next character is a non-digit)\n             ^\nThe parsed integer is 4193.\nSince 4193 is in the range [-231, 231 - 1], the final result is 4193.\n\n \nConstraints:\n\n0 <= s.length <= 200\ns consists of English letters (lower-case and upper-case), digits (0-9), ' ', '+', '-', and '.'.\n\n",
+    "difficulty": "Medium",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["\"42\"", "\"   -42\"", "\"4193 with words\""],
+    "title": "String to Integer (atoi)",
+    "topic_tags": ["String"],
+    "updated_at": 1695017048,
+    "url": "https://leetcode.com/problems/string-to-integer-atoi/"
+  },
+  {
+    "_id": "6507e508864da362070ffeaf",
+    "id": "9",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    bool isPalindrome(int x) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public boolean isPalindrome(int x) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def isPalindrome(self, x):\n        \"\"\"\n        :type x: int\n        :rtype: bool\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def isPalindrome(self, x: int) -> bool:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "bool isPalindrome(int x){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public bool IsPalindrome(int x) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {number} x\n * @return {boolean}\n */\nvar isPalindrome = function(x) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function isPalindrome(x: number): boolean {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param Integer $x\n     * @return Boolean\n     */\n    function isPalindrome($x) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func isPalindrome(_ x: Int) -> Bool {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun isPalindrome(x: Int): Boolean {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  bool isPalindrome(int x) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func isPalindrome(x int) bool {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {Integer} x\n# @return {Boolean}\ndef is_palindrome(x)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def isPalindrome(x: Int): Boolean = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn is_palindrome(x: i32) -> bool {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (is-palindrome x)\n  (-> exact-integer? boolean?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec is_palindrome(X :: integer()) -> boolean().\nis_palindrome(X) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec is_palindrome(x :: integer) :: boolean\n  def is_palindrome(x) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given an integer x, return true if x is a palindrome, and false otherwise.\n \nExample 1:\n\nInput: x = 121\nOutput: true\nExplanation: 121 reads as 121 from left to right and from right to left.\n\nExample 2:\n\nInput: x = -121\nOutput: false\nExplanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.\n\nExample 3:\n\nInput: x = 10\nOutput: false\nExplanation: Reads 01 from right to left. Therefore it is not a palindrome.\n\n \nConstraints:\n\n-231 <= x <= 231 - 1\n\n \nFollow up: Could you solve it without converting the integer to a string?",
+    "difficulty": "Easy",
+    "hints": ["Beware of overflow when you reverse the integer."],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["121", "-121", "10"],
+    "title": "Palindrome Number",
+    "topic_tags": ["Math"],
+    "updated_at": 1695017050,
+    "url": "https://leetcode.com/problems/palindrome-number/"
+  },
+  {
+    "_id": "6507e508864da362070ffeb0",
+    "id": "10",
+    "category": "Algorithms",
+    "code_snippets": [
+      {
+        "lang": "C++",
+        "langSlug": "cpp",
+        "code": "class Solution {\npublic:\n    bool isMatch(string s, string p) {\n        \n    }\n};"
+      },
+      {
+        "lang": "Java",
+        "langSlug": "java",
+        "code": "class Solution {\n    public boolean isMatch(String s, String p) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Python",
+        "langSlug": "python",
+        "code": "class Solution(object):\n    def isMatch(self, s, p):\n        \"\"\"\n        :type s: str\n        :type p: str\n        :rtype: bool\n        \"\"\"\n        "
+      },
+      {
+        "lang": "Python3",
+        "langSlug": "python3",
+        "code": "class Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        "
+      },
+      {
+        "lang": "C",
+        "langSlug": "c",
+        "code": "bool isMatch(char * s, char * p){\n\n}"
+      },
+      {
+        "lang": "C#",
+        "langSlug": "csharp",
+        "code": "public class Solution {\n    public bool IsMatch(string s, string p) {\n        \n    }\n}"
+      },
+      {
+        "lang": "JavaScript",
+        "langSlug": "javascript",
+        "code": "/**\n * @param {string} s\n * @param {string} p\n * @return {boolean}\n */\nvar isMatch = function(s, p) {\n    \n};"
+      },
+      {
+        "lang": "TypeScript",
+        "langSlug": "typescript",
+        "code": "function isMatch(s: string, p: string): boolean {\n\n};"
+      },
+      {
+        "lang": "PHP",
+        "langSlug": "php",
+        "code": "class Solution {\n\n    /**\n     * @param String $s\n     * @param String $p\n     * @return Boolean\n     */\n    function isMatch($s, $p) {\n        \n    }\n}"
+      },
+      {
+        "lang": "Swift",
+        "langSlug": "swift",
+        "code": "class Solution {\n    func isMatch(_ s: String, _ p: String) -> Bool {\n        \n    }\n}"
+      },
+      {
+        "lang": "Kotlin",
+        "langSlug": "kotlin",
+        "code": "class Solution {\n    fun isMatch(s: String, p: String): Boolean {\n        \n    }\n}"
+      },
+      {
+        "lang": "Dart",
+        "langSlug": "dart",
+        "code": "class Solution {\n  bool isMatch(String s, String p) {\n\n  }\n}"
+      },
+      {
+        "lang": "Go",
+        "langSlug": "golang",
+        "code": "func isMatch(s string, p string) bool {\n    \n}"
+      },
+      {
+        "lang": "Ruby",
+        "langSlug": "ruby",
+        "code": "# @param {String} s\n# @param {String} p\n# @return {Boolean}\ndef is_match(s, p)\n    \nend"
+      },
+      {
+        "lang": "Scala",
+        "langSlug": "scala",
+        "code": "object Solution {\n    def isMatch(s: String, p: String): Boolean = {\n        \n    }\n}"
+      },
+      {
+        "lang": "Rust",
+        "langSlug": "rust",
+        "code": "impl Solution {\n    pub fn is_match(s: String, p: String) -> bool {\n        \n    }\n}"
+      },
+      {
+        "lang": "Racket",
+        "langSlug": "racket",
+        "code": "(define/contract (is-match s p)\n  (-> string? string? boolean?)\n\n  )"
+      },
+      {
+        "lang": "Erlang",
+        "langSlug": "erlang",
+        "code": "-spec is_match(S :: unicode:unicode_binary(), P :: unicode:unicode_binary()) -> boolean().\nis_match(S, P) ->\n  ."
+      },
+      {
+        "lang": "Elixir",
+        "langSlug": "elixir",
+        "code": "defmodule Solution do\n  @spec is_match(s :: String.t, p :: String.t) :: boolean\n  def is_match(s, p) do\n\n  end\nend"
+      }
+    ],
+    "description": "Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n\n'.' Matches any single character.​​​​\n'*' Matches zero or more of the preceding element.\n\nThe matching should cover the entire input string (not partial).\n \nExample 1:\n\nInput: s = \"aa\", p = \"a\"\nOutput: false\nExplanation: \"a\" does not match the entire string \"aa\".\n\nExample 2:\n\nInput: s = \"aa\", p = \"a*\"\nOutput: true\nExplanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes \"aa\".\n\nExample 3:\n\nInput: s = \"ab\", p = \".*\"\nOutput: true\nExplanation: \".*\" means \"zero or more (*) of any character (.)\".\n\n \nConstraints:\n\n1 <= s.length <= 20\n1 <= p.length <= 20\ns contains only lowercase English letters.\np contains only lowercase English letters, '.', and '*'.\nIt is guaranteed for each appearance of the character '*', there will be a previous valid character to match.\n\n",
+    "difficulty": "Hard",
+    "hints": [],
+    "languages": [
+      "cpp",
+      "java",
+      "python",
+      "python3",
+      "mysql",
+      "mssql",
+      "oraclesql",
+      "c",
+      "csharp",
+      "javascript",
+      "typescript",
+      "bash",
+      "php",
+      "swift",
+      "kotlin",
+      "dart",
+      "golang",
+      "ruby",
+      "scala",
+      "html",
+      "pythonml",
+      "rust",
+      "racket",
+      "erlang",
+      "elixir",
+      "pythondata",
+      "react",
+      "vanillajs"
+    ],
+    "paid_only": false,
+    "test_cases": ["\"aa\"\n\"a\"", "\"aa\"\n\"a*\"", "\"ab\"\n\".*\""],
+    "title": "Regular Expression Matching",
+    "topic_tags": ["String", "Dynamic Programming", "Recursion"],
+    "updated_at": 1695017051,
+    "url": "https://leetcode.com/problems/regular-expression-matching/"
+  }
+]
