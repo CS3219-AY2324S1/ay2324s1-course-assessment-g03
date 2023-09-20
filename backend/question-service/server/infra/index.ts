@@ -25,17 +25,16 @@ const domainName = `${subdomain}${rootDomain}`;
 const acmCertificateArn = config.requireSecret("acmEcsCertificateArn");
 
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
+const isProd = currentEnv === "prod";
 
 // Fallback `frontendWebsiteUrl` if the frontend stack is not deployed
-const fallbackFrontendWebsiteUrl =
-  currentEnv === "prod"
-    ? "https://peerprep.net"
-    : "https://staging.peerprep.net";
+const fallbackFrontendWebsiteUrl = isProd
+  ? "https://peerprep.net"
+  : "https://staging.peerprep.net";
 
-const fallbackApiGatewayUrl =
-  currentEnv === "prod"
-    ? "https://api.peerprep.net"
-    : "https://api.staging.peerprep.net";
+const fallbackApiGatewayUrl = isProd
+  ? "https://api.peerprep.net"
+  : "https://api.staging.peerprep.net";
 
 /**
  * Reference the other stacks
@@ -128,7 +127,7 @@ const service = new awsx.ecs.FargateService("service", {
         // Feel free to remove or add more environment variables as needed
         {
           name: "ENV",
-          value: currentEnv === "prod" ? "production" : currentEnv,
+          value: isProd ? "production" : currentEnv,
         },
         { name: "PORT", value: containerPort.toString() },
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
