@@ -1,41 +1,28 @@
-import { backendApi } from "@/lib";
+import { backendApi } from "@/lib/axios";
+import { makeSuccessResponseSchema } from "@/lib/api";
 import { useQuery } from "react-query";
+import { z } from "zod";
 
 const GET_GITHUB_AUTH_URL_KEY = "github-auth-url";
 
-type GetGithubAuthUrlResponse =
-  | {
-      status: "success";
-      data: {
-        url: string;
-      };
-    }
-  | {
-      status: "fail";
-      message: string;
-    };
+const getGithubAuthUrlResponseSchema = makeSuccessResponseSchema(
+  z.object({
+    url: z.string().url(),
+  }),
+);
 
 const getGithubAuthUrl = async () => {
-  try {
-    const { data } = await backendApi.get<GetGithubAuthUrlResponse>(
-      "/auth/github/authorize",
-    );
-    if (data.status === "fail") {
-      throw new Error(data.message);
-    }
-    return data.data;
-  } catch (error) {
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
-  }
+  const { data } = await backendApi.get("/auth/github/authorize");
+  return getGithubAuthUrlResponseSchema.parse(data);
 };
 
 export const useGetGithubAuthUrl = () => {
   return useQuery({
     queryKey: [GET_GITHUB_AUTH_URL_KEY],
-    queryFn: getGithubAuthUrl,
+    queryFn: () => getGithubAuthUrl(),
     enabled: false,
     retry: false,
-    onSuccess(data) {
+    onSuccess({ data }) {
       window.location.href = data.url;
     },
   });

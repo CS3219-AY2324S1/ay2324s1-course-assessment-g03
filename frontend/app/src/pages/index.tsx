@@ -19,7 +19,9 @@ function HomePage() {
           </Text>
           {data?.user ? (
             <>
-              <h2>You are signed in as {data.user.email}</h2>
+              <Text color="white" textStyle="text-2xl">
+                You are signed in as {data.user.email}
+              </Text>
               <LogoutButton />
             </>
           ) : (

@@ -1,46 +1,29 @@
 import { useSearchParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { API_URL } from "@/constants/api";
+import { useGetGithubLogin } from "@/features/auth/api";
+import { VStack, Text, Button } from "@chakra-ui/react";
 
 function GitHubCallbackPage() {
   const [searchParams] = useSearchParams();
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["github-login"],
-    queryFn: async () => {
-      const res = await fetch(
-        `${API_URL}/auth/github/login?${searchParams.toString()}`,
-        { credentials: "include" },
-      );
-      if (!res.ok) {
-        const { error, error_message } = await res.json();
-
-        throw new Error(`Error: ${error} - ${error_message}`);
-      }
-      const data = await res.json();
-      return data;
-    },
-    retry: false,
-  });
+  const { data, isLoading, isError } = useGetGithubLogin(searchParams);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Text color="white">Loading...</Text>;
   }
 
   if (isError) {
     return (
-      <>
-        <div>Error: {JSON.stringify(data)}</div>
-        <button onClick={() => (window.location.href = "/")}>Back</button>
-      </>
+      <VStack>
+        <Text color="white">Error: {JSON.stringify(data)}</Text>
+        <Button onClick={() => (window.location.href = "/")}>Back</Button>
+      </VStack>
     );
   }
 
   return (
-    <>
-      <p>User data: {JSON.stringify(data)}</p>
-      <button onClick={() => (window.location.href = "/")}>Back</button>
-    </>
+    <VStack>
+      <Text color="white">User data: {JSON.stringify(data)}</Text>
+      <Button onClick={() => (window.location.href = "/")}>Back</Button>
+    </VStack>
   );
 }
 

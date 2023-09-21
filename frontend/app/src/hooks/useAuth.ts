@@ -1,40 +1,31 @@
-import { backendApi } from "@/lib";
-import { User } from "@/types/user";
+import { makeSuccessResponseSchema } from "@/lib/api";
+import { backendApi } from "@/lib/axios";
+import { userSchema } from "@/types/user";
 import { useQuery } from "react-query";
+import { z } from "zod";
 
 export const GET_AUTH_QUERY_KEY = "auth";
 
-type GetAuthResponse =
-  | {
-      status: "success";
-      data: {
-        user: User;
-      };
-    }
-  | {
-      status: "fail";
-      data: {
-        message: string;
-      };
-    };
+const getAuthResponseSchema = makeSuccessResponseSchema(
+  z.object({
+    user: userSchema,
+  }),
+);
 
 const getAuth = async () => {
-  try {
-    const { data } = await backendApi.get<GetAuthResponse>("/auth", {
-      withCredentials: true,
-    });
-    if (data.status === "fail") {
-      throw new Error(data.data.message);
-    }
-    return data.data;
-  } catch (error) {
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+  const { data } = await backendApi.get("/auth");
+  const parsedResponse = getAuthResponseSchema.safeParse(data);
+
+  // Fail silently
+  if (parsedResponse.success) {
+    return { ...parsedResponse.data.data };
   }
 };
 
 export const useAuth = () => {
   return useQuery({
     queryKey: [GET_AUTH_QUERY_KEY],
-    queryFn: getAuth,
+    queryFn: () => getAuth(),
+    retry: false,
   });
 };

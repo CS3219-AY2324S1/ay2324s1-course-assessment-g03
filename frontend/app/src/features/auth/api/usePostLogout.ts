@@ -1,28 +1,26 @@
-import { backendApi } from "@/lib";
+import { backendApi } from "@/lib/axios";
 import { useMutation, useQueryClient } from "react-query";
-import { GET_AUTH_QUERY_KEY } from "../../../hooks/useAuth";
+import { GET_AUTH_QUERY_KEY } from "@/hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
+import { z } from "zod";
+import { makeSuccessResponseSchema } from "@/lib/api";
 
-type PostLogoutRespose = {
-  status: "success" | "fail";
-  data: { message: string };
-};
+const postLogoutResponseSchema = makeSuccessResponseSchema(
+  z.object({
+    message: z.string(),
+  }),
+);
 
 const postLogout = async () => {
-  const { data } = await backendApi.post<PostLogoutRespose>(
-    "/auth/logout",
-    {},
-    { withCredentials: true },
-  );
-
-  return data.data;
+  const { data } = await backendApi.post("/auth/logout");
+  return postLogoutResponseSchema.parse(data);
 };
 
 export const usePostLogout = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation(postLogout, {
+  return useMutation(() => postLogout(), {
     onSuccess: () => {
       toast({
         status: "success",

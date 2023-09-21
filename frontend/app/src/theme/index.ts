@@ -9,3 +9,5 @@ export const theme = extendTheme({
   colors,
   textStyles,
 });
+
+export * from "./Toast";
