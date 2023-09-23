@@ -1,3 +1,4 @@
+import { API_ENDPOINT } from "@/constants/api";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { backendApi } from "@/lib/axios";
 import { userSchema } from "@/types/user";
@@ -13,7 +14,7 @@ const getAuthResponseSchema = makeSuccessResponseSchema(
 );
 
 const getAuth = async () => {
-  const { data } = await backendApi.get("/auth");
+  const { data } = await backendApi.get(API_ENDPOINT.AUTH);
   const parsedResponse = getAuthResponseSchema.safeParse(data);
 
   // Fail silently

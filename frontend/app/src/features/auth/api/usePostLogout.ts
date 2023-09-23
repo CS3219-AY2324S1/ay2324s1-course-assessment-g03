@@ -4,6 +4,7 @@ import { GET_AUTH_QUERY_KEY } from "@/hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";
+import { API_ENDPOINT } from "@/constants/api";
 
 const postLogoutResponseSchema = makeSuccessResponseSchema(
   z.object({
@@ -12,7 +13,7 @@ const postLogoutResponseSchema = makeSuccessResponseSchema(
 );
 
 const postLogout = async () => {
-  const { data } = await backendApi.post("/auth/logout");
+  const { data } = await backendApi.post(API_ENDPOINT.AUTH_LOGOUT);
   return postLogoutResponseSchema.parse(data);
 };
 

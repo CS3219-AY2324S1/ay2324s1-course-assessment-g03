@@ -2,6 +2,7 @@ import { backendApi } from "@/lib/axios";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { useQuery } from "react-query";
 import { z } from "zod";
+import { API_ENDPOINT } from "@/constants/api";
 
 const GET_GITHUB_LOGIN_KEY = "github-login";
 
@@ -12,7 +13,9 @@ const getGithubLoginResponseSchema = makeSuccessResponseSchema(
 );
 
 const getGithubLogin = async (params: URLSearchParams) => {
-  const { data } = await backendApi.get(`/auth/github/login`, { params });
+  const { data } = await backendApi.get(API_ENDPOINT.AUTH_GITHUB_LOGIN, {
+    params,
+  });
   return getGithubLoginResponseSchema.parse(data);
 };
 
