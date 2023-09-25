@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { failApiResponse, unwrapJwt } from "./utils";
 import { HTTP_STATUS_CODE } from "../types";
-import { User } from "../types/user";
+import { User, userSchema } from "../types/user";
 
 export const authMiddleware: RequestHandler = async (req, res, next) => {
   /**
@@ -15,7 +15,7 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
    */
   let data: User | undefined = undefined;
   try {
-    data = await unwrapJwt<User>(token);
+    data = await unwrapJwt(token, userSchema);
   } catch (error) {
     return res
       .status(HTTP_STATUS_CODE.UNAUTHORIZED)

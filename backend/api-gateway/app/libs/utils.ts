@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { HTTP_STATUS } from "../types";
 import jwt from "jsonwebtoken";
 
@@ -21,14 +22,21 @@ export const wrapJwt = (data: Record<string, string>) => {
   return jwt.sign(data, process.env.JWT_SECRET);
 };
 
-export const unwrapJwt = <T>(token: string): Promise<T> => {
+export const unwrapJwt = (
+  token: string,
+  schema: z.ZodTypeAny
+): Promise<z.infer<typeof schema>> => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         reject(err); // Reject with the error if verification fails
       } else {
-        const data = decoded as T;
-        resolve(data); // Resolve with the decoded data if verification succeeds
+        const parsedContents = schema.safeParse(decoded);
+        if (!parsedContents.success) {
+          reject(parsedContents.error);
+        } else {
+          resolve(parsedContents.data); // Resolve with the decoded data if verification succeeds
+        }
       }
     });
   });

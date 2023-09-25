@@ -81,7 +81,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     },
   });
 
-  const emailPromise = await fetch(GITHUB_USER_EMAIL_ENDPOINT, {
+  const emailPromise = fetch(GITHUB_USER_EMAIL_ENDPOINT, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -92,6 +92,12 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
   const [userData, emailData] = await Promise.all(
     promiseResponses.map(async (response) => await response.json())
   );
+
+  const userObject = {
+    name: userData["name"],
+    email: emailData[0]["email"],
+    avatarUrl: userData["avatar_url"],
+  };
 
   // TODO: Check `Account` to see if user exists
 
@@ -104,9 +110,8 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
   // TODO: - Create new Account record
 
   // Log the user in by setting JWT in cookie
-  const jwtPayload = {
-    email: emailData[0]["email"],
-  };
+  const jwtPayload = { ...userObject };
+
   const token = wrapJwt(jwtPayload);
 
   res.cookie(process.env.JWT_COOKIE_NAME, token, cookieOptions);
