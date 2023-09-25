@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { failApiResponse, unwrapJwt } from "./utils";
 import { HTTP_STATUS_CODE } from "../types";
-import { User } from "../types/user";
+import { ROLE, User, userSchema } from "../types/user";
 
 export const authMiddleware: RequestHandler = async (req, res, next) => {
   /**
@@ -15,7 +15,7 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
    */
   let data: User | undefined = undefined;
   try {
-    data = await unwrapJwt<User>(token);
+    data = await unwrapJwt(token, userSchema);
   } catch (error) {
     return res
       .status(HTTP_STATUS_CODE.UNAUTHORIZED)
@@ -30,4 +30,22 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
   // User is authenticated
   res.locals.user = { ...data };
   next();
+};
+
+export const adminMiddleware: RequestHandler = async (req, res, next) => {
+  authMiddleware(req, res, next);
+
+  const userData = userSchema.parse(res.locals.user);
+
+  if (userData.roles && userData.roles.includes(ROLE.ADMIN)) {
+    next();
+  } else {
+    return res
+      .status(HTTP_STATUS_CODE.UNAUTHORIZED)
+      .send(
+        failApiResponse({
+          message: "User is not authorized to perform this action",
+        })
+      );
+  }
 };
