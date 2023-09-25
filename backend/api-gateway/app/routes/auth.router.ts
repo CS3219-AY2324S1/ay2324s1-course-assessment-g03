@@ -99,15 +99,9 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     avatarUrl: userData["avatar_url"],
   };
 
-  // TODO: Check `Account` to see if user exists
+  // TODO: Call user service to upsert user data based on email
 
-  // TODO: If user does not exist in `Account`
-
-  // TODO: - Call user service to check if user exists
-
-  // TODO: - - If user does not exist, create new user with user service
-
-  // TODO: - Create new Account record
+  // TODO: Validate user data response from user service
 
   // Log the user in by setting JWT in cookie
   const jwtPayload = { ...userObject };
