@@ -9,6 +9,7 @@ import {
 } from "react-query";
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { globalToastOptions, theme } from "@/theme";
+import "@fontsource-variable/inter";
 
 // To show toasts outside of react components (e.g. in react-query's global onError)
 const { ToastContainer, toast } = createStandaloneToast({ theme });
