@@ -1,6 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
 import { colors, textStyles } from "./foundations";
 import { Button } from "./components";
+import { fonts } from "./foundations/fonts";
 
 export const theme = extendTheme({
   components: {
@@ -8,6 +9,7 @@ export const theme = extendTheme({
   },
   colors,
   textStyles,
+  fonts,
 });
 
 export * from "./Toast";
