@@ -1,8 +1,11 @@
 import { backendApi } from "@/lib/axios";
 import { makeSuccessResponseSchema } from "@/lib/api";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { z } from "zod";
 import { API_ENDPOINT } from "@/constants/api";
+import { useNavigate } from "react-router-dom";
+import { ROUTE } from "@/constants/route";
+import { GET_AUTH_QUERY_KEY } from "@/hooks";
 
 const GET_GITHUB_LOGIN_KEY = "github-login";
 
@@ -20,13 +23,17 @@ const getGithubLogin = async (params: URLSearchParams) => {
 };
 
 export const useGetGithubLogin = (params: URLSearchParams) => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   return useQuery({
     queryKey: [GET_GITHUB_LOGIN_KEY],
     queryFn: () => getGithubLogin(params),
     enabled: !!params,
     retry: false,
     onSuccess() {
-      //   window.location.href = "/";
+      queryClient.invalidateQueries(GET_AUTH_QUERY_KEY);
+      navigate(ROUTE.HOME);
     },
   });
 };

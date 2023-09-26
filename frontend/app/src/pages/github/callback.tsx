@@ -1,29 +1,26 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGithubLogin } from "@/features/auth/api";
-import { VStack, Text, Button } from "@chakra-ui/react";
+import { VStack, Text, Button, Spinner, Box } from "@chakra-ui/react";
+import { ROUTE } from "@/constants/route";
+import { Page } from "@/components/Page/Page";
 
 function GitHubCallbackPage() {
   const [searchParams] = useSearchParams();
-  const { data, isLoading, isError } = useGetGithubLogin(searchParams);
-
-  if (isLoading) {
-    return <Text color="white">Loading...</Text>;
-  }
-
-  if (isError) {
-    return (
-      <VStack>
-        <Text color="white">Error: {JSON.stringify(data)}</Text>
-        <Button onClick={() => (window.location.href = "/")}>Back</Button>
-      </VStack>
-    );
-  }
+  const navigate = useNavigate();
+  const { isLoading, isError } = useGetGithubLogin(searchParams);
 
   return (
-    <VStack>
-      <Text color="white">User data: {JSON.stringify(data)}</Text>
-      <Button onClick={() => (window.location.href = "/")}>Back</Button>
-    </VStack>
+    <Page display="grid" placeItems="center">
+      {isLoading ? <Spinner /> : null}
+      {isError ? (
+        <VStack gap="1rem">
+          <Text textStyle="heading-md">
+            An error has occurred, please try again
+          </Text>
+          <Button onClick={() => navigate(ROUTE.ROOT)}>Back</Button>
+        </VStack>
+      ) : null}
+    </Page>
   );
 }
 
