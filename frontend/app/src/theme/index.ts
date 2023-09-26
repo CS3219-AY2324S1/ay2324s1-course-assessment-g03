@@ -1,11 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
 import { colors, textStyles } from "./foundations";
-import { Button } from "./components";
+import { Text, Spinner } from "./components";
 import { fonts } from "./foundations/fonts";
 
 export const theme = extendTheme({
   components: {
-    Button,
+    Text,
+    Spinner,
   },
   colors,
   textStyles,
@@ -13,3 +14,4 @@ export const theme = extendTheme({
 });
 
 export * from "./Toast";
+export * from "./ChakraReactSelect";

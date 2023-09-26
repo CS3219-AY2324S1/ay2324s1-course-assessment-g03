@@ -1,12 +1,20 @@
 import { useGetGithubAuthUrl } from "@/features/auth/api";
 import { Button } from "@chakra-ui/react";
 
-export const LoginWithGithubButton = () => {
+type LoginWithGithubButtonProps = {
+  text?: string;
+};
+
+export const LoginWithGithubButton = ({ text }: LoginWithGithubButtonProps) => {
   const { refetch: loginWithGithub } = useGetGithubAuthUrl();
 
   return (
-    <Button colorScheme="primary" onClick={() => loginWithGithub()}>
-      Try with GitHub
+    <Button
+      colorScheme="primary"
+      borderRadius="6.25rem"
+      onClick={() => loginWithGithub()}
+    >
+      {text || "Try with GitHub"}
     </Button>
   );
 };
