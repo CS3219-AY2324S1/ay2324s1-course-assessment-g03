@@ -17,6 +17,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
+import { io } from "socket.io-client";
 
 type PreferencesFormValues = {
   difficulty:
@@ -33,6 +34,8 @@ type PreferencesFormValues = {
     | undefined;
 };
 
+const socket = io('http://localhost:8004');
+
 export const SelectPreferencesCard = () => {
   const {
     handleSubmit,
@@ -41,13 +44,11 @@ export const SelectPreferencesCard = () => {
   } = useForm<PreferencesFormValues>();
 
   const onSubmit = handleSubmit(async values => {
-    // TODO: @Joel - Add logic to join room
     const parsedValues = {
       difficulty: values.difficulty?.map(difficulty => difficulty.value),
       category: values.category?.map(category => category.value),
     };
-
-    console.log(parsedValues);
+    socket.emit('join', parsedValues);
   });
 
   return (
