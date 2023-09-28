@@ -1,5 +1,12 @@
 config:
+  aws:region: ap-southeast-1
   matching-service-infra:acmEcsCertificateArn:
-    secure: AAABAGrMpeXHGlicxo6zF5QVCtb0C9Nm645SqxV7V3ZaJXYhqg9t04wLe6VUsAqbc1g13n82tpnoP8kYY8TY5bmxS0yTaGWtMdLLZywUxNOtdNe3DqmBmdixYqG/cf39ABnYirH4GXuKiZFuA9AvHUNM+pbjZ7W+
+    secure: AAABAGB3yQz81TDRx7sc8Mpo9dSLsOWn5SdL2Pm38NxMD3H2YyvAUqGq+Hghuguxjq0Z4m0c73YS1L0jZFh0BwubL2Ch2tzjhNCEhtoNWVDF/i/ZF2IzJyPoinTvgvr8342nKHEyPSoi8dZ8GsZ6g36TFbMQLl/+
+  matching-service-infra:containerPort: "80"
+  matching-service-infra:cpu: "256"
   matching-service-infra:hostedZoneId:
-    secure: AAABAAwc/dn8kJoxze92WxrRvg2bMkBWkFzCPIQi69VlOp3o+zGqpJR65dObSTid18c5qg==
+    secure: AAABAFfUvySKDXgmO0y7jWMesRi8x7OvmFK0oyz4eSsUrZz18QaQH6AFY/Xbe5ORG3Xitg==
+  matching-service-infra:memory: "128"
+  matching-service-infra:path: ../app
+  matching-service-infra:rootDomain: peerprep.net
+  matching-service-infra:subdomain: matching.
