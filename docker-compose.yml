@@ -87,4 +87,3 @@ services:
   #     - "8009:80"
 
 volumes:
-  question-service-db-data:
