@@ -5,6 +5,7 @@ import {
   TOPIC_TAG,
   TopicTagType,
 } from "@/constants/question";
+import { Preferences } from "@/types/room";
 import {
   Button,
   FormControl,
@@ -17,7 +18,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
-import { io } from "socket.io-client";
 
 type PreferencesFormValues = {
   difficulty:
@@ -34,9 +34,11 @@ type PreferencesFormValues = {
     | undefined;
 };
 
-const socket = io('http://localhost:8004');
+type Props = {
+  joinCallback: (preferences: Preferences) => void;
+};
 
-export const SelectPreferencesCard = () => {
+export const SelectPreferencesCard = ({joinCallback}: Props) => {
   const {
     handleSubmit,
     control,
@@ -48,7 +50,7 @@ export const SelectPreferencesCard = () => {
       difficulty: values.difficulty?.map(difficulty => difficulty.value),
       category: values.category?.map(category => category.value),
     };
-    socket.emit('join', parsedValues);
+    joinCallback(parsedValues);
   });
 
   return (

@@ -3,7 +3,11 @@ import { VStack, Text, Button, HStack } from "@chakra-ui/react";
 import { UserCard } from ".";
 import { useAuth } from "@/hooks";
 
-export const FindingMatchCard = () => {
+type Props = {
+  leaveCallback: () => void;
+};
+
+export const FindingMatchCard = ({ leaveCallback }: Props) => {
   const { data } = useAuth();
 
   const user = data?.user;
@@ -19,7 +23,9 @@ export const FindingMatchCard = () => {
           <UserCard user={undefined} />
         </HStack>
         <HStack alignSelf="end">
-          <Button colorScheme="light">Leave room</Button>
+          <Button colorScheme="light" onClick={leaveCallback}>
+            Leave room
+          </Button>
         </HStack>
       </VStack>
     </Card>
