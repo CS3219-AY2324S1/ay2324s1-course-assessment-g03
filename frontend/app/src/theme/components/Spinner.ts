@@ -1,7 +1,7 @@
 import { defineStyleConfig } from "@chakra-ui/react";
 
-export const Button = defineStyleConfig({
+export const Spinner = defineStyleConfig({
   baseStyle: {
-    borderRadius: "6.25rem",
+    color: "white",
   },
 });
