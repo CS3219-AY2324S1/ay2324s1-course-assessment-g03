@@ -18,7 +18,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
-import { io } from "socket.io-client";
 
 type PreferencesFormValues = {
   difficulty: {
