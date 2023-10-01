@@ -11,7 +11,11 @@ import RoomPage from "./pages/room/room";
 import HomePage from "@/pages/home";
 import JoinPage from "@/pages/home/join";
 import CreatePage from "@/pages/home/create";
+<<<<<<< HEAD
 >>>>>>> 710372c (feat: setup auth gate and some pages)
+=======
+import RoomPage from "./pages/room/room";
+>>>>>>> 588750d (Add: room page for collab service)
 
 function App() {
   return (
@@ -31,6 +35,7 @@ function App() {
           <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.HOME_JOIN} element={<JoinPage />} />
           <Route path={ROUTE.HOME_CREATE} element={<CreatePage />} />
+          <Route path={ROUTE.ROOM} element={<RoomPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
