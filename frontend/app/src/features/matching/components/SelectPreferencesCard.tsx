@@ -5,7 +5,7 @@ import {
   TOPIC_TAG,
   TopicTagType,
 } from "@/constants/question";
-import { Preferences } from "@/types/room";
+import { Preferences } from "@/types/matching";
 import {
   Button,
   FormControl,
@@ -20,35 +20,36 @@ import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
 
 type PreferencesFormValues = {
-  difficulty:
-    | {
-        value: DifficultyType;
-        label: DifficultyType;
-      }[]
-    | undefined;
-  category:
-    | {
-        value: TopicTagType;
-        label: TopicTagType;
-      }[]
-    | undefined;
+  difficulty: {
+    value: DifficultyType;
+    label: DifficultyType;
+  }[];
+  category: {
+    value: TopicTagType;
+    label: TopicTagType;
+  }[];
 };
 
 type Props = {
   joinCallback: (preferences: Preferences) => void;
 };
 
-export const SelectPreferencesCard = ({joinCallback}: Props) => {
+export const SelectPreferencesCard = ({ joinCallback }: Props) => {
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<PreferencesFormValues>();
+  } = useForm<PreferencesFormValues>({
+    defaultValues: {
+      difficulty: [],
+      category: [],
+    },
+  });
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues = {
-      difficulty: values.difficulty?.map(difficulty => difficulty.value),
-      category: values.category?.map(category => category.value),
+      difficulty: values.difficulty.map(difficulty => difficulty.value),
+      category: values.category.map(category => category.value),
     };
     joinCallback(parsedValues);
   });
