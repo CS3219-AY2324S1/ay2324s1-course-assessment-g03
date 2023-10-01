@@ -3,6 +3,7 @@ import HomePage from "@/pages";
 import GitHubCallbackPage from "@/pages/github/callback";
 import { Layout } from "./components";
 import { ROUTE } from "./constants/route";
+import RoomPage from "./pages/room/room";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             path={ROUTE.GITHUB_CALLBACK}
             element={<GitHubCallbackPage />}
           />
+          <Route path={ROUTE.ROOM} element={<RoomPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
