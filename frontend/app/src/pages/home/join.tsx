@@ -1,36 +1,42 @@
 import { useState } from "react";
-import { Page } from "@/components";
-import { FindingMatchCard, SelectPreferencesCard } from "@/features/matching";
-import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
-import { Preferences } from "@/types/room";
+import { io } from "socket.io-client";
+
+import { Page } from "@/components";
+import { MATCH_SOCKET_EVENTS } from "@/constants/matching";
+import { ROUTE } from "@/constants/route";
+import { FindingMatchCard, SelectPreferencesCard } from "@/features/matching";
+import { env } from "@/lib/env";
+import { Matching, Preferences, matchingSchema } from "@/types/matching";
 
 function JoinPage() {
   const navigate = useNavigate();
-  const socket = io("http://localhost:8004");
-  const [waiting, setWaiting] = useState<boolean>(false);
+  const socket = io(env.MATCHING_SERVICE_URL);
+  const [isWaitingForMatch, setIsWaitingForMatch] = useState<boolean>(false);
 
   const joinRoom = (preferences: Preferences) => {
-    setWaiting(true);
-    socket.emit(
-      "join",
-      preferences,
-      (response: { status: string; roomId: string }) => {
-        if (response.status === "joined") {
-          navigate(`room/${response.roomId}`);
+    setIsWaitingForMatch(true);
+    socket.emit(MATCH_SOCKET_EVENTS.JOIN, preferences, (response: Matching) => {
+      try {
+        const matchingResponse = matchingSchema.parse(response);
+        if (matchingResponse.status === "joined") {
+          navigate(`${ROUTE.ROOM}/${matchingResponse.roomId}`);
         }
-      },
-    );
+      } catch (error) {
+        // TODO: error handling for failed matching
+        console.log(error);
+      }
+    });
   };
 
   const leaveWaiting = () => {
-    setWaiting(false);
+    setIsWaitingForMatch(false);
     socket.disconnect();
   };
 
   return (
     <Page display="grid" placeItems="center">
-      {waiting ? (
+      {isWaitingForMatch ? (
         <FindingMatchCard leaveCallback={leaveWaiting} />
       ) : (
         <SelectPreferencesCard joinCallback={joinRoom} />
