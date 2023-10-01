@@ -91,7 +91,6 @@ class RoomsGateway {
       if (JSON.stringify(room.preferences) === JSON.stringify(preferences)) {
         // maybe use lodash for deep comparison
         roomId = room.roomId;
-        console.log(roomId);
         socket.join(roomId);
         this.roomIdToSockets.set(roomId, [user, room.userSocket]);
       }
@@ -106,16 +105,13 @@ const rooms = new RoomsGateway();
 io.on("connection", (socket) => {
   socket.on("join", (preferences, callback) => {
     rooms.createRoom(socket);
-    console.log(rooms.waiting);
     const roomId = rooms.joinRandomRoom(
       { user: 2, socket },
       preferences,
       socket
     );
     if (roomId) {
-      console.log(roomId);
       callback({
-        status: "joined",
         roomId,
       });
     }
