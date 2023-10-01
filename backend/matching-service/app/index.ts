@@ -2,8 +2,10 @@ import express, { Application, Request, Response } from "express";
 import { createServer } from "http";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Server, Socket } from "socket.io";
-import { v4 as uuidv4 } from "uuid";
+import { Server } from "socket.io";
+
+import { MATCHING_EVENTS } from "./src/matching/matching.constants";
+import { MatchingGateway } from "./src/matching/matching.gateway";
 
 /**
  * Configuration
@@ -45,73 +47,19 @@ Container URL: http://localhost:${process.env.PORT}
 Local development URL: <TEMPLATE> (Refer to our discussion on which port your local dev should take)`);
 });
 
-interface Preferences {
-  difficulty: string[];
-  category: string[];
-}
-
-interface UserSocket {
-  user: number;
-  socket: Socket;
-}
-
-interface WaitingSocket {
-  roomId: string;
-  userSocket: UserSocket;
-  preferences: Preferences;
-}
-
-class RoomsGateway {
-  public roomIdToSockets: Map<string, UserSocket[]> = new Map();
-  public waiting: WaitingSocket[] = [];
-  private roomIdToLinkWaiting: Map<string, UserSocket> = new Map();
-
-  constructor() {}
-
-  createRoom(socket: any) {
-    const roomId = uuidv4();
-    socket.join(roomId);
-    this.waiting.push({
-      roomId: uuidv4(),
-      preferences: {
-        difficulty: ["Medium"],
-        category: ["Array"],
-      },
-      userSocket: { user: 1, socket },
-    });
-  }
-
-  joinRandomRoom(
-    user: UserSocket,
-    preferences: Preferences,
-    socket: any
-  ): string {
-    let roomId: string = "";
-    this.waiting.forEach((room) => {
-      if (JSON.stringify(room.preferences) === JSON.stringify(preferences)) {
-        // maybe use lodash for deep comparison
-        roomId = room.roomId;
-        socket.join(roomId);
-        this.roomIdToSockets.set(roomId, [user, room.userSocket]);
-      }
-    });
-    this.waiting.filter((room) => room.roomId != roomId);
-    return roomId;
-  }
-}
-
-const rooms = new RoomsGateway();
+const matchingGateway = new MatchingGateway();
 
 io.on("connection", (socket) => {
-  socket.on("join", (preferences, callback) => {
-    rooms.createRoom(socket);
-    const roomId = rooms.joinRandomRoom(
+  socket.on(MATCHING_EVENTS.JOIN_ROOM, (preferences, callback) => {
+    matchingGateway.createRoom(socket);
+    const roomId = matchingGateway.joinRandomRoom(
       { user: 2, socket },
       preferences,
       socket
     );
     if (roomId) {
       callback({
+        status: MATCHING_EVENTS.JOINED_ROOM,
         roomId,
       });
     }
