@@ -5,6 +5,8 @@ import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { API_ENDPOINT } from "@/constants/api";
+import { useNavigate } from "react-router-dom";
+import { ROUTE } from "@/constants/route";
 
 const postLogoutResponseSchema = makeSuccessResponseSchema(
   z.object({
@@ -20,14 +22,17 @@ const postLogout = async () => {
 export const usePostLogout = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const navigate = useNavigate();
 
   return useMutation(() => postLogout(), {
     onSuccess: () => {
       toast({
         status: "success",
         title: "You have been logged out",
+        isClosable: true,
       });
       queryClient.setQueryData([GET_AUTH_QUERY_KEY], undefined);
+      navigate(ROUTE.ROOT);
     },
   });
 };
