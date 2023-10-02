@@ -47,10 +47,9 @@ const fallbackQuestionServiceUrl = isProd
   ? "https://questions.peerprep.net"
   : "https://questions.staging.peerprep.net";
 
-// TODO:
-// const fallbackMatchingServiceUrl = isProd
-//   ? "https://matching.peerprep.net"
-//   : "https://matching.staging.peerprep.net";
+const fallbackMatchingServiceUrl = isProd
+  ? "https://matching.peerprep.net"
+  : "https://matching.staging.peerprep.net";
 
 // TODO:
 // const fallbackCollaborationServiceUrl = isProd
