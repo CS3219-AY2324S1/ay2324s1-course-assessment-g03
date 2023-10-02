@@ -20,7 +20,7 @@ services:
       - /app/node_modules
     ports:
       - "8001:80"
-  
+
   question-service-server:
     build:
       context: ./backend/question-service/server/app/
@@ -35,7 +35,7 @@ services:
         condition: service_healthy
     ports:
       - "8003:80"
-  
+
   question-service-db:
     image: mongo:latest
     volumes:
@@ -49,15 +49,15 @@ services:
       retries: 5
       start_period: 40s
 
-  template-service:
-    build:
-      context: ./backend/template-service/app/
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./backend/template-service/app:/app:delegated
-      - /app/node_modules
-    ports:
-      - "8009:80"
+  # template-service:
+  #   build:
+  #     context: ./backend/template-service/app/
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - ./backend/template-service/app:/app:delegated
+  #     - /app/node_modules
+  #   ports:
+  #     - "8009:80"
 
 volumes:
-    question-service-db-data:
+  question-service-db-data:
