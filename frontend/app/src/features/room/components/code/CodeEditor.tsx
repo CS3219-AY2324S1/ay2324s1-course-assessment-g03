@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CodeMirror, { basicSetup } from '@uiw/react-codemirror'
 import { Socket } from "socket.io-client"
 import { indentUnit } from '@codemirror/language'
 import { langs } from '@uiw/codemirror-extensions-langs'
 import { Box, Text } from '@chakra-ui/react'
 import { getDocument, peerExtension } from '@/lib/collab'
+import { useRoomStore } from "@/stores"
 
-interface Props {
+interface CodeEditorProps {
     socket: Socket;
     className?: string;
 }
 
-export const CodeEditor: React.FC<Props> = ({ socket }) => {
+export const CodeEditor = ({ socket }: CodeEditorProps) => {
 
     const [doc, setDoc] = useState<string | null>(null)
     const [version, setVersion] = useState<number | null>(null)
-    const [roomId, setRoomId] = useState<string>("1")
+    const roomId = useRoomStore.getState().roomId
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,8 +43,8 @@ export const CodeEditor: React.FC<Props> = ({ socket }) => {
 
 
 
-    if (version != null && doc != null) {
-        return (<Box>
+    if (version !== null && doc !== null) {
+        return (<Box height="full">
             <Text>{`You are in room ${roomId}`}</Text>
             <CodeMirror
                 height="100%"

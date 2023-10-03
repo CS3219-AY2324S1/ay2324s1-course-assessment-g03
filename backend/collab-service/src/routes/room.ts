@@ -1,6 +1,5 @@
 import express from "express"
 import type { Request, Response, NextFunction } from "express"
-import { redisClient } from "../server"
 import { v4 } from "uuid"
 import moment from "moment"
 import { HttpStatus } from "../utils/HTTP_Status_Codes"
@@ -32,7 +31,6 @@ roomRouter.get("/user/:userId", (req: Request<{ userId: string }>,
     res: Response<{ roomId: string, userIds: string[], creationTime: string }>) => {
     const { userId } = req.params;
 
-    redisClient.GET("hello")
     // Get Room Details by User Logic Here
 
     return res.json({
@@ -46,8 +44,6 @@ roomRouter.get("/:roomId", (req: Request<{ roomId: string; }>,
     res: Response<{ roomId: string; userIds: string[], creationTime: string; }>) => {
 
     const { roomId } = req.params;
-
-    redisClient.SET("hello", "world")
     // Get Room Details Logic Here
 
     return res.json({

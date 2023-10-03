@@ -1,12 +1,10 @@
 import http from "http"
 import app from "./app"
-import { createClient } from "redis"
 import { Server } from "socket.io"
-import { Update } from "@codemirror/collab"
-import { ChangeSet, Text } from "@codemirror/state"
+import { ChangeSet } from "@codemirror/state"
 import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, updateDocInfo } from "./models/rooms.model"
 
-const port = process.env.port || 8000;
+const port = process.env.port || 8005;
 
 const server = http.createServer(app);
 
@@ -18,15 +16,9 @@ const io = new Server(server, {
     }
 })
 
-export const redisClient = createClient()
-
-redisClient
-    .connect()
-    .then(() => console.log('Connected to local redis instance'))
-    .catch(() => { console.error("Error connecting to local redis instance ") })
-
 io.on('connection', (socket) => {
 
+    /* Socket API to pull updates from the server */
     socket.on('pullUpdates', (version: number, roomId: string) => {
         const pullUpdatesData = getPullUpdatesInfo(roomId)
         if (!pullUpdatesData.data) {
@@ -41,6 +33,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    /* Socket API to push updates to the server */
     socket.on('pushUpdates', (version: number, docUpdatesData: string, roomId: string) => {
         let docUpdates = JSON.parse(docUpdatesData);
         const updateInfo = getUpdateInfo(roomId)
@@ -49,12 +42,12 @@ io.on('connection', (socket) => {
         } else {
             let { updates, pending, doc } = updateInfo.data
             try {
-                if (version != updates.length) {
+                if (version !== updates.length) {
                     socket.emit('pushUpdateResponse', false);
                 } else {
                     let newUpdates = [];
                     for (let update of docUpdates) {
-                        let changes = ChangeSet.fromJSON(update.changes);
+                        const changes = ChangeSet.fromJSON(update.changes);
                         newUpdates.push({ changes, clientID: update.clientID });
                         updates.push({ changes, clientID: update.clientID });
                         doc = changes.apply(doc);
@@ -73,6 +66,7 @@ io.on('connection', (socket) => {
 
     });
 
+    /* Socket API to get the current state of the document from the server */
     socket.on('getDocument', (roomId: string) => {
         const docData = getDocumentInfo(roomId)
         if (!docData.data) {
@@ -83,6 +77,7 @@ io.on('connection', (socket) => {
         }
     })
 
+    /* Socket API to disconnect from the server */
     socket.on('disconnect', () => {
         console.log('user disconnected')
     })

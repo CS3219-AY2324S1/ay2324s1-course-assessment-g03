@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 
-interface Props {
+interface QuestionDetailsProps {
     details: string;
 }
 
-export const QuestionDetails: React.FC<Props> = ({ details }) => {
+export const QuestionDetails = ({ details }: QuestionDetailsProps) => {
     return (
         <Box flex={1} border="1px" borderColor={"ActiveBorder"} rounded="md" height="full">
             {details}

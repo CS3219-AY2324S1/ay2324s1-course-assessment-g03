@@ -1,13 +1,11 @@
 import { DifficultyType } from "@/constants/question"
 import { Badge } from "@chakra-ui/react"
 
-interface Props {
+interface DifficultyBadgeProps {
     difficulty: DifficultyType
 }
 
-
-
-export const DifficultyBadge: React.FC<Props> = ({ difficulty }) => {
+export const DifficultyBadge = ({ difficulty }: DifficultyBadgeProps) => {
 
     const colorSchemes: Record<DifficultyType, string> = {
         "Easy": "green",

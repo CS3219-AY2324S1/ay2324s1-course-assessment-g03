@@ -1,5 +1,5 @@
 import moment from "moment";
-import { ChangeSet, Text } from "@codemirror/state"
+import { Text } from "@codemirror/state"
 import { Update } from "@codemirror/collab"
 import * as roomsType from "../types/rooms.type";
 

@@ -3,12 +3,12 @@ import { DifficultyBadge, TopicBadge } from "@/features/room"
 import { DifficultyType } from "@/constants/question"
 import { UserCard } from "@/features/matching"
 
-interface Props {
+interface InfoBarProps {
     difficulty: DifficultyType;
     topic: string;
 }
 
-export const InfoBar: React.FC<Props> = ({ difficulty, topic }) => {
+export const InfoBar = ({ difficulty, topic }: InfoBarProps) => {
     return (
         <HStack justifyContent={"space-between"}>
             <HStack>

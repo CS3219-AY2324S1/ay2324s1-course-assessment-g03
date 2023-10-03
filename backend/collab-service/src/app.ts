@@ -1,5 +1,5 @@
 import express from 'express';
-import type { Express, Request, Response, NextFunction } from 'express';
+import type { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from "cors"
 import morgan from "morgan"
