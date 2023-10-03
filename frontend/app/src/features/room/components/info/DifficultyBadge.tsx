@@ -13,5 +13,5 @@ export const DifficultyBadge = ({ difficulty }: DifficultyBadgeProps) => {
         "Hard": "red"
     }
 
-    return <Badge colorScheme={colorSchemes[difficulty]} variant="outline">Easy</Badge>
+    return <Badge colorScheme={colorSchemes[difficulty]} variant="outline">{difficulty}</Badge>
 }
