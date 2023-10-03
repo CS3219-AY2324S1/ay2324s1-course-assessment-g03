@@ -20,6 +20,16 @@ services:
       - /app/node_modules
     ports:
       - "8001:80"
+  
+  users-service:
+    build:
+      context: ./backend/users-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/users-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8002:80"
 
   question-service-server:
     build:
