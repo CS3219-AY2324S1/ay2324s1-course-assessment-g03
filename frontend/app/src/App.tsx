@@ -22,7 +22,8 @@ function App() {
           <Route path={ROUTE.ROOM} element={<RoomPage />} />
         </Route>
         {/* With border-ful Navbar */}
-        <Route element={<Layout requireAuthentication />}>
+        {/* TODO: ENABLE AUTHENTICATION */}
+        <Route element={<Layout />}>
           <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.HOME_JOIN} element={<JoinPage />} />
           <Route path={ROUTE.HOME_CREATE} element={<CreatePage />} />

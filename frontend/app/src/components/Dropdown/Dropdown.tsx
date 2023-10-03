@@ -1,25 +1,37 @@
-import { Select, VStack, Text } from "@chakra-ui/react";
+import { ChakraReactSelectSize, singleSelectStyles } from "@/theme";
+import { VStack, Text } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
 
 interface Option {
-    id: number;
-    description: string;
+  id: number;
+  description: string;
 }
 
 interface Props {
-    title: string;
-    options: Option[]
-    placeholder?: string;
+  size?: ChakraReactSelectSize;
+  title: string;
+  options: Option[];
+  placeholder?: string;
 }
 
-export const Dropdown: React.FC<Props> = ({ title, options, placeholder }) => {
-    return (
-        <VStack align="left">
-            <Text textStyle="text-sm">{title}</Text>
-            <Select placeholder={placeholder ?? "Select Option"} size="xs" textColor="white">
-                {options.map(({ id, description }) =>
-                    <option key={id} value={id}>{description}</option>
-                )}
-            </Select>
-        </VStack>
-    )
-}
+export const Dropdown: React.FC<Props> = ({
+  size,
+  title,
+  options,
+  placeholder,
+}) => {
+  return (
+    <VStack align="left">
+      <Text textStyle="text-sm">{title}</Text>
+      <Select
+        // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
+        chakraStyles={singleSelectStyles(size)}
+        placeholder={placeholder ?? "Select option"}
+        options={options.map(({ description }) => ({
+          value: description,
+          label: description,
+        }))}
+      />
+    </VStack>
+  );
+};
