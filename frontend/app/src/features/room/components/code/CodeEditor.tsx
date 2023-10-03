@@ -5,18 +5,17 @@ import { indentUnit } from '@codemirror/language'
 import { langs } from '@uiw/codemirror-extensions-langs'
 import { Box, Text } from '@chakra-ui/react'
 import { getDocument, peerExtension } from '@/lib/collab'
-import { useRoomStore } from "@/stores"
 
 interface CodeEditorProps {
     socket: Socket;
     className?: string;
+    roomId: string;
 }
 
-export const CodeEditor = ({ socket }: CodeEditorProps) => {
+export const CodeEditor = ({ socket, roomId }: CodeEditorProps) => {
 
     const [doc, setDoc] = useState<string | null>(null)
     const [version, setVersion] = useState<number | null>(null)
-    const roomId = useRoomStore.getState().roomId
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,8 +39,6 @@ export const CodeEditor = ({ socket }: CodeEditorProps) => {
         }
 
     }, [socket, roomId])
-
-
 
     if (version !== null && doc !== null) {
         return (<Box height="full">
