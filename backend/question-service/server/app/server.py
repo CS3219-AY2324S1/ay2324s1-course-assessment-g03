@@ -14,8 +14,7 @@ class JSendStatus(Enum):
     ERROR = "error"
 
 load_dotenv()
-MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
-MONGO_PORT = os.environ.get('MONGO_PORT', '27017')
+MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
 app = FastAPI()
 
@@ -32,11 +31,10 @@ def connect_to_mongo(db_url, retries=5, delay=5):
     raise ConnectionError("Could not connect to MongoDB after multiple retries.")
 
 # Establish a connection to the MongoDB server
-client = connect_to_mongo(f"mongodb://{MONGO_HOST}:{MONGO_PORT}/")
+client = connect_to_mongo(MONGO_CONNECTION_STRING)
 print("Successfully connected to MongoDB!")
-db = client['leetcode_db']
+db = client['questions_db']
 collection = db['problems']
-
 
 def jsend_response(status: JSendStatus, data=None, message=None):
     response = {"status": status.value}
