@@ -1,5 +1,5 @@
 {
-  "name": "collaboration-service-infra",
+  "name": "template-service-infra",
   "devDependencies": {
     "@types/node": "^16"
   },

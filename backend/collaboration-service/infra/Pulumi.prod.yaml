@@ -1,0 +1,12 @@
+config:
+  aws:region: ap-southeast-1
+  collaboration-service-infra:acmEcsCertificateArn:
+    secure: AAABAAnSd3nPZtwkIRBTY2jJQ3+Su2kqJXtKXij73JUQIR8yebzLd8WE/skBWrB2jOLUhwBGS9br46l01dVhW44kvK0bSHkGopXMDp5WluIJF4L09bs9YI0JS+qmNRB/Qv63H+QFT020y3lmdIjrZItO46Bnryg7
+  collaboration-service-infra:containerPort: "80"
+  collaboration-service-infra:cpu: "256"
+  collaboration-service-infra:hostedZoneId:
+    secure: AAABABnBwzYsbOS9VgIRLXPZlE5mdJYYr6rAMg2kpEpuHoI3ijdPrVsVVkiqQDJf4Nltvg==
+  collaboration-service-infra:memory: "128"
+  collaboration-service-infra:path: ../app
+  collaboration-service-infra:rootDomain: peerprep.net
+  collaboration-service-infra:subdomain: collaboration.

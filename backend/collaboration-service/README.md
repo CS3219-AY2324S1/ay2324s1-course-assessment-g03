@@ -1,8 +1,6 @@
-# <TEMPLATE> Service
+# Collaboration Service
 
 ## INSTRUCTIONS TO USE THIS SERVICE (Delete this section after completing and evaluating that it works)
-
-_tldr: change <TEMPLATE> to whatever your service is wherever you see it (e.g. question)_
 
 1. Update the `/infra` directory
    1. Copy paste this entire directory and rename it to your service name (e.g. questions-service)
