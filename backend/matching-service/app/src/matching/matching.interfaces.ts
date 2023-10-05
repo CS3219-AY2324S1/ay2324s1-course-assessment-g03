@@ -5,8 +5,8 @@ interface User {
   avatarUrl?: string;
 }
 export interface Preferences {
-  difficulty: string[];
-  category: string[];
+  difficulty: DifficultyType[];
+  category: TopicTagType[];
 }
 
 export interface RoomParams {
