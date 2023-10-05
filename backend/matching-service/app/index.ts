@@ -50,18 +50,14 @@ Local development URL: http://localhost:8004`);
 const matchingGateway = new MatchingGateway();
 
 io.on("connection", (socket) => {
-  socket.on(MATCHING_EVENTS.JOIN_ROOM, (preferences, callback) => {
-    matchingGateway.createRoom(socket);
-    const roomId = matchingGateway.joinRandomRoom(
-      { user: 2, socket },
-      preferences,
-      socket
-    );
-    if (roomId) {
-      callback({
-        status: MATCHING_EVENTS.JOINED_ROOM,
-        roomId,
-      });
+  socket.on(MATCHING_EVENTS.JOIN_ROOM, (user, preferences) => {
+    const matched = matchingGateway.joinRandomRoom({ user, preferences });
+    if (matched) {
+      socket.join(matched.roomId);
+      io.to(matched.roomId).emit(MATCHING_EVENTS.FOUND_ROOM, matched);
+    } else {
+      const newRoom = matchingGateway.createRoom({ user, preferences });
+      socket.join(newRoom);
     }
   });
 });

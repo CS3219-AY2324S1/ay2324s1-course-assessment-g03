@@ -6,5 +6,5 @@ export const ROUTE = {
   HOME_JOIN: "/home/join",
   HOME_CREATE: "/home/create",
 
-  ROOM: "/home",
+  ROOM: "/room",
 } as const;

@@ -1,43 +1,43 @@
 import { v4 as uuidv4 } from "uuid";
-import { Preferences, UserSocket, WaitingSocket } from "./matching.interfaces";
+import {
+  MatchedRoom,
+  Preferences,
+  RoomParams,
+  WaitingUser,
+} from "./matching.interfaces";
 import { comparePreferences } from "../utils/preferences";
 
 export class MatchingGateway {
-  public roomIdToSockets: Map<string, UserSocket[]> = new Map();
-  public waiting: WaitingSocket[] = [];
-  private roomIdToLinkWaiting: Map<string, UserSocket> = new Map();
+  private waiting: WaitingUser[] = [];
 
   constructor() {}
 
-  createRoom(socket: any) {
+  createRoom(roomParams: RoomParams) {
+    // change to zech's collab service create-room route
     const roomId = uuidv4();
-    socket.join(roomId);
-    this.waiting.push({
-      roomId: uuidv4(),
-      // Hard code one existing user for testing purposes
-      preferences: {
-        difficulty: ["Medium"],
-        category: ["Array"],
-      },
-      userSocket: { user: 1, socket },
-    });
+    const newWaiting: WaitingUser = {
+      user: roomParams.user,
+      roomId,
+      preferences: roomParams.preferences,
+    };
+    this.waiting.push(newWaiting);
+    return roomId;
   }
 
-  joinRandomRoom(
-    user: UserSocket,
-    preferences: Preferences,
-    socket: any
-  ): string {
-    let roomId: string = "";
-    this.waiting.forEach((room) => {
-      if (comparePreferences(room.preferences, preferences)) {
-        roomId = room.roomId;
-        socket.join(roomId);
-        this.roomIdToSockets.set(roomId, [user, room.userSocket]);
-        return;
+  joinRandomRoom(roomParams: RoomParams): MatchedRoom | null {
+    for (let i = 0; i < this.waiting.length; i++) {
+      const waitingUser = this.waiting[i];
+      if (comparePreferences(waitingUser.preferences, roomParams.preferences)) {
+        const { roomId } = waitingUser;
+        this.waiting.filter((waitingUser) => waitingUser.roomId != roomId);
+        return {
+          user1: waitingUser.user,
+          user2: roomParams.user,
+          roomId,
+          preferences: roomParams.preferences,
+        };
       }
-    });
-    this.waiting.filter((room) => room.roomId != roomId);
-    return roomId;
+    }
+    return null;
   }
 }
