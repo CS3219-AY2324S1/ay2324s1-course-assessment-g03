@@ -86,20 +86,6 @@ const project = new mongodbatlas.Project(
   { provider: provider }
 );
 
-// // Connect to an existing MongoDB Atlas project
-// const project = mongodbatlas.Project.get(
-//   "question-service",
-//   MONGODB_ATLAS_ORG_ID,
-//   { provider: provider }
-// );
-
-// // Allow all IPs to access the MongoDB Atlas cluster
-// const accessList = new mongodbatlas.ProjectIpAccessList("myAccessList", {
-//   projectId: project.id, // Reference the project ID
-//   ipAddress: "0.0.0.0", // Add the IP Address you want to allow
-//   comment: "Access from everywhere", // Comment describing the access list.
-// });
-
 // Create a MongoDB Atlas Cluster
 const mongoCluster = new mongodbatlas.Cluster(
   "Cluster",
