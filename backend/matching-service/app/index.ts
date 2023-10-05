@@ -44,7 +44,7 @@ app.get("/", (req: Request, res: Response) => {
 httpServer.listen(process.env.PORT, () => {
   console.log(`Matching Service is live and running ⚡
 Container URL: http://localhost:${process.env.PORT}
-Local development URL: <TEMPLATE> (Refer to our discussion on which port your local dev should take)`);
+Local development URL: http://localhost:8004`);
 });
 
 const matchingGateway = new MatchingGateway();
