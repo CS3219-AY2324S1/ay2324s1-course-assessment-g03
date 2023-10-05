@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import CodeMirror, { basicSetup } from '@uiw/react-codemirror'
 import { Socket } from "socket.io-client"
-import { indentUnit } from '@codemirror/language'
-import { langs } from '@uiw/codemirror-extensions-langs'
+import { LanguageSupport, indentUnit } from '@codemirror/language'
 import { Box, Text } from '@chakra-ui/react'
 import { getDocument, peerExtension } from '@/lib/collab'
 
@@ -10,9 +9,10 @@ interface CodeEditorProps {
     socket: Socket;
     className?: string;
     roomId: string;
+    language: LanguageSupport;
 }
 
-export const CodeEditor = ({ socket, roomId }: CodeEditorProps) => {
+export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
 
     const [doc, setDoc] = useState<string | null>(null)
     const [version, setVersion] = useState<number | null>(null)
@@ -51,8 +51,8 @@ export const CodeEditor = ({ socket, roomId }: CodeEditorProps) => {
                 extensions={[
                     indentUnit.of("\t"),
                     basicSetup(),
-                    langs.python(),
-                    peerExtension(socket, version, roomId)
+                    language,
+                    peerExtension(socket, version)
                 ]}
                 value={doc}
             />

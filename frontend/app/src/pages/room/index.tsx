@@ -8,6 +8,8 @@ function RoomPage() {
 
     const { roomId } = useParams();
 
+    console.log(roomId)
+
     return (
         <Page display="grid" placeItems="center">
             <VStack marginBottom="4" flexDirection="column" align="left" height="full" width="full">

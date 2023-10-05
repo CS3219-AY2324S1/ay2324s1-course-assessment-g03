@@ -13,4 +13,5 @@ export const LANGUAGES = {
     "Go": langs.go()
 } as const;
 
+
 export type LanguageType = (typeof LANGUAGES[keyof typeof LANGUAGES])

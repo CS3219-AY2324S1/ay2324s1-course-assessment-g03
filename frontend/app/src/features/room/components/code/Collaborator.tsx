@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { CodeEditor, QuestionDetails } from "..";
 import { LANGUAGES } from "../../constants/languages";
+import { SingleValue } from "chakra-react-select";
+import { LanguageSupport } from "node_modules/@codemirror/language/dist";
 
 interface CollaboratorProps {
     roomId: string;
@@ -12,9 +14,14 @@ interface CollaboratorProps {
 export const Collaborator = ({ roomId }: CollaboratorProps) => {
     const [renderQuestion, setRenderQuestion] = useState(true);
     const [socket, setSocket] = useState<Socket | null>(null);
+    const [currentLanguage, setCurrentLanguage] = useState(LANGUAGES.Python)
 
     useEffect(() => {
-        const connectSocket = io("http://localhost:8005");
+        const connectSocket = io("http://localhost:8005", {
+            query: {
+                roomId: roomId
+            }
+        });
         setSocket(connectSocket);
         return () => {
             if (connectSocket) {
@@ -22,7 +29,14 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
                 setSocket(null);
             }
         };
-    }, []);
+    }, [roomId]);
+
+    const handleLanguageChange = (e: SingleValue<{
+        label: string;
+        value: LanguageSupport;
+    }>) => {
+        setCurrentLanguage(e?.value ?? LANGUAGES.Python)
+    }
 
     //TODO: update options when in
     const options = (
@@ -38,12 +52,13 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
                 title="Language"
                 placeholder="Select language"
                 options={Object.entries(LANGUAGES).map(([languageName, languageSupport]) => ({ label: languageName, value: languageSupport }))}
+                onChangeHandler={handleLanguageChange}
             />
         </HStack>
     );
 
     const codeEditor = socket ? (
-        <CodeEditor socket={socket} roomId={roomId} />
+        <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
     ) : (
         <Box>Loading</Box>
     );

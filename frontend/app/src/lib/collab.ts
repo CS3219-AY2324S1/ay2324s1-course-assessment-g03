@@ -8,7 +8,6 @@ function pushUpdates(
     socket: Socket,
     version: number,
     fullUpdates: readonly Update[],
-    roomId: string
 ): Promise<boolean> {
     // Strip off transaction data
     const updates = fullUpdates.map(u => ({
@@ -18,7 +17,7 @@ function pushUpdates(
     }))
 
     return new Promise(function (resolve) {
-        socket.emit('pushUpdates', version, JSON.stringify(updates), roomId);
+        socket.emit('pushUpdates', version, JSON.stringify(updates));
 
         socket.once('pushUpdateResponse', function (status: boolean) {
             resolve(status);
@@ -29,10 +28,9 @@ function pushUpdates(
 function pullUpdates(
     socket: Socket,
     version: number,
-    roomId: string
 ): Promise<readonly Update[]> {
     return new Promise(function (resolve) {
-        socket.emit('pullUpdates', version, roomId);
+        socket.emit('pullUpdates', version);
 
         socket.once('pullUpdateResponse', function (updates: any) {
             resolve(JSON.parse(updates));
@@ -56,7 +54,7 @@ export function getDocument(socket: Socket, roomId: string): Promise<{ version: 
     });
 }
 
-export const peerExtension = (socket: Socket, startVersion: number, roomId: string) => {
+export const peerExtension = (socket: Socket, startVersion: number) => {
     const plugin = ViewPlugin.fromClass(class {
         private pushing = false
         private done = false
@@ -72,7 +70,7 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
             if (this.pushing || !updates.length) return
             this.pushing = true
             const version = getSyncedVersion(this.view.state)
-            await pushUpdates(socket, version, updates, roomId)
+            await pushUpdates(socket, version, updates)
             this.pushing = false
             // Regardless of whether the push failed or new updates came in
             // while it was running, try again if there's updates remaining
@@ -83,7 +81,7 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
         async pull() {
             while (!this.done) {
                 const version = getSyncedVersion(this.view.state)
-                const updates = await pullUpdates(socket, version, roomId)
+                const updates = await pullUpdates(socket, version)
                 this.view.dispatch(receiveUpdates(this.view.state, updates))
             }
         }

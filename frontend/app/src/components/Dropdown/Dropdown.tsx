@@ -1,25 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChakraReactSelectSize, singleSelectStyles } from "@/theme";
 import { VStack, Text } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
+import { ActionMeta, Select, SingleValue } from "chakra-react-select";
 
 interface Option {
   label: string;
   value: any;
 }
 
-interface Props {
+interface DropdownProps {
   size?: ChakraReactSelectSize;
   title: string;
   options: Option[];
   placeholder?: string;
+  onChangeHandler?: ((newValue: SingleValue<{
+    label: string;
+    value: any;
+  }>, actionMeta: ActionMeta<{
+    label: string;
+    value: any;
+  }>) => void) | undefined
 }
 
-export const Dropdown: React.FC<Props> = ({
+export const Dropdown = ({
   size,
   title,
   options,
   placeholder,
-}) => {
+  onChangeHandler
+}: DropdownProps) => {
   return (
     <VStack align="left">
       <Text textStyle="text-sm">{title}</Text>
@@ -31,6 +40,7 @@ export const Dropdown: React.FC<Props> = ({
           label,
           value,
         }))}
+        onChange={onChangeHandler ?? undefined}
       />
     </VStack>
   );
