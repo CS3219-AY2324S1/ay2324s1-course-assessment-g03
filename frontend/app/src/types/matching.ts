@@ -1,19 +1,24 @@
 import { z } from "zod";
 
 import { MATCHING_EVENTS } from "@/constants/matching";
-import { DifficultyType, TopicTagType } from "@/constants/question";
+import { DIFFICULTY, TOPIC_TAG } from "@/constants/question";
+import { userSchema } from "./user";
 
 export type MatchingStatusType =
   (typeof MATCHING_EVENTS)[keyof typeof MATCHING_EVENTS];
 
-export type Preferences = {
-  difficulty: DifficultyType[];
-  category: TopicTagType[];
-};
+export const preferenceSchema = z.object({
+  difficulty: z.array(z.nativeEnum(DIFFICULTY)),
+  category: z.array(z.nativeEnum(TOPIC_TAG)),
+});
+
+export type Preferences = z.infer<typeof preferenceSchema>;
 
 export const matchingSchema = z.object({
-  status: z.nativeEnum(MATCHING_EVENTS),
+  user1: userSchema,
+  user2: userSchema,
   roomId: z.string(),
+  preferences: preferenceSchema,
 });
 
 export type Matching = z.infer<typeof matchingSchema>;
