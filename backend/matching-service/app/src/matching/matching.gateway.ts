@@ -34,6 +34,7 @@ export class MatchingGateway {
         roomId = room.roomId;
         socket.join(roomId);
         this.roomIdToSockets.set(roomId, [user, room.userSocket]);
+        return;
       }
     });
     this.waiting.filter((room) => room.roomId != roomId);
