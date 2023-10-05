@@ -1,42 +1,44 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 
 import { Page } from "@/components";
 import { MATCHING_EVENTS } from "@/constants/matching";
 import { ROUTE } from "@/constants/route";
 import { FindingMatchCard, SelectPreferencesCard } from "@/features/matching";
+import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
-import { Matching, Preferences, matchingSchema } from "@/types/matching";
+import { Preferences, matchingSchema } from "@/types/matching";
 
 function JoinPage() {
+  const { data } = useAuth();
+  const user = data?.user;
   const navigate = useNavigate();
-  // TODO: make connection through API gateway URL
-  const socket = io(env.VITE_MATCHING_SERVICE_URL);
   const [isWaitingForMatch, setIsWaitingForMatch] = useState(false);
+  const socketRef = useRef<Socket | null>(null);
 
-  const joinRoom = (preferences: Preferences) => {
+  const joinRoom = async (preferences: Preferences) => {
+    if (socketRef.current == null) {
+      // TODO: make connection through API gateway URL
+      socketRef.current = io(env.VITE_MATCHING_SERVICE_URL);
+    }
+
+    const { current: socket } = socketRef;
+
     setIsWaitingForMatch(true);
-    socket.emit(
-      MATCHING_EVENTS.JOIN_ROOM,
-      preferences,
-      (response: Matching) => {
-        try {
-          const matchingResponse = matchingSchema.parse(response);
-          if (matchingResponse.status === MATCHING_EVENTS.JOINED_ROOM) {
-            navigate(`${ROUTE.ROOM}/${matchingResponse.roomId}`);
-          }
-        } catch (error) {
-          // TODO: error handling for failed matching
-          console.log(error);
-        }
-      },
-    );
+    socket.connect();
+    socket.emit(MATCHING_EVENTS.JOIN_ROOM, user, preferences);
+    socket.on(MATCHING_EVENTS.FOUND_ROOM, room => {
+      const matchData = matchingSchema.parse(room);
+      navigate(`${ROUTE.ROOM}/${matchData.roomId}`);
+    });
   };
 
   const leaveWaiting = () => {
     setIsWaitingForMatch(false);
-    socket.disconnect();
+    if (socketRef.current !== null) {
+      socketRef.current.disconnect();
+    }
   };
 
   return (
