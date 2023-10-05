@@ -1,6 +1,10 @@
 import { z } from "zod";
 
+import { MATCHING_EVENTS } from "@/constants/matching";
 import { DifficultyType, TopicTagType } from "@/constants/question";
+
+export type MatchingStatusType =
+  (typeof MATCHING_EVENTS)[keyof typeof MATCHING_EVENTS];
 
 export type Preferences = {
   difficulty: DifficultyType[];
@@ -8,7 +12,7 @@ export type Preferences = {
 };
 
 export const matchingSchema = z.object({
-  status: z.string(),
+  status: z.nativeEnum(MATCHING_EVENTS),
   roomId: z.string(),
 });
 

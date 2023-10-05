@@ -11,8 +11,9 @@ import { Matching, Preferences, matchingSchema } from "@/types/matching";
 
 function JoinPage() {
   const navigate = useNavigate();
+  // TODO: make connection through API gateway URL
   const socket = io(env.VITE_MATCHING_SERVICE_URL);
-  const [isWaitingForMatch, setIsWaitingForMatch] = useState<boolean>(false);
+  const [isWaitingForMatch, setIsWaitingForMatch] = useState(false);
 
   const joinRoom = (preferences: Preferences) => {
     setIsWaitingForMatch(true);
