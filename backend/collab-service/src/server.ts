@@ -1,12 +1,13 @@
 import http from "http"
 import app from "./app"
 import { Server } from "socket.io"
-import { ChangeSet } from "@codemirror/state"
-import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, updateDocInfo } from "./models/rooms.model"
+import { ChangeSet } from "@codemirror/state";
+import { getUpdateInfo, updateDocInfo, getDocumentInfo } from "./models/rooms.model";
+import { handleGetDocument, handlePullUpdates, handlePushUpdates, handleResetDocument } from "./socket/doc";
 
 const port = process.env.port || 8005;
 
-const server = http.createServer(app);
+export const server = http.createServer(app,);
 
 const io = new Server(server, {
     // options
@@ -18,71 +19,42 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
 
+    const roomId = socket.handshake.query.roomId;
+
+    if (typeof roomId !== "string") {
+        socket.emit('error', 'Invalid roomId provided')
+        socket.disconnect()
+        return
+    }
+    socket.join(roomId)
+
     /* Socket API to pull updates from the server */
-    socket.on('pullUpdates', (version: number, roomId: string) => {
-        const pullUpdatesData = getPullUpdatesInfo(roomId)
-        if (!pullUpdatesData.data) {
-            console.error(pullUpdatesData.error)
-        } else {
-            const { updates, pending } = pullUpdatesData.data
-            if (version < updates.length) {
-                socket.emit("pullUpdateResponse", JSON.stringify(updates.slice(version)));
-            } else {
-                pending.push((updates) => { socket.emit('pullUpdateResponse', JSON.stringify(updates)) });
-            }
-        }
+    socket.on('pullUpdates', (version: number) => {
+        handlePullUpdates(socket, version, roomId)
     });
 
     /* Socket API to push updates to the server */
-    socket.on('pushUpdates', (version: number, docUpdatesData: string, roomId: string) => {
-        let docUpdates = JSON.parse(docUpdatesData);
-        const updateInfo = getUpdateInfo(roomId)
-        if (!updateInfo.data) {
-            console.error(updateInfo.error)
-        } else {
-            let { updates, pending, doc } = updateInfo.data
-            try {
-                if (version !== updates.length) {
-                    socket.emit('pushUpdateResponse', false);
-                } else {
-                    let newUpdates = [];
-                    for (let update of docUpdates) {
-                        const changes = ChangeSet.fromJSON(update.changes);
-                        newUpdates.push({ changes, clientID: update.clientID });
-                        updates.push({ changes, clientID: update.clientID });
-                        doc = changes.apply(doc);
-                        updateDocInfo(roomId, doc)
-                    }
-                    socket.emit('pushUpdateResponse', true);
-
-                    while (pending.length) {
-                        pending.pop()!(newUpdates);
-                    }
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
+    socket.on('pushUpdates', (version: number, docUpdatesData: string) => {
+        handlePushUpdates(socket, version, docUpdatesData, roomId)
     });
 
     /* Socket API to get the current state of the document from the server */
-    socket.on('getDocument', (roomId: string) => {
-        const docData = getDocumentInfo(roomId)
-        if (!docData.data) {
-            console.log(docData.error)
-        } else {
-            const { updates, doc } = docData.data
-            socket.emit('getDocumentResponse', updates.length, doc.toString())
-        }
+    socket.on('getDocument', () => {
+        handleGetDocument(socket, roomId)
+    })
+
+    socket.on('resetDocument', () => {
+        handleResetDocument(socket, roomId)
     })
 
     /* Socket API to disconnect from the server */
     socket.on('disconnect', () => {
         console.log('user disconnected')
     })
+
 })
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
+

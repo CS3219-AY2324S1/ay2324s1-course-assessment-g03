@@ -34,6 +34,9 @@ export type getDocumentData = {
     doc: Text;
 }
 
+export type resetDocumentData = {
+}
+
 export type roomInfo = {
     created: moment.Moment;
     updated: moment.Moment;

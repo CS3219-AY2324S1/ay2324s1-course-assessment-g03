@@ -120,4 +120,19 @@ export const getDocumentInfo = (roomId: string): ModelResponse<roomsType.getDocu
     }
 }
 
+export const resetDocument = (roomId: string): ModelResponse<roomsType.resetDocumentData> => {
+
+    if (!(roomId in rooms)) {
+        return { error: "Room not found" }
+    }
+
+    rooms[roomId].doc = Text.of([`Welcome to Room ${roomId}`])
+    rooms[roomId].updates = []
+    rooms[roomId].pending = []
+
+    return {
+        data: {}
+    }
+}
+
 
