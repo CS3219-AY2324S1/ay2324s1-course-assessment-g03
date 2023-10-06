@@ -1,0 +1,5 @@
+config:
+  matching-service-infra:acmEcsCertificateArn:
+    secure: AAABAHXlXYRt2PC4BiUtsGxhicn/22xb2O4py9Yh2wAFQDcDZWXLSITQNCjW/kTEcArrpxSV6YlgoXzpjj30u0KT4UAuNJo8Oumw7BacRA+6sEgZM9GBx4vzmjwEnFD9NMuzRZhY3iyroDvTYAev4UPfrbfYRNde
+  matching-service-infra:hostedZoneId:
+    secure: AAABAL9rkLIBdNx9DMp4YkfRMcTjYwykfX6TLEBMttZXYnSVKUCnhtReFl0lQgWwoEMqOg==

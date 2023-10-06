@@ -4,7 +4,11 @@ import { UserCard } from ".";
 import { useAuth } from "@/hooks";
 import { SkeletonUserCard } from "./SkeletonUserCard";
 
-export const FindingMatchCard = () => {
+type Props = {
+  leaveCallback: () => void;
+};
+
+export const FindingMatchCard = ({ leaveCallback }: Props) => {
   const { data } = useAuth();
 
   const user = data?.user;
@@ -20,7 +24,9 @@ export const FindingMatchCard = () => {
           <SkeletonUserCard />
         </HStack>
         <HStack alignSelf="end">
-          <Button colorScheme="light">Leave room</Button>
+          <Button colorScheme="light" onClick={leaveCallback}>
+            Leave room
+          </Button>
         </HStack>
       </VStack>
     </Card>

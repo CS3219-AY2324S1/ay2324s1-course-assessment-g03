@@ -5,4 +5,6 @@ export const ROUTE = {
   HOME: "/home",
   HOME_JOIN: "/home/join",
   HOME_CREATE: "/home/create",
+
+  ROOM: "/room",
 } as const;

@@ -47,10 +47,9 @@ const fallbackQuestionServiceUrl = isProd
   ? "https://questions.peerprep.net"
   : "https://questions.staging.peerprep.net";
 
-// TODO:
-// const fallbackMatchingServiceUrl = isProd
-//   ? "https://matching.peerprep.net"
-//   : "https://matching.staging.peerprep.net";
+const fallbackMatchingServiceUrl = isProd
+  ? "https://matching.peerprep.net"
+  : "https://matching.staging.peerprep.net";
 
 // TODO:
 // const fallbackCollaborationServiceUrl = isProd
@@ -87,13 +86,13 @@ const questionServiceUrl = questionServiceStack
   .getOutput("url")
   .apply((domain) => `${domain || fallbackQuestionServiceUrl}`);
 
-// TODO: Reference the Matching service stack
-// const matchingServiceStack = new pulumi.StackReference(
-//   `cs3219/matching-service-infra/${currentEnv}`
-// );
-// const matchingServiceUrl = matchingServiceStack
-//   .getOutput("url")
-//   .apply((domain) => `${domain || fallbackMatchingServiceUrl}`);
+// Reference the Matching service stack
+const matchingServiceStack = new pulumi.StackReference(
+  `cs3219/matching-service-infra/${currentEnv}`
+);
+const matchingServiceUrl = matchingServiceStack
+  .getOutput("url")
+  .apply((domain) => `${domain || fallbackMatchingServiceUrl}`);
 
 // TODO: Reference the Collaboration service stack
 // const collaborationServiceStack = new pulumi.StackReference(
@@ -193,10 +192,10 @@ const service = new awsx.ecs.FargateService("service", {
           name: "QUESTIONS_SERVICE_URL",
           value: questionServiceUrl,
         },
-        // {
-        //   name: "MATCHING_SERVICE_URL",
-        //   value: matchingServiceUrl,
-        // },
+        {
+          name: "MATCHING_SERVICE_URL",
+          value: matchingServiceUrl,
+        },
         // {
         //   name: "COLLABORATION_SERVICE_URL",
         //   value: collaborationServiceUrl,

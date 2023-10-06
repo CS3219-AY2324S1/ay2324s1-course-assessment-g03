@@ -20,7 +20,7 @@ services:
       - /app/node_modules
     ports:
       - "8001:80"
-  
+
   users-service:
     build:
       context: ./backend/users-service/app/
@@ -58,6 +58,16 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+
+  matching-service:
+    build:
+      context: ./backend/matching-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/matching-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8004:80"
 
   # template-service:
   #   build:
