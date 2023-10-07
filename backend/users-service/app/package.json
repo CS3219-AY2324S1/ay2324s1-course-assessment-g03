@@ -12,7 +12,8 @@
     "@elysiajs/swagger": "^0.7.3",
     "@prisma/client": "^5.4.1",
     "elysia": "latest",
-    "elysia-helmet": "^1.0.1"
+    "elysia-helmet": "^1.0.1",
+    "prisma": "^5.4.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.4",
