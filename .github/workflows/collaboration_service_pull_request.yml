@@ -1,4 +1,4 @@
-name: Template Service Pulumi Preview
+name: Collaboration Service Pulumi Preview
 on:
   pull_request:
     branches: ["staging", "master"]

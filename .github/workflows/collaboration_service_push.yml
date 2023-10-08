@@ -1,4 +1,4 @@
-name: Template Service Pulumi Update
+name: Collaboration Service Pulumi Update
 on:
   push:
     branches: ["staging", "master"]
