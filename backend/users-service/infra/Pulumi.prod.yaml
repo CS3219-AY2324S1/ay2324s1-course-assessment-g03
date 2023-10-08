@@ -4,8 +4,12 @@ config:
     secure: AAABAMz6p82vt5eZ3hLTjpX3tAib3lPPeEBW14jvvFpgNnUwdR6ah+fN34lK+4uUDwOfPYZ4peYOR2shE5pPAGtYmIvOnyVPMWbsOiC1C+9kTLLXVqpvVYVE0hDwohsvhCRZ0iGK5YrGVtIfQhq2stzuyExh1GMC
   users-service-infra:containerPort: '80'
   users-service-infra:cpu: '256'
+  users-service-infra:databaseUrl:
+    secure: AAABAKOIsF/3YFk3Z0wjkvQLB5KmXCdbb1JnLMaiVtf2KWqSf6E5+iABuYYYAgtEqvDWEmell1zX0gf8vibNM3i1hu2Fb+5gx0/iKMbaBg1IedRMSF78cvU9Uv4DvCdrAG7VKIe5Or1M9B5H740zFl2XIZT6duwJ04tHkA1vQFXNcdp2GNMn1Ea+7w==
   users-service-infra:hostedZoneId:
     secure: AAABAJI7xUrzlmZP58/kzcoW/P52p4r3p6/UZSSr3DhDIms5zaLioKYT0uBjRr+JxyxYHg==
+  users-service-infra:jwtSecret:
+    secure: AAABAH7fImn/9Vn+rAyK96MFBF8e/CVJxwxVi/H6oVScuLql+iEWCh+xRuNHIFO5syIKqfzhmWjp0ZoQLShKAr7swN+aFEFR09TN4b66GgaD+0KePuz02d9aSqbcFWuY
   users-service-infra:memory: '128'
   users-service-infra:path: ../app
   users-service-infra:rootDomain: peerprep.net
