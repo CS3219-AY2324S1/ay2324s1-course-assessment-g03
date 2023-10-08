@@ -20,6 +20,13 @@ const app = new Elysia({ prefix: '/users' })
   )
   .use(logger())
   .use(swagger())
+  .model({
+    user: t.Object({
+      avatarUrl: t.String(),
+      email: t.String(),
+      name: t.String()
+    })
+  })
   .get(
     '/:id',
     async ({ params: { id } }) =>
@@ -34,32 +41,28 @@ const app = new Elysia({ prefix: '/users' })
   )
   .post(
     '/',
-    async ({ body: { avatarUrl, email } }) =>
+    async ({ body }) =>
       await db.user.create({
         data: {
-          avatarUrl,
-          email,
+          ...body,
           role: Role.User
         }
       }),
     {
-      body: t.Object({ avatarUrl: t.String(), email: t.String() })
+      body: 'user'
     }
   )
   .put(
     '/:id',
-    async ({ body: { avatarUrl, email }, params: { id } }) =>
+    async ({ body, params: { id } }) =>
       await db.user.update({
         where: {
           id
         },
-        data: {
-          avatarUrl,
-          email
-        }
+        data: body
       }),
     {
-      body: t.Object({ avatarUrl: t.String(), email: t.String() })
+      body: 'user'
     }
   )
   .delete(
