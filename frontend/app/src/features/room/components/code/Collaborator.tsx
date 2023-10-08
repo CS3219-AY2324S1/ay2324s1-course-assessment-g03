@@ -74,14 +74,22 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
                 {codeEditor}
             </VStack>
         </HStack>
+<<<<<<< HEAD
     );
+=======
+    )
+>>>>>>> db2103e (Add collab-service frontend)
 
     const hiddenView = (
         <VStack align="left" height="full" width="full">
             {options}
             {codeEditor}
         </VStack>
+<<<<<<< HEAD
     );
+=======
+    )
+>>>>>>> db2103e (Add collab-service frontend)
 
     return (
         <VStack align="left" height="full" width="full">
@@ -89,15 +97,24 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
                 {renderQuestion ? visibleView : hiddenView}
             </Box>
             <Box>
-                <Button
-                    size="xs"
-                    background="#3F3F46"
-                    textColor="white"
-                    onClick={() => setRenderQuestion(!renderQuestion)}
-                >
-                    {renderQuestion ? "Hide" : "Show"} Question
-                </Button>
-            </Box>
-        </VStack>
+<<<<<<< HEAD
+    <Button
+        size="xs"
+        background="#3F3F46"
+        textColor="white"
+        onClick={() => setRenderQuestion(!renderQuestion)}
+    >
+        {renderQuestion ? "Hide" : "Show"} Question
+    </Button>
+            </Box >
+        </VStack >
     );
 };
+=======
+                <Button size="xs" background="#3F3F46" textColor="white" onClick={() => setRenderQuestion(!renderQuestion)}>{renderQuestion ? "Hide" : "Show"} Question</Button>
+            </Box>
+        </VStack>
+    )
+
+}
+>>>>>>> db2103e (Add collab-service frontend)
