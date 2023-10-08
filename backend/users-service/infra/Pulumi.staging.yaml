@@ -2,11 +2,11 @@ config:
   aws:region: ap-southeast-1
   users-service-infra:acmEcsCertificateArn:
     secure: AAABAGZXUUERgLpmAx5rk2iQWNRCnuEnomfOkLKZBJU1ExXNnEbhf0fmf1R+WbQNdJcSx9sA2pP1D4IO6N3D92izFMmMFUnWEcfhRP/uM/VVvoNlcUEjhoWoH7KGSdV1lMcmxCJlEHjRhoKKROW5lkfdWQZ5gki1
-  users-service-infra:containerPort: "80"
-  users-service-infra:cpu: "256"
+  users-service-infra:containerPort: '80'
+  users-service-infra:cpu: '256'
   users-service-infra:hostedZoneId:
     secure: AAABAAqNubrYHxuf6vI2fqAeJOPUDnSjV7a3G4rYgDeFRgu3rnS2ruA4YZK0rIyYD4dueQ==
-  users-service-infra:memory: "128"
+  users-service-infra:memory: '128'
   users-service-infra:path: ../app
   users-service-infra:rootDomain: peerprep.net
   users-service-infra:subdomain: users.staging.
