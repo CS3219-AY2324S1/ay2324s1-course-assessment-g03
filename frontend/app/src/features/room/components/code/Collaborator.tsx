@@ -1,4 +1,4 @@
-import { Box, Text, Button, HStack, VStack } from "@chakra-ui/react";
+import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
 import { Dropdown } from "@/components/Dropdown";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
@@ -60,7 +60,7 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
   const codeEditor = socket ? (
     <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
   ) : (
-    <Box>Loading</Box>
+    <Spinner />
   );
 
   const visibleView = (

@@ -4,6 +4,7 @@ import { Socket } from "socket.io-client"
 import { LanguageSupport, indentUnit } from '@codemirror/language'
 import { Box, Text } from '@chakra-ui/react'
 import { getDocument, peerExtension } from '@/lib/collab'
+import { Spinner } from '@chakra-ui/react'
 
 interface CodeEditorProps {
     socket: Socket;
@@ -60,6 +61,6 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
             />
         </Box>)
     } else {
-        return <Box>Loading...</Box>
+        return <Spinner />
     }
 }
