@@ -20,6 +20,9 @@ const domainName = `${subdomain}${rootDomain}`
 
 const acmCertificateArn = config.requireSecret('acmEcsCertificateArn')
 
+const jwtSecret = config.requireSecret('jwtSecret')
+const databaseUrl = config.requireSecret('databaseUrl')
+
 const currentEnv = pulumi.getStack() // 'staging' or 'prod'
 const isProd = currentEnv === 'prod'
 
@@ -108,7 +111,7 @@ const service = new awsx.ecs.FargateService('service', {
     //   operatingSystemFamily: "LINUX",
     // },
     container: {
-      name: 'users-service-container', // TODO: Update `users` placeholder
+      name: 'users-service-container',
       image: image.imageUri,
       cpu: cpu,
       memory: memory,
@@ -126,6 +129,8 @@ const service = new awsx.ecs.FargateService('service', {
           value: isProd ? 'production' : currentEnv
         },
         { name: 'PORT', value: containerPort.toString() },
+        { name: 'JWT_SECRET', value: jwtSecret },
+        { name: 'DATABASE_URL', value: databaseUrl },
         { name: 'FRONTEND_ORIGIN', value: frontendWebsiteUrl },
         { name: 'API_GATEWAY_URL', value: apiGatewayUrl }
       ]
