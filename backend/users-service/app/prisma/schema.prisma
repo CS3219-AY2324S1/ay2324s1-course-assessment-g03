@@ -8,10 +8,10 @@ datasource db {
 }
 
 type QuestionCodeSnippets {
-   code     String
-   lang     String
-   langSlug String
- }
+  code     String
+  lang     String
+  langSlug String
+}
 
 model Question {
   id           String                 @id @default(auto()) @map("_id") @db.ObjectId
