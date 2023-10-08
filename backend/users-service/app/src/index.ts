@@ -47,13 +47,15 @@ const app = new Elysia({ prefix: '/users' })
     }
   )
   .put(
-    '/',
-    async ({ body: { avatarUrl, email } }) =>
-      await db.user.create({
+    '/:id',
+    async ({ body: { avatarUrl, email }, params: { id } }) =>
+      await db.user.update({
+        where: {
+          id
+        },
         data: {
           avatarUrl,
-          email,
-          role: 'user'
+          email
         }
       }),
     {
