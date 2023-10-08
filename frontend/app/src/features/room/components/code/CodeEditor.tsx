@@ -40,35 +40,25 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
 
     }, [socket, roomId])
 
-<<<<<<< HEAD
-    if (version !== null && doc !== null) {
-        return (<Box height="full">
-=======
 
 
     if (version != null && doc != null) {
         return (<Box>
->>>>>>> db2103e (Add collab-service frontend)
-                <Text>{`You are in room ${roomId}`}</Text>
-                <CodeMirror
-                    height="100%"
-                    basicSetup={false}
-                    id="codeEditor"
-                    theme="dark"
-                    extensions={[
-                        indentUnit.of("\t"),
-                        basicSetup(),
-<<<<<<< HEAD
-                        language,
-                        peerExtension(socket, version)
-=======
-                    langs.python(),
-                    peerExtension(socket, version, roomId)
->>>>>>> db2103e (Add collab-service frontend)
-                    ]}
-                    value={doc}
-                />
-            </Box>)
+            <Text>{`You are in room ${roomId}`}</Text>
+            <CodeMirror
+                height="100%"
+                basicSetup={false}
+                id="codeEditor"
+                theme="dark"
+                extensions={[
+                    indentUnit.of("\t"),
+                    basicSetup(),
+                    language,
+                    peerExtension(socket, version)
+                ]}
+                value={doc}
+            />
+        </Box>)
     } else {
         return <Box>Loading...</Box>
     }
