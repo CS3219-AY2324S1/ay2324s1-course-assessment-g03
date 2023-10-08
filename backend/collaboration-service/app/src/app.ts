@@ -18,7 +18,7 @@ app.use(morgan('dev'))
 app.use('/api', apiRouter)
 
 app.get("/", (_: Request, res: Response) => {
-    res.send("Hello World")
+    res.send("Hello")
 })
 
 
