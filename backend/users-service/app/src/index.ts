@@ -22,8 +22,8 @@ const app = new Elysia({ prefix: '/users' })
   .use(swagger())
   .model({
     user: t.Object({
-      avatarUrl: t.String(),
-      email: t.String(),
+      avatarUrl: t.String({ format: 'uri' }),
+      email: t.String({ format: 'email' }),
       name: t.String()
     })
   })
