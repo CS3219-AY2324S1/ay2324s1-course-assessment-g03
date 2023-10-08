@@ -5,7 +5,6 @@ import { helmet } from 'elysia-helmet'
 import jwt from '@elysiajs/jwt'
 import { PrismaClient } from '@prisma/client'
 import { logger } from '@bogeychan/elysia-logger'
-import { Role } from './constants'
 
 const db = new PrismaClient()
 
