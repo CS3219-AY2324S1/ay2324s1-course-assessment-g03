@@ -5,7 +5,6 @@ import { helmet } from 'elysia-helmet'
 import jwt from '@elysiajs/jwt'
 import { PrismaClient } from '@prisma/client'
 import { logger } from '@bogeychan/elysia-logger'
-import { Role } from './constants'
 
 const db = new PrismaClient()
 
@@ -22,7 +21,7 @@ const app = new Elysia({ prefix: '/users' })
   .use(swagger())
   .model({
     user: t.Object({
-      avatarUrl: t.String({ format: 'uri' }),
+      avatarUrl: t.String(),
       email: t.String({ format: 'email' }),
       name: t.String()
     })
@@ -43,10 +42,7 @@ const app = new Elysia({ prefix: '/users' })
     '/',
     async ({ body }) =>
       await db.user.create({
-        data: {
-          ...body,
-          role: Role.User
-        }
+        data: body
       }),
     {
       body: 'user'
