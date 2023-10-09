@@ -12,8 +12,8 @@ const cpu = config.getNumber('cpu') || 256
 const memory = config.getNumber('memory') || 128
 
 // For custom domain
-const subdomain = config.get("subdomain") || "users.staging.";
-const rootDomain = config.get("rootDomain") || "peerprep.net";
+const subdomain = config.get('subdomain') || 'users.staging.'
+const rootDomain = config.get('domainName') || 'peerprep.net'
 
 const hostedZoneId = config.requireSecret('hostedZoneId')
 const domainName = `${subdomain}${rootDomain}`
