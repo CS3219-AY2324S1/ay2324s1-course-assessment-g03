@@ -8,11 +8,11 @@ function RoomPage() {
 
     const { roomId } = useParams();
 
+    // TODO: Add Error message if room id not passed as prop
     return (
         <Page display="grid" placeItems="center">
             <VStack marginBottom="4" flexDirection="column" align="left" height="full" width="full">
                 <InfoBar difficulty={"Easy"} topic={"Data Structures & Algorithms"} />
-                // TODO: Add Error message if room id not passed as prop
                 {roomId ? <Collaborator roomId={roomId} /> : <Navigate to={ROUTE.ROOT} />}
             </VStack>
         </Page >
