@@ -21,3 +21,11 @@ export const API_ENDPOINT = {
    */
   COLLAB: "/room"
 } as const;
+
+/**
+ * Websocket paths
+ */
+export const WEBSOCKET_PATH = {
+  MATCHING: "/api/matching/websocket",
+  COLLABORATION: "/api/collaboration/websocket",
+} as const;

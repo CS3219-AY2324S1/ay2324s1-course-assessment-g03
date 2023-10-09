@@ -9,11 +9,6 @@ if (process.env.NODE_ENV === "development") {
 }
 const envServerParsed = envSchema.safeParse(process.env);
 if (!envServerParsed.success) {
-  console.log(
-    "These were the provided environment variables",
-    JSON.stringify(process.env)
-  );
-  console.error(envServerParsed.error.issues);
   throw new Error("There is an error with the server environment variables");
 }
 process.env = envServerParsed.data;
