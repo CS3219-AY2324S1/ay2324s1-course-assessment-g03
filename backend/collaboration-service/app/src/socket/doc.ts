@@ -1,7 +1,8 @@
 import { ChangeSet } from "@codemirror/state";
 import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, resetDocument, updateDocInfo } from "../models/rooms.model";
+import { Socket } from "socket.io"
 
-export function handlePullUpdates(socket: any, version: number, roomId: string) {
+export function handlePullUpdates(socket: Socket, version: number, roomId: string) {
     const pullUpdatesData = getPullUpdatesInfo(roomId)
     if (!pullUpdatesData.data) {
         console.error(pullUpdatesData.error)
@@ -15,7 +16,7 @@ export function handlePullUpdates(socket: any, version: number, roomId: string) 
     }
 }
 
-export function handlePushUpdates(socket: any, version: number, docUpdatesData: string, roomId: string) {
+export function handlePushUpdates(socket: Socket, version: number, docUpdatesData: string, roomId: string) {
     let docUpdates = JSON.parse(docUpdatesData);
     const updateInfo = getUpdateInfo(roomId)
     if (!updateInfo.data) {
@@ -46,7 +47,7 @@ export function handlePushUpdates(socket: any, version: number, docUpdatesData: 
     }
 }
 
-export function handleGetDocument(socket: any, roomId: string) {
+export function handleGetDocument(socket: Socket, roomId: string) {
     const docData = getDocumentInfo(roomId)
     if (!docData.data) {
         console.log(docData.error)
@@ -56,7 +57,7 @@ export function handleGetDocument(socket: any, roomId: string) {
     }
 }
 
-export function handleResetDocument(socket: any, roomId: string) {
+export function handleResetDocument(socket: Socket, roomId: string) {
     resetDocument(roomId)
     socket.emit('pushUpdateResponse', false)
 }
