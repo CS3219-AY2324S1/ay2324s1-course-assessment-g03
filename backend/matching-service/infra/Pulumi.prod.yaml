@@ -1,4 +1,5 @@
 config:
+  aws:region: ap-southeast-1
   matching-service-infra:acmEcsCertificateArn:
     secure: AAABAGrMpeXHGlicxo6zF5QVCtb0C9Nm645SqxV7V3ZaJXYhqg9t04wLe6VUsAqbc1g13n82tpnoP8kYY8TY5bmxS0yTaGWtMdLLZywUxNOtdNe3DqmBmdixYqG/cf39ABnYirH4GXuKiZFuA9AvHUNM+pbjZ7W+
   matching-service-infra:hostedZoneId:
