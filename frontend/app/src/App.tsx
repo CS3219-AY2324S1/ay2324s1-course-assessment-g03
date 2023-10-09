@@ -19,7 +19,7 @@ function App() {
             path={ROUTE.GITHUB_CALLBACK}
             element={<GitHubCallbackPage />}
           />
-          <Route path={ROUTE.ROOM} element={<RoomPage />} />
+          <Route path={ROUTE.ROOM_ROOMID} element={<RoomPage />} />
         </Route>
         {/* With border-ful Navbar */}
         {/* TODO: ENABLE AUTHENTICATION */}

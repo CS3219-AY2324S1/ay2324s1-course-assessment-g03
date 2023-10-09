@@ -20,7 +20,6 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
   const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE)
 
   useEffect(() => {
-    console.log(`${API_URL}${API_ENDPOINT.COLLAB}`)
     const connectSocket = io(`${API_URL}${API_ENDPOINT.COLLAB}`, {
       query: {
         roomId: roomId
