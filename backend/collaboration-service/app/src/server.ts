@@ -13,7 +13,7 @@ const io = new Server(server, {
     path: "/api/collaboration/websocket",
     cors: {
         credentials: true,
-        origin: "*",
+        origin: process.env.FRONTEND_ORIGIN,
         methods: ["GET", "POST"]
     }
 })
