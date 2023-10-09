@@ -43,7 +43,7 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
 
 
 
-    if (version != null && doc != null) {
+    if (version !== null && doc !== null) {
         return (<Box>
             <Text>{`You are in room ${roomId}`}</Text>
             <CodeMirror
