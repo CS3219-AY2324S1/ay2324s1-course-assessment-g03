@@ -6,6 +6,7 @@ import { CodeEditor, QuestionDetails } from "..";
 import { LANGUAGES } from "../../constants/languages";
 import { SingleValue } from "chakra-react-select";
 import { LanguageSupport } from "node_modules/@codemirror/language/dist";
+import { API_ENDPOINT, API_URL } from "@/constants/api";
 
 interface CollaboratorProps {
   roomId: string;
@@ -17,7 +18,8 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
   const [currentLanguage, setCurrentLanguage] = useState(LANGUAGES.Python)
 
   useEffect(() => {
-    const connectSocket = io("http://localhost:8005", {
+    console.log(`${API_URL}${API_ENDPOINT.COLLAB}`)
+    const connectSocket = io(`${API_URL}${API_ENDPOINT.COLLAB}`, {
       query: {
         roomId: roomId
       }
