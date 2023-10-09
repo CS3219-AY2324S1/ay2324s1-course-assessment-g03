@@ -17,6 +17,8 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
 
     const [doc, setDoc] = useState<string | null>(null)
     const [version, setVersion] = useState<number | null>(null)
+    const [isLoading, setLoading] = useState(true)
+    const [error, setError] = useState<unknown>(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,7 +28,9 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
                 setDoc(doc.toString())
             } catch (error) {
                 console.error('Error fetching document', error)
+                setError(error)
             }
+            setLoading(false)
         }
 
         fetchData()
@@ -41,9 +45,11 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
 
     }, [socket, roomId])
 
-
-
-    if (version !== null && doc !== null) {
+    if (isLoading) {
+        return <Spinner />
+    } else if (error || (version === null || doc === null)) {
+        return <Text>{error instanceof Error ? error.message : "An error has occurred"}</Text>
+    } else {
         return (<Box>
             <Text>{`You are in room ${roomId}`}</Text>
             <CodeMirror
@@ -60,7 +66,5 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
                 value={doc}
             />
         </Box>)
-    } else {
-        return <Spinner />
     }
 }
