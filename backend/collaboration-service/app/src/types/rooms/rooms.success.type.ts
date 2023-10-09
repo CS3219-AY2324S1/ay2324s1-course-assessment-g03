@@ -1,19 +1,20 @@
-import { Update } from "@codemirror/collab"
 import { Text } from "@codemirror/state"
+import { Update } from "@codemirror/collab"
 
 export type createRoomData = {
     created: moment.Moment;
     roomId: string;
 }
 
-export type getRoomInfoData = {
+export type getRoomData = {
+    created: moment.Moment;
+    updated: moment.Moment;
     updates: Update[];
     doc: Text;
     pending: ((value: any) => void)[];
-    updated: moment.Moment;
 }
 
-export type pullUpdatesData = {
+export type getPullUpdatesData = {
     updates: Update[];
     pending: ((value: any) => void)[];
 }
@@ -32,15 +33,4 @@ export type updateDocData = {
 export type getDocumentData = {
     updates: Update[];
     doc: Text;
-}
-
-export type resetDocumentData = {
-}
-
-export type roomInfo = {
-    created: moment.Moment;
-    updated: moment.Moment;
-    updates: Update[]
-    doc: Text;
-    pending: ((value: any) => void)[];
 }

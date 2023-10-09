@@ -1,13 +1,14 @@
 import { ChangeSet } from "@codemirror/state";
-import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, resetDocument, updateDocInfo } from "../models/rooms.model";
+import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, updateDocInfo } from "../models/rooms.model";
 import { Socket } from "socket.io"
 
 export function handlePullUpdates(socket: Socket, version: number, roomId: string) {
     const pullUpdatesData = getPullUpdatesInfo(roomId)
-    if (!pullUpdatesData.data) {
-        console.error(pullUpdatesData.error)
-        return
+
+    if (pullUpdatesData.status !== "success") {
+        return console.error(pullUpdatesData.data)
     }
+
     const { updates, pending } = pullUpdatesData.data
     if (version < updates.length) {
         socket.emit("pullUpdateResponse", JSON.stringify(updates.slice(version)));
@@ -19,8 +20,8 @@ export function handlePullUpdates(socket: Socket, version: number, roomId: strin
 export function handlePushUpdates(socket: Socket, version: number, docUpdatesData: string, roomId: string) {
     const docUpdates = JSON.parse(docUpdatesData);
     const updateInfo = getUpdateInfo(roomId)
-    if (!updateInfo.data) {
-        console.error(updateInfo.error)
+    if (updateInfo.status !== "success") {
+        console.error(updateInfo.data)
     } else {
         const { updates, pending } = updateInfo.data
         let { doc } = updateInfo.data
@@ -50,15 +51,10 @@ export function handlePushUpdates(socket: Socket, version: number, docUpdatesDat
 
 export function handleGetDocument(socket: Socket, roomId: string) {
     const docData = getDocumentInfo(roomId)
-    if (!docData.data) {
-        console.log(docData.error)
+    if (docData.status !== "success") {
+        console.log(docData.data)
     } else {
         const { updates, doc } = docData.data
         socket.emit('getDocumentResponse', updates.length, doc.toString())
     }
-}
-
-export function handleResetDocument(socket: Socket, roomId: string) {
-    resetDocument(roomId)
-    socket.emit('pushUpdateResponse', false)
 }

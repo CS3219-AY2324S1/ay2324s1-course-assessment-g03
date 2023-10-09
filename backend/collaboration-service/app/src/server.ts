@@ -1,9 +1,7 @@
 import http from "http"
 import app from "./app"
 import { Server } from "socket.io"
-import { ChangeSet } from "@codemirror/state";
-import { getUpdateInfo, updateDocInfo, getDocumentInfo } from "./models/rooms.model";
-import { handleGetDocument, handlePullUpdates, handlePushUpdates, handleResetDocument } from "./socket/doc";
+import { handleGetDocument, handlePullUpdates, handlePushUpdates } from "./socket/doc";
 
 const port = process.env.PORT || 8005;
 
@@ -41,10 +39,6 @@ io.on('connection', (socket) => {
     /* Socket API to get the current state of the document from the server */
     socket.on('getDocument', () => {
         handleGetDocument(socket, roomId)
-    })
-
-    socket.on('resetDocument', () => {
-        handleResetDocument(socket, roomId)
     })
 
     /* Socket API to disconnect from the server */

@@ -1,138 +1,136 @@
 import moment from "moment";
 import { Text } from "@codemirror/state"
-import { Update } from "@codemirror/collab"
-import * as roomsType from "../types/rooms.type";
+import * as types from "../types/rooms/rooms.type"
+import { generateNewDocument } from "../helpers/rooms.helper";
+import { rooms } from "../db/rooms.db";
+import { HttpStatus } from "../utils/HTTP_Status_Codes"
 
-export const rooms: Record<string, roomsType.roomInfo> = {
-    "1": {
-        created: moment(),
-        updated: moment(),
-        updates: [],
-        doc: Text.of(["Welcome to Room 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"]),
-        pending: []
-    },
-    "2": {
-        created: moment(),
-        updated: moment(),
-        updates: [],
-        doc: Text.of(["Welcome to Room 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"]),
-        pending: []
-    },
-    "3": {
-        created: moment(),
-        updated: moment(),
-        updates: [],
-        doc: Text.of(["Welcome to Room 3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"]),
-        pending: []
-    }
-}
-
-export const createRoom = (roomId: string): ModelResponse<roomsType.createRoomData> => {
+export const createRoom = (roomId: string): types.createRoomType => {
     if (roomId in rooms) {
-        return { error: "Room already exists" }
+        return {
+            status: "fail",
+            code: HttpStatus.BAD_REQUEST,
+            data: {
+                roomId: "Room already exists"
+            }
+        }
     }
 
-    const created = moment();
-    const updated = moment();
-    const updates: Update[] = []
-    const doc = Text.of([`Welcome to Room ${roomId}`])
-    const pending: ((value: any) => void)[] = []
-
-    rooms[roomId] = {
-        created, updated, updates, doc, pending
-    }
+    rooms[roomId] = generateNewDocument(roomId)
 
     return {
+        status: "success",
+        code: HttpStatus.CREATED,
         data: {
-            roomId, created
+            created: rooms[roomId].created,
+            roomId: roomId
         }
     }
 }
 
-export const getRoomInfo = (roomId: string): ModelResponse<roomsType.getRoomInfoData> => {
+export const getRoomInfo = (roomId: string): types.getRoomType => {
     if (!(roomId in rooms)) {
-        return { error: "Room not found" }
+        return {
+            status: "fail",
+            code: HttpStatus.BAD_REQUEST,
+            data: {
+                roomId: "Room not found"
+            }
+        }
     }
 
-    const { updates, doc, pending, updated } = rooms[roomId]
+    const { updates, doc, pending, updated, created } = rooms[roomId]
 
     return {
+        status: "success",
+        code: HttpStatus.OK,
         data: {
-            updates, doc, pending, updated
+            updates, doc, pending, updated, created
         }
     }
 }
 
-export const getPullUpdatesInfo = (roomId: string): ModelResponse<roomsType.pullUpdatesData> => {
+export const getPullUpdatesInfo = (roomId: string): types.getPullUpdatesType => {
     if (!(roomId in rooms)) {
-        return { error: "Room not found" }
+        return {
+            status: "fail",
+            code: HttpStatus.BAD_REQUEST,
+            data: {
+                roomId: "Room not found"
+            }
+        }
     }
 
     const { updates, pending } = rooms[roomId]
 
     return {
+        status: "success",
+        code: HttpStatus.OK,
         data: {
             updates, pending
         }
     }
+
 }
 
-export const getUpdateInfo = (roomId: string): ModelResponse<roomsType.getUpdateInfoData> => {
+export const getUpdateInfo = (roomId: string): types.getUpdateType => {
     if (!(roomId in rooms)) {
-        return { error: "Room not found" }
+        return {
+            status: "fail",
+            code: HttpStatus.BAD_REQUEST,
+            data: { roomId: "Room not found" }
+        }
     }
 
     const { updates, doc, pending } = rooms[roomId]
 
     return {
+        status: "success",
+        code: HttpStatus.OK,
         data: {
             updates, doc, pending
         }
     }
 }
 
-export const updateDocInfo = (roomId: string, doc: Text): ModelResponse<roomsType.updateDocData> => {
+export const updateDocInfo = (roomId: string, doc: Text): types.updateDocType => {
     if (!(roomId in rooms)) {
-        return { error: "Room not found" }
+        return {
+            status: "fail",
+            code: HttpStatus.BAD_REQUEST,
+            data: { roomId: "Room not found" }
+        }
     }
 
     rooms[roomId].doc = doc
     rooms[roomId].updated = moment()
 
     return {
+        status: "success",
+        code: HttpStatus.OK,
         data: {
             updated: rooms[roomId].updated, doc
         }
     }
 }
 
-export const getDocumentInfo = (roomId: string): ModelResponse<roomsType.getDocumentData> => {
+
+export const getDocumentInfo = (roomId: string): types.getDocumentType => {
     if (!(roomId in rooms)) {
-        return { error: "Room not found" }
+        return {
+            status: "fail",
+            code: HttpStatus.BAD_REQUEST,
+            data: { roomId: "Room not found" }
+        }
     }
 
     const { updates, doc } = rooms[roomId]
 
     return {
+        status: "success",
+        code: HttpStatus.OK,
         data: {
             updates, doc
         }
     }
 }
-
-export const resetDocument = (roomId: string): ModelResponse<roomsType.resetDocumentData> => {
-
-    if (!(roomId in rooms)) {
-        return { error: "Room not found" }
-    }
-
-    rooms[roomId].doc = Text.of([`Welcome to Room ${roomId}`])
-    rooms[roomId].updates = []
-    rooms[roomId].pending = []
-
-    return {
-        data: {}
-    }
-}
-
-

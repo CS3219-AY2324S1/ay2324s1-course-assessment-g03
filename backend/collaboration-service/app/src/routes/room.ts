@@ -1,57 +1,34 @@
 import express from "express"
 import type { Request, Response, NextFunction } from "express"
 import { v4 } from "uuid"
-import moment from "moment"
-import { HttpStatus } from "../utils/HTTP_Status_Codes"
-import { createRoom } from "../models/rooms.model"
+import { createRoom, getRoomInfo } from "../models/rooms.model"
 
 const roomRouter = express.Router()
 
-roomRouter.use((req: Request, res: Response, next: NextFunction) => {
+roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
     console.log('Room Request received')
     next()
 })
 
-roomRouter.post("/create-room",
+roomRouter.post("/",
     async (_: Request,
         res: Response) => {
 
         const roomId = v4()
 
-        const createRoomResponse = createRoom(roomId)
+        const { code, data, status } = createRoom(roomId)
 
-        if (!(createRoomResponse.data)) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: createRoomResponse.error ?? "" })
-        }
-
-        return res.status(HttpStatus.CREATED).json(createRoomResponse.data)
+        return res.status(code).json({ status, data })
     })
-
-roomRouter.get("/user/:userId", (req: Request<{ userId: string }>,
-    res: Response<{ roomId: string, userIds: string[], creationTime: string }>) => {
-    const { userId } = req.params;
-
-    // Get Room Details by User Logic Here
-
-    return res.json({
-        roomId: "hello",
-        userIds: [],
-        creationTime: new Date().toISOString()
-    })
-})
 
 roomRouter.get("/:roomId", (req: Request<{ roomId: string; }>,
-    res: Response<{ roomId: string; userIds: string[], creationTime: string; }>) => {
+    res: Response) => {
 
     const { roomId } = req.params;
-    // Get Room Details Logic Here
 
-    return res.json({
-        roomId: roomId,
-        userIds: [],
-        creationTime: new Date().toISOString()
-    })
+    const roomInfo = getRoomInfo(roomId)
 
+    return res.status(roomInfo.code).json({ status: roomInfo.status, data: roomInfo.data })
 })
 
 export default roomRouter
