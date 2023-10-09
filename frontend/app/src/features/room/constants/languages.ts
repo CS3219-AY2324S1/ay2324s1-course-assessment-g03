@@ -13,5 +13,6 @@ export const LANGUAGES = {
     "Go": langs.go()
 } as const;
 
+export const DEFAULT_LANGUAGE = LANGUAGES.Python
 
 export type LanguageType = (typeof LANGUAGES[keyof typeof LANGUAGES])

@@ -3,7 +3,7 @@ import { Dropdown } from "@/components/Dropdown";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
-import { LANGUAGES } from "../../constants/languages";
+import { LANGUAGES, DEFAULT_LANGUAGE } from "../../constants/languages";
 import { SingleValue } from "chakra-react-select";
 import { LanguageSupport } from "node_modules/@codemirror/language/dist";
 import { env } from "@/lib/env";
@@ -13,7 +13,6 @@ interface CollaboratorProps {
   roomId: string;
 }
 
-const DEFAULT_LANGUAGE = LANGUAGES.Python
 
 export const Collaborator = ({ roomId }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
