@@ -5,7 +5,7 @@ import { ChangeSet } from "@codemirror/state";
 import { getUpdateInfo, updateDocInfo, getDocumentInfo } from "./models/rooms.model";
 import { handleGetDocument, handlePullUpdates, handlePushUpdates, handleResetDocument } from "./socket/doc";
 
-const port = process.env.port || 8005;
+const port = process.env.PORT || 8005;
 
 export const server = http.createServer(app,);
 
