@@ -63,7 +63,7 @@ export const singleSelectStyles: (
 export const multiSelectStyles: (
   size?: ChakraReactSelectSize,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-) => ChakraStylesConfig = (size = "md") => {
+) => ChakraStylesConfig = () => {
   return {
     container: provided => ({
       ...provided,

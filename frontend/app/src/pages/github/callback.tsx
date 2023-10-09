@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGithubLogin } from "@/features/auth/api";
-import { VStack, Text, Button, Spinner, Box } from "@chakra-ui/react";
+import { VStack, Text, Button, Spinner } from "@chakra-ui/react";
 import { ROUTE } from "@/constants/route";
 import { Page } from "@/components/Page/Page";
 

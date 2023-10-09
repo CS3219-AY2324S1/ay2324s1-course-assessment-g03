@@ -31,7 +31,6 @@ services:
     ports:
       - "8002:80"
   
-
   question-service-server:
     build:
       context: ./backend/question-service/server/app/

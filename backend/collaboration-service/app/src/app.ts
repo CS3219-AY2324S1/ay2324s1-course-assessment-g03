@@ -15,11 +15,7 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
-app.use('/api', apiRouter)
-
-app.get("/", (_: Request, res: Response) => {
-    res.send("Hello")
-})
+app.use('/api/collaboration', apiRouter)
 
 
 export default app

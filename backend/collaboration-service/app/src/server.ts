@@ -3,7 +3,7 @@ import app from "./app"
 import { Server } from "socket.io"
 import { handleGetDocument, handlePullUpdates, handlePushUpdates } from "./socket/doc";
 
-const port = process.env.PORT || 8005;
+const port = process.env.PORT || 80;
 
 export const server = http.createServer(app,);
 

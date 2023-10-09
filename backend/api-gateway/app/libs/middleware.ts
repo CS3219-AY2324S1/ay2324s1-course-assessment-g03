@@ -7,6 +7,7 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
   /**
    * Retrieve JWT from cookies
    */
+
   const token = req.cookies[process.env.JWT_COOKIE_NAME];
 
   /**

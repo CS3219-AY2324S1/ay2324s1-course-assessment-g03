@@ -2,7 +2,7 @@ import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
 import { Dropdown } from "@/components/Dropdown";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
-import { CodeEditor, QuestionDetails } from "..";
+import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { LANGUAGES } from "../../constants/languages";
 import { SingleValue } from "chakra-react-select";
 import { LanguageSupport } from "node_modules/@codemirror/language/dist";
@@ -12,10 +12,12 @@ interface CollaboratorProps {
   roomId: string;
 }
 
+const DEFAULT_LANGUAGE = LANGUAGES.Python
+
 export const Collaborator = ({ roomId }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [currentLanguage, setCurrentLanguage] = useState(LANGUAGES.Python)
+  const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE)
 
   useEffect(() => {
     console.log(`${API_URL}${API_ENDPOINT.COLLAB}`)
@@ -37,7 +39,7 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
     label: string;
     value: LanguageSupport;
   }>) => {
-    setCurrentLanguage(e?.value ?? LANGUAGES.Python)
+    setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)
   }
 
   //TODO: update options when in
@@ -93,8 +95,7 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
       <Box>
         <Button
           size="xs"
-          background="#3F3F46"
-          textColor="white"
+          colorScheme="light"
           onClick={() => setRenderQuestion(!renderQuestion)}
         >
           {renderQuestion ? "Hide" : "Show"} Question

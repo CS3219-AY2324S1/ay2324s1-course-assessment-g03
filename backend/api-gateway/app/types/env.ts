@@ -2,7 +2,7 @@ import { z } from "zod";
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends EnvSchemaType {}
+    interface ProcessEnv extends EnvSchemaType { }
   }
 }
 

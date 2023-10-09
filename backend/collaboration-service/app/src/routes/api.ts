@@ -13,6 +13,10 @@ apiRouter.get("/test", (req: Request, res: Response) => {
     res.send("Server is healthy!")
 })
 
+apiRouter.get("/collaboration", (req: Request, res: Response) => {
+    res.send("Collaboration service")
+})
+
 apiRouter.use("/room", roomRouter)
 
 export default apiRouter
