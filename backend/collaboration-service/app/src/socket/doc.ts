@@ -17,18 +17,19 @@ export function handlePullUpdates(socket: Socket, version: number, roomId: strin
 }
 
 export function handlePushUpdates(socket: Socket, version: number, docUpdatesData: string, roomId: string) {
-    let docUpdates = JSON.parse(docUpdatesData);
+    const docUpdates = JSON.parse(docUpdatesData);
     const updateInfo = getUpdateInfo(roomId)
     if (!updateInfo.data) {
         console.error(updateInfo.error)
     } else {
-        let { updates, pending, doc } = updateInfo.data
+        const { updates, pending } = updateInfo.data
+        let { doc } = updateInfo.data
         try {
             if (version !== updates.length) {
                 socket.emit('pushUpdateResponse', false);
             } else {
                 const newUpdates: { changes: ChangeSet, clientID: any }[] = []
-                for (let update of docUpdates) {
+                for (const update of docUpdates) {
                     const changes = ChangeSet.fromJSON(update.changes);
                     newUpdates.push({ changes, clientID: update.clientID });
                     updates.push({ changes, clientID: update.clientID });
