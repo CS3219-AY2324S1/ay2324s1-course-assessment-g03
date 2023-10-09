@@ -3,6 +3,7 @@ import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view"
 import { Text, ChangeSet } from "@codemirror/state"
 import { Update, receiveUpdates, sendableUpdates, collab, getSyncedVersion } from "@codemirror/collab"
 import { Socket } from "socket.io-client"
+import { SOCKET_API } from "@/constants/socket"
 
 function pushUpdates(
     socket: Socket,
@@ -17,9 +18,9 @@ function pushUpdates(
     }))
 
     return new Promise(function (resolve) {
-        socket.emit('pushUpdates', version, JSON.stringify(updates));
+        socket.emit(SOCKET_API.PUSH_UPDATES, version, JSON.stringify(updates));
 
-        socket.once('pushUpdateResponse', function (status: boolean) {
+        socket.once(SOCKET_API.PUSH_UPDATES_RESPONSE, function (status: boolean) {
             resolve(status);
         });
     });
@@ -30,9 +31,9 @@ function pullUpdates(
     version: number,
 ): Promise<readonly Update[]> {
     return new Promise(function (resolve) {
-        socket.emit('pullUpdates', version);
+        socket.emit(SOCKET_API.PULL_UPDATES, version);
 
-        socket.once('pullUpdateResponse', function (updates: any) {
+        socket.once(SOCKET_API.PULL_UPDATES_RESPONSE, function (updates: any) {
             resolve(JSON.parse(updates));
         });
     }).then((updates: any) => updates.map((u: any) => ({
@@ -43,9 +44,9 @@ function pullUpdates(
 
 export function getDocument(socket: Socket, roomId: string): Promise<{ version: number, doc: Text }> {
     return new Promise(function (resolve) {
-        socket.emit('getDocument', roomId);
+        socket.emit(SOCKET_API.GET_DOCUMENT, roomId);
 
-        socket.once('getDocumentResponse', function (version: number, doc: string) {
+        socket.once(SOCKET_API.GET_DOCUMENT_RESPONSE, function (version: number, doc: string) {
             resolve({
                 version,
                 doc: Text.of(doc.split("\n"))
