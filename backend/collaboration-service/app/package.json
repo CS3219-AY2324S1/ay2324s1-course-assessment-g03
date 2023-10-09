@@ -19,7 +19,6 @@
     "http": "^0.0.1-security",
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
-    "redis": "^4.6.8",
     "socket.io": "^4.7.2",
     "uuid": "^9.0.0"
   },
