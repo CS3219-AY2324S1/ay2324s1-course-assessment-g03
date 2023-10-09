@@ -7,6 +7,7 @@ import { LANGUAGES } from "../../constants/languages";
 import { SingleValue } from "chakra-react-select";
 import { LanguageSupport } from "node_modules/@codemirror/language/dist";
 import { env } from "@/lib/env";
+import { WEBSOCKET_PATH } from "@/constants/api";
 
 interface CollaboratorProps {
   roomId: string;
@@ -21,7 +22,7 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
 
   useEffect(() => {
     const connectSocket = io(`${env.VITE_BACKEND_URL}`, {
-      path: "/api/collaboration/websocket",
+      path: WEBSOCKET_PATH.COLLABORATION,
       query: {
         roomId: roomId
       }
