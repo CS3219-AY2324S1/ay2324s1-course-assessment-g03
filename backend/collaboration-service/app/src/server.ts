@@ -10,7 +10,9 @@ export const server = http.createServer(app,);
 
 const io = new Server(server, {
     // options
+    path: "/api/collaboration/websocket",
     cors: {
+        credentials: true,
         origin: "*",
         methods: ["GET", "POST"]
     }
