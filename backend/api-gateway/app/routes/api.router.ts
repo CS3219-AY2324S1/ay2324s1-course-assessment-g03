@@ -12,7 +12,7 @@ apiRouter.use("/auth", authRouter);
  */
 apiRouter.use(
   "/users",
-  // authMiddleware,
+  authMiddleware,
   createProxyMiddleware({
     target: process.env.USERS_SERVICE_URL,
     changeOrigin: true,
