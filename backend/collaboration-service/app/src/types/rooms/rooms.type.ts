@@ -2,6 +2,7 @@ import * as success from "./rooms.success.type";
 import * as failure from "./rooms.error.type";
 import { Update } from "@codemirror/collab";
 import { Text } from "@codemirror/state"
+import { ModelResponse } from "../models.type";
 
 export type createRoomType = ModelResponse<success.createRoomData, failure.roomIdError>
 
