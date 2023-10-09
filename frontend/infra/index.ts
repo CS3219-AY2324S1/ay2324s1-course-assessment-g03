@@ -12,7 +12,7 @@ const indexDocument = config.get("indexDocument") || "index.html";
 // For custom domain
 const subdomainConfig = config.get("subdomain");
 const subdomain = subdomainConfig !== undefined ? subdomainConfig : "staging."; // As 'subdomain' can be defined as an empty string for prod
-const rootDomain = config.get("domainName") || "peerprep.net";
+const rootDomain = config.get("rootDomain") || "peerprep.net";
 
 const hostedZoneId = config.requireSecret("hostedZoneId");
 const domainName = `${subdomain}${rootDomain}`;

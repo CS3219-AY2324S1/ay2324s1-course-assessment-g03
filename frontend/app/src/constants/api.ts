@@ -16,3 +16,11 @@ export const API_ENDPOINT = {
   AUTH_GITHUB_AUTH_URL: "/auth/github/authorize",
   AUTH_GITHUB_LOGIN: "/auth/github/login",
 } as const;
+
+/**
+ * Websocket paths
+ */
+export const WEBSOCKET_PATH = {
+  MATCHING: "/api/matching/websocket",
+  COLLABORATION: "/api/collaboration/websocket",
+} as const;

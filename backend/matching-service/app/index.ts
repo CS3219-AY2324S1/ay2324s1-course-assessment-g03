@@ -15,8 +15,10 @@ dotenv.config({ path: `.env.development` });
 const app: Application = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
+  path: "/api/matching/websocket",
   cors: {
     origin: process.env.FRONTEND_ORIGIN,
+    credentials: true,
   },
 });
 
