@@ -6,6 +6,7 @@ import GitHubCallbackPage from "@/pages/github/callback";
 import HomePage from "@/pages/home";
 import JoinPage from "@/pages/home/join";
 import CreatePage from "@/pages/home/create";
+import RoomPage from "./pages/room";
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
             path={ROUTE.GITHUB_CALLBACK}
             element={<GitHubCallbackPage />}
           />
+          <Route path={ROUTE.ROOM_ROOMID} element={<RoomPage />} />
         </Route>
         {/* With border-ful Navbar */}
-        <Route element={<Layout requireAuthentication />}>
+        {/* TODO: ENABLE AUTHENTICATION */}
+        <Route element={<Layout />}>
           <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.HOME_JOIN} element={<JoinPage />} />
           <Route path={ROUTE.HOME_CREATE} element={<CreatePage />} />

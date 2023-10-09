@@ -2,7 +2,6 @@ import { Card } from "@/components";
 import { VStack, Text, Button, HStack } from "@chakra-ui/react";
 import { UserCard } from ".";
 import { useAuth } from "@/hooks";
-import { SkeletonUserCard } from "./SkeletonUserCard";
 
 type Props = {
   leaveCallback: () => void;
@@ -21,7 +20,7 @@ export const FindingMatchCard = ({ leaveCallback }: Props) => {
         </Text>
         <HStack gap="1.25rem" w="full">
           <UserCard user={user} />
-          <SkeletonUserCard />
+          <UserCard user={undefined} />
         </HStack>
         <HStack alignSelf="end">
           <Button colorScheme="light" onClick={leaveCallback}>
