@@ -1,33 +1,35 @@
 import { ChangeSet } from "@codemirror/state";
 import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, updateDocInfo } from "../models/rooms.model";
 import { Socket } from "socket.io"
+import { SOCKET_API } from "../constants/socket";
+import { JSEND_STATUS } from "../types/models.type";
 
 export function handlePullUpdates(socket: Socket, version: number, roomId: string) {
     const pullUpdatesData = getPullUpdatesInfo(roomId)
 
-    if (pullUpdatesData.status !== "success") {
+    if (pullUpdatesData.status !== JSEND_STATUS.SUCCESS) {
         return console.error(pullUpdatesData.data)
     }
 
     const { updates, pending } = pullUpdatesData.data
     if (version < updates.length) {
-        socket.emit("pullUpdateResponse", JSON.stringify(updates.slice(version)));
+        socket.emit(SOCKET_API.PULL_UPDATES_RESPONSE, JSON.stringify(updates.slice(version)));
     } else {
-        pending.push((updates: any) => { socket.emit('pullUpdateResponse', JSON.stringify(updates)) });
+        pending.push((updates: any) => { socket.emit(SOCKET_API.PULL_UPDATES_RESPONSE, JSON.stringify(updates)) });
     }
 }
 
 export function handlePushUpdates(socket: Socket, version: number, docUpdatesData: string, roomId: string) {
     const docUpdates = JSON.parse(docUpdatesData);
     const updateInfo = getUpdateInfo(roomId)
-    if (updateInfo.status !== "success") {
+    if (updateInfo.status !== JSEND_STATUS.SUCCESS) {
         console.error(updateInfo.data)
     } else {
         const { updates, pending } = updateInfo.data
         let { doc } = updateInfo.data
         try {
             if (version !== updates.length) {
-                socket.emit('pushUpdateResponse', false);
+                socket.emit(SOCKET_API.PUSH_UPDATES_RESPONSE, false);
             } else {
                 const newUpdates: { changes: ChangeSet, clientID: any }[] = []
                 for (const update of docUpdates) {
@@ -37,7 +39,7 @@ export function handlePushUpdates(socket: Socket, version: number, docUpdatesDat
                     doc = changes.apply(doc);
                     updateDocInfo(roomId, doc)
                 }
-                socket.emit('pushUpdateResponse', true);
+                socket.emit(SOCKET_API.PUSH_UPDATES_RESPONSE, true);
 
                 while (pending.length) {
                     pending.pop()!(newUpdates);
@@ -51,10 +53,10 @@ export function handlePushUpdates(socket: Socket, version: number, docUpdatesDat
 
 export function handleGetDocument(socket: Socket, roomId: string) {
     const docData = getDocumentInfo(roomId)
-    if (docData.status !== "success") {
+    if (docData.status !== JSEND_STATUS.SUCCESS) {
         console.log(docData.data)
     } else {
         const { updates, doc } = docData.data
-        socket.emit('getDocumentResponse', updates.length, doc.toString())
+        socket.emit(SOCKET_API.GET_DOCUMENT_RESPONSE, updates.length, doc.toString())
     }
 }

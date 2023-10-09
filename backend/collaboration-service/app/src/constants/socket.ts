@@ -5,6 +5,9 @@ export const SOCKET_API = {
     PUSH_UPDATES: "pushUpdates",
     GET_DOCUMENT: "getDocument",
     DISCONNECT: "disconnect",
+    PUSH_UPDATES_RESPONSE: "pushUpdateResponse",
+    PULL_UPDATES_RESPONSE: "pullUpdateResponse",
+    GET_DOCUMENT_RESPONSE: "getDocumentResponse"
 } as const;
 
 export const SOCKET_INVALID_ROOM_ID = "Invalid roomId provided"

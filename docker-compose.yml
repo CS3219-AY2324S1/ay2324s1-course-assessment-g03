@@ -65,6 +65,7 @@ services:
       start_period: 40s
   
   collaboration-service:
+    container_name: collaboration-service
     build:
       context: ./backend/collaboration-service/app/
       dockerfile: Dockerfile.dev
