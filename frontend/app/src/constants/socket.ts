@@ -1,4 +1,4 @@
-export const SOCKET_API = {
+export const COLLABORATION_SOCKET_API = {
     CONNECT: "connection",
     ERROR: "error",
     PULL_UPDATES: "pullUpdates",

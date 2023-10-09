@@ -3,7 +3,7 @@ import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view"
 import { Text, ChangeSet } from "@codemirror/state"
 import { Update, receiveUpdates, sendableUpdates, collab, getSyncedVersion } from "@codemirror/collab"
 import { Socket } from "socket.io-client"
-import { SOCKET_API } from "@/constants/socket"
+import { COLLABORATION_SOCKET_API } from "@/constants/socket"
 
 function pushUpdates(
     socket: Socket,
@@ -18,9 +18,9 @@ function pushUpdates(
     }))
 
     return new Promise(function (resolve) {
-        socket.emit(SOCKET_API.PUSH_UPDATES, version, JSON.stringify(updates));
+        socket.emit(COLLABORATION_SOCKET_API.PUSH_UPDATES, version, JSON.stringify(updates));
 
-        socket.once(SOCKET_API.PUSH_UPDATES_RESPONSE, function (status: boolean) {
+        socket.once(COLLABORATION_SOCKET_API.PUSH_UPDATES_RESPONSE, function (status: boolean) {
             resolve(status);
         });
     });
@@ -31,9 +31,9 @@ function pullUpdates(
     version: number,
 ): Promise<readonly Update[]> {
     return new Promise(function (resolve) {
-        socket.emit(SOCKET_API.PULL_UPDATES, version);
+        socket.emit(COLLABORATION_SOCKET_API.PULL_UPDATES, version);
 
-        socket.once(SOCKET_API.PULL_UPDATES_RESPONSE, function (updates: any) {
+        socket.once(COLLABORATION_SOCKET_API.PULL_UPDATES_RESPONSE, function (updates: any) {
             resolve(JSON.parse(updates));
         });
     }).then((updates: any) => updates.map((u: any) => ({
@@ -44,9 +44,9 @@ function pullUpdates(
 
 export function getDocument(socket: Socket, roomId: string): Promise<{ version: number, doc: Text }> {
     return new Promise(function (resolve) {
-        socket.emit(SOCKET_API.GET_DOCUMENT, roomId);
+        socket.emit(COLLABORATION_SOCKET_API.GET_DOCUMENT, roomId);
 
-        socket.once(SOCKET_API.GET_DOCUMENT_RESPONSE, function (version: number, doc: string) {
+        socket.once(COLLABORATION_SOCKET_API.GET_DOCUMENT_RESPONSE, function (version: number, doc: string) {
             resolve({
                 version,
                 doc: Text.of(doc.split("\n"))
