@@ -26,10 +26,13 @@ export const envSchema = z.object({
   /**
    * For services
    */
-  USERS_SERVICE_URL: z.string().url().default("http://localhost:8002"),
-  QUESTIONS_SERVICE_URL: z.string().url().default("http://localhost:8003"),
-  MATCHING_SERVICE_URL: z.string().url().default("http://localhost:8004"),
-  COLLABORATION_SERVICE_URL: z.string().url().default("http://localhost:8005"),
+  USERS_SERVICE_URL: z.string().url().default("http://users-service"),
+  QUESTIONS_SERVICE_URL: z.string().url().default("http://questions-service"),
+  MATCHING_SERVICE_URL: z.string().url().default("http://matching-service"),
+  COLLABORATION_SERVICE_URL: z
+    .string()
+    .url()
+    .default("http://collaboration-service"),
 });
 
 type EnvSchemaType = z.infer<typeof envSchema>;

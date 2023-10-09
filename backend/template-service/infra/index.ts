@@ -13,7 +13,7 @@ const memory = config.getNumber("memory") || 128;
 
 // For custom domain
 const subdomain = config.get("subdomain") || "template.staging."; // TODO: Update `template` placeholder
-const rootDomain = config.get("domainName") || "peerprep.net";
+const rootDomain = config.get("rootDomain") || "peerprep.net";
 
 const hostedZoneId = config.requireSecret("hostedZoneId");
 const domainName = `${subdomain}${rootDomain}`;

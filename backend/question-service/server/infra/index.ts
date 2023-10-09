@@ -17,7 +17,7 @@ const MONGO_PORT = config.requireSecret("MONGO_PORT");
 
 // For custom domain
 const subdomain = config.get("subdomain") || "questions.staging.";
-const rootDomain = config.get("domainName") || "peerprep.net";
+const rootDomain = config.get("rootDomain") || "peerprep.net";
 
 const hostedZoneId = config.requireSecret("hostedZoneId");
 const domainName = `${subdomain}${rootDomain}`;

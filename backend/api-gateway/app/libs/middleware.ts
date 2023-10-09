@@ -40,12 +40,10 @@ export const adminMiddleware: RequestHandler = async (req, res, next) => {
   if (userData.roles && userData.roles.includes(ROLE.ADMIN)) {
     next();
   } else {
-    return res
-      .status(HTTP_STATUS_CODE.UNAUTHORIZED)
-      .send(
-        failApiResponse({
-          message: "User is not authorized to perform this action",
-        })
-      );
+    return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).send(
+      failApiResponse({
+        message: "User is not authorized to perform this action",
+      })
+    );
   }
 };
