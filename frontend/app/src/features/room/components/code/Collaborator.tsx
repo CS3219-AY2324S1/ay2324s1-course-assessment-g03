@@ -13,18 +13,18 @@ interface CollaboratorProps {
   roomId: string;
 }
 
-
 export const Collaborator = ({ roomId }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE)
+  const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE);
 
   useEffect(() => {
     const connectSocket = io(`${env.VITE_BACKEND_URL}`, {
       path: WEBSOCKET_PATH.COLLABORATION,
+      withCredentials: true,
       query: {
-        roomId: roomId
-      }
+        roomId: roomId,
+      },
     });
     setSocket(connectSocket);
     return () => {
@@ -35,12 +35,14 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
     };
   }, [roomId]);
 
-  const handleLanguageChange = (e: SingleValue<{
-    label: string;
-    value: LanguageSupport;
-  }>) => {
-    setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)
-  }
+  const handleLanguageChange = (
+    e: SingleValue<{
+      label: string;
+      value: LanguageSupport;
+    }>,
+  ) => {
+    setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE);
+  };
 
   //TODO: update options when in
   const options = (
@@ -55,7 +57,12 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
         size="sm"
         title="Language"
         placeholder="Select language"
-        options={Object.entries(LANGUAGES).map(([languageName, languageSupport]) => ({ label: languageName, value: languageSupport }))}
+        options={Object.entries(LANGUAGES).map(
+          ([languageName, languageSupport]) => ({
+            label: languageName,
+            value: languageSupport,
+          }),
+        )}
         onChangeHandler={handleLanguageChange}
       />
     </HStack>
@@ -100,7 +107,7 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
         >
           {renderQuestion ? "Hide" : "Show"} Question
         </Button>
-      </Box >
-    </VStack >
+      </Box>
+    </VStack>
   );
 };

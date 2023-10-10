@@ -23,6 +23,7 @@ const acmCertificateArn = config.requireSecret("acmEcsCertificateArn");
 // For Auth module
 const jwtCookieName = config.get("jwtCookieName") || "peerprep-token";
 const jwtSecret = config.requireSecret("jwtSecret");
+const apiGatewayAuthSecret = config.requireSecret("apiGatewayAuthSecret");
 
 // For GitHub OAuth 2.0
 const githubClientId = config.requireSecret("githubClientId");
@@ -38,10 +39,9 @@ const fallbackFrontendWebsiteUrl = isProd
   ? "https://peerprep.net"
   : "https://staging.peerprep.net";
 
-// TODO:
-// const fallbackUserServiceUrl = isProd
-//   ? "https://users.peerprep.net"
-//   : "https://users.staging.peerprep.net";
+const fallbackUserServiceUrl = isProd
+  ? "https://users.peerprep.net"
+  : "https://users.staging.peerprep.net";
 
 const fallbackQuestionServiceUrl = isProd
   ? "https://questions.peerprep.net"
@@ -51,10 +51,9 @@ const fallbackMatchingServiceUrl = isProd
   ? "https://matching.peerprep.net"
   : "https://matching.staging.peerprep.net";
 
-// TODO:
-// const fallbackCollaborationServiceUrl = isProd
-//   ? "https://collaboration.peerprep.net"
-//   : "https://collaboration.staging.peerprep.net";
+const fallbackCollaborationServiceUrl = isProd
+  ? "https://collaboration.peerprep.net"
+  : "https://collaboration.staging.peerprep.net";
 
 /**
  * Reference the other stacks
@@ -70,13 +69,12 @@ const githubCallbackUrl = frontendWebsiteUrl.apply(
   (url) => `${url || fallbackFrontendWebsiteUrl}${githubCallbackPath}`
 );
 
-// TODO: Reference the User service stack
-// const userServiceStack = new pulumi.StackReference(
-//   `cs3219/user-service-infra/${currentEnv}`
-// );
-// const userServiceUrl = userServiceStack
-//   .getOutput("url")
-//   .apply((domain) => `${domain || fallbackUserServiceUrl}`);
+const userServiceStack = new pulumi.StackReference(
+  `cs3219/user-service-infra/${currentEnv}`
+);
+const userServiceUrl = userServiceStack
+  .getOutput("url")
+  .apply((domain) => `${domain || fallbackUserServiceUrl}`);
 
 // Reference the Question service stack
 const questionServiceStack = new pulumi.StackReference(
@@ -94,13 +92,12 @@ const matchingServiceUrl = matchingServiceStack
   .getOutput("url")
   .apply((domain) => `${domain || fallbackMatchingServiceUrl}`);
 
-// TODO: Reference the Collaboration service stack
-// const collaborationServiceStack = new pulumi.StackReference(
-//   `cs3219/collaboration-service-infra/${currentEnv}`
-// );
-// const collaborationServiceUrl = collaborationServiceStack
-//   .getOutput("url")
-//   .apply((domain) => `${domain || fallbackCollaborationServiceUrl}`);
+const collaborationServiceStack = new pulumi.StackReference(
+  `cs3219/collaboration-service-infra/${currentEnv}`
+);
+const collaborationServiceUrl = collaborationServiceStack
+  .getOutput("url")
+  .apply((domain) => `${domain || fallbackCollaborationServiceUrl}`);
 
 // An ECS cluster to deploy into
 const cluster = new aws.ecs.Cluster("cluster", {});
@@ -176,18 +173,17 @@ const service = new awsx.ecs.FargateService("service", {
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
         { name: "JWT_COOKIE_NAME", value: jwtCookieName },
         { name: "JWT_SECRET", value: jwtSecret },
+        { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
         { name: "GITHUB_CLIENT_ID", value: githubClientId },
         { name: "GITHUB_CLIENT_SECRET", value: githubClientSecret },
         {
           name: "GITHUB_CALLBACK_URL",
           value: githubCallbackUrl,
         },
-
-        // TODO: Update as the services are built
-        // {
-        //   name: "USERS_SERVICE_URL",
-        //   value: userServiceUrl,
-        // },
+        {
+          name: "USERS_SERVICE_URL",
+          value: userServiceUrl,
+        },
         {
           name: "QUESTIONS_SERVICE_URL",
           value: questionServiceUrl,
@@ -196,10 +192,10 @@ const service = new awsx.ecs.FargateService("service", {
           name: "MATCHING_SERVICE_URL",
           value: matchingServiceUrl,
         },
-        // {
-        //   name: "COLLABORATION_SERVICE_URL",
-        //   value: collaborationServiceUrl,
-        // },
+        {
+          name: "COLLABORATION_SERVICE_URL",
+          value: collaborationServiceUrl,
+        },
       ],
     },
   },

@@ -2,14 +2,16 @@ config:
   aws:region: ap-southeast-1
   users-service-infra:acmEcsCertificateArn:
     secure: AAABAGZXUUERgLpmAx5rk2iQWNRCnuEnomfOkLKZBJU1ExXNnEbhf0fmf1R+WbQNdJcSx9sA2pP1D4IO6N3D92izFMmMFUnWEcfhRP/uM/VVvoNlcUEjhoWoH7KGSdV1lMcmxCJlEHjRhoKKROW5lkfdWQZ5gki1
+  users-service-infra:apiGatewayAuthSecret:
+    secure: AAABAN1ckGUj2vV6q+gfqx3K21py4BqcpWiRyOlYQSdCoKNUkl8/UIESJs9gx5wBeZqQO6m3ToCBYNq5ec+mJWRFN+d6zsWrqoScre6MUbTORFSVr63O+4yScQMSofwHAr1D5LslAMmBd2Ycp8K226kwsBNt5We2PQkv9fTZrzBlKTbffdcJI0GDWCUrGqcIoCEy34b9h+uq+r8JPvx6xaa2xD0TCPtYJNw1/SBYa9NSW6Dr/7f8CvP8KzTZi7TW
   users-service-infra:containerPort: '80'
   users-service-infra:cpu: '256'
-  users-service-infra:databaseUrl:
-    secure: AAABAIY3F/BYlcdmGmFn5jFIEeGM+mpXyTn/kC+ZkYHx2Z5uA4MnSiUslicLPhCPrqEYeA+WlUei4Xm+WXqo1ZRVev+UwxZXrxd9gWJxGGX2Sm/dhFCdUL7/TI8UP6pbOYK830RwKeWiV0JQbuAQsMoqHrcBmvpmpnT+1VjANvcx9Kl9DpoPvthpuw==
   users-service-infra:hostedZoneId:
     secure: AAABAAqNubrYHxuf6vI2fqAeJOPUDnSjV7a3G4rYgDeFRgu3rnS2ruA4YZK0rIyYD4dueQ==
   users-service-infra:jwtSecret:
     secure: AAABAGrP7DAmQEirdkPZj/nsUKJorifrC+BkO7VgT6T8h+UNhEFdI6musA7lm66cevlx8PEvKf4WdAEWX/0gE5ZqpmeQkQBqLl3IXav+cDebiTdxo5n85Ck3h2kc9Grt
+  users-service-infra:databaseUrl:
+    secure: AAABAIY3F/BYlcdmGmFn5jFIEeGM+mpXyTn/kC+ZkYHx2Z5uA4MnSiUslicLPhCPrqEYeA+WlUei4Xm+WXqo1ZRVev+UwxZXrxd9gWJxGGX2Sm/dhFCdUL7/TI8UP6pbOYK830RwKeWiV0JQbuAQsMoqHrcBmvpmpnT+1VjANvcx9Kl9DpoPvthpuw==
   users-service-infra:memory: '128'
   users-service-infra:path: ../app
   users-service-infra:rootDomain: peerprep.net

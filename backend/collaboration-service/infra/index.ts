@@ -12,13 +12,16 @@ const cpu = config.getNumber("cpu") || 256;
 const memory = config.getNumber("memory") || 128;
 
 // For custom domain
-const subdomain = config.get("subdomain") || "collaboration.staging."; // TODO: Update `collaboration` placeholder
+const subdomain = config.get("subdomain") || "collaboration.staging.";
 const rootDomain = config.get("rootDomain") || "peerprep.net";
 
 const hostedZoneId = config.requireSecret("hostedZoneId");
 const domainName = `${subdomain}${rootDomain}`;
 
 const acmCertificateArn = config.requireSecret("acmEcsCertificateArn");
+
+// For Auth module
+const apiGatewayAuthSecret = config.requireSecret("apiGatewayAuthSecret");
 
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const isProd = currentEnv === "prod";
@@ -108,7 +111,7 @@ const service = new awsx.ecs.FargateService("service", {
     //   operatingSystemFamily: "LINUX",
     // },
     container: {
-      name: "collaboration-service-container", // TODO: Update `collaboration` placeholder
+      name: "collaboration-service-container",
       image: image.imageUri,
       cpu: cpu,
       memory: memory,
@@ -128,6 +131,7 @@ const service = new awsx.ecs.FargateService("service", {
         { name: "PORT", value: containerPort.toString() },
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
         { name: "API_GATEWAY_URL", value: apiGatewayUrl },
+        { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
       ],
     },
   },

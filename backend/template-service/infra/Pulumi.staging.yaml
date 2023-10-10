@@ -2,6 +2,8 @@ config:
   aws:region: ap-southeast-1
   template-service-infra:acmEcsCertificateArn:
     secure: AAABALzuta9ZNskR3pnpCdr0gwOU+Wuh8twoaGPtkfHUSk270ytqAWXeWzzULZCxNm7PFUlO97WfDpZMHSow4gKEEYEJqP6mYnDkwsAFjGsAZij/I8aKKucK1rloAW7b/YRTKMqa4zi4lxLbARgdhjD/dAXPoJX5
+  template-service-infra:apiGatewayAuthSecret:
+    secure: AAABAESuHEDkT6oG7zciwgvuzmlybo8xSGhC+vjlfKpB71jS0BQc1H+T+cXvGtfDH6kAMfnZ64ehV0xsutS1Ix3eoDEhZ6LYRNA4WnfsrngVNdsO7u6AbfdINV0xcyzBb3l7gOvUjHBVdzqEiHxrhSjHjLd6NX6+w180imj5HsFvbbDGTtB0LyIui2bLMMmJ9cmbOsSAjslX+WVHG2+4M0dZAcYS1AzsfDIRRvtPyRI1cxR7Jc+PSUZ3gV5Hec5I
   template-service-infra:containerPort: "80"
   template-service-infra:cpu: "256"
   template-service-infra:hostedZoneId:

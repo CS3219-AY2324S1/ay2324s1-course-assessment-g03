@@ -2,10 +2,12 @@ config:
   aws:region: ap-southeast-1
   users-service-infra:acmEcsCertificateArn:
     secure: AAABAMz6p82vt5eZ3hLTjpX3tAib3lPPeEBW14jvvFpgNnUwdR6ah+fN34lK+4uUDwOfPYZ4peYOR2shE5pPAGtYmIvOnyVPMWbsOiC1C+9kTLLXVqpvVYVE0hDwohsvhCRZ0iGK5YrGVtIfQhq2stzuyExh1GMC
-  users-service-infra:containerPort: '80'
-  users-service-infra:cpu: '256'
   users-service-infra:databaseUrl:
     secure: AAABAKOIsF/3YFk3Z0wjkvQLB5KmXCdbb1JnLMaiVtf2KWqSf6E5+iABuYYYAgtEqvDWEmell1zX0gf8vibNM3i1hu2Fb+5gx0/iKMbaBg1IedRMSF78cvU9Uv4DvCdrAG7VKIe5Or1M9B5H740zFl2XIZT6duwJ04tHkA1vQFXNcdp2GNMn1Ea+7w==
+  users-service-infra:apiGatewayAuthSecret:
+    secure: AAABALuikXMmWcgtFjbcEK7Mn+sh0PaKT2ko9ofpMSb8MR/TLIfKENuRuHK1B97Ypzq1dPjQARsJfwrKepRJQnOW32+4046TpXh7KHrZl6E8Eo1aJQaxPbMKcuJ4877GDDxJEHDLj3q+bShqczzYWNzGIrsQEwG9jWt9LwN8UrpnM8YEwAlpxPkI3APN63YcH5bvdi9/f154aF2Sxkb2Qjl9lNhuq6coOwXNzk3/18W9fJVD6JkE2ngZTNIcQFy/
+  users-service-infra:containerPort: '80'
+  users-service-infra:cpu: '256'
   users-service-infra:hostedZoneId:
     secure: AAABAJI7xUrzlmZP58/kzcoW/P52p4r3p6/UZSSr3DhDIms5zaLioKYT0uBjRr+JxyxYHg==
   users-service-infra:jwtSecret:

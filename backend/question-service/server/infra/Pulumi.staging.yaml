@@ -6,6 +6,8 @@ config:
     secure: AAABAPFwD+A1Nfi4ez17NVKrV1dLTSnvlSeB2pZAE84ekTmI
   question-service-infra:acmEcsCertificateArn:
     secure: AAABAL3u5v31yQUyf5uyt3JXgX/p/WPHDHc1bGg5h4Uts4wSKDYFYj21z/H4Chqam/ru9zzAizQTEzX6D6/N2HSj3UTOtKkCr0sU50OLOvDYOs0QLq7ddVuIJBbbzp7Mh6upprFOseeoWrFHK5926wa41rxTImGY
+  question-service-infra:apiGatewayAuthSecret:
+    secure: AAABANPRJHeVvmshnh7DNdRY8H+kDpTNE30ncPbGACPhMfefbpLAKZixVRk9LEgJwZjuzbwmNB32lJtM976o0N+q4qnIm8lfj6MF6u/VPF8SIRC0iTI+Gf5x7Lsj/FcUFkAVRUiC71RyVnHZRnY+Xgq4eX1uee8GGwAR/1bE9PJ49ROjTUSgC/ji36IYeLe/ehrGQYcesfTdWpXhrFDHu9mV5iJjrZjnuxr9VKHGXEAA2a8Pv+xcDUVaq1w+wnNu
   question-service-infra:containerPort: "80"
   question-service-infra:cpu: "512"
   question-service-infra:hostedZoneId:

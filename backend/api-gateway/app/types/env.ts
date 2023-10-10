@@ -2,7 +2,7 @@ import { z } from "zod";
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends EnvSchemaType { }
+    interface ProcessEnv extends EnvSchemaType {}
   }
 }
 
@@ -23,6 +23,7 @@ export const envSchema = z.object({
   GITHUB_CLIENT_ID: z.string().nonempty(),
   GITHUB_CLIENT_SECRET: z.string().nonempty(),
   GITHUB_CALLBACK_URL: z.string().url().nonempty(),
+  API_GATEWAY_AUTH_SECRET: z.string().nonempty(),
   /**
    * For services
    */

@@ -1,6 +1,8 @@
 config:
   api-gateway-infra:acmEcsCertificateArn:
     secure: AAABAIxphTfkUXOxnGaXpfZUVzosuGrSVCKPVj5q5isiYoNkxHY/K+nGr+GfseDD9TWGYU3E5rSU0e5vvh3sPUJSGt/iKKBXyaFrbxQ2Q5d8iKaNwDIL3C6MU2XNcTDq9LqbJiCknKJLu85u7PWTYyrqJLdxMoUR
+  api-gateway-infra:apiGatewayAuthSecret:
+    secure: AAABAJ/XNnqjPuiQDhxPT3SyzovbtW4s4YdgfqhJoKNz8HYip3G3NwTkIvZU39p1GJ+hI2+jT9tR4pasRv2cw9ySirllhySrGOC0k6y0JF349p8XvkfXYbvFhCht4bQTJBekljpfRYgFehRD7n1bH0BVGflMddQz53ZLKiKupc2o5S1/guYKnCwj/0LdAdJzE2C7qNZnDIjwJ5Fh9lpPz1lY4XxuniDoT4Lkstdu6OWqUGfwhCpnj9Y/POetgLFc
   api-gateway-infra:containerPort: "80"
   api-gateway-infra:cpu: "256"
   api-gateway-infra:githubCallbackPath: /github/callback
