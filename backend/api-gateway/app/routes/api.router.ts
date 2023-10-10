@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authRouter } from "./auth.router";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { authMiddleware } from "../libs";
+import { proxyOptions } from "../libs/config";
 
 export const apiRouter = Router();
 
@@ -15,7 +16,7 @@ apiRouter.use(
   authMiddleware,
   createProxyMiddleware({
     target: process.env.USERS_SERVICE_URL,
-    changeOrigin: true,
+    ...proxyOptions,
   })
 );
 
@@ -24,7 +25,7 @@ apiRouter.use(
   authMiddleware,
   createProxyMiddleware({
     target: process.env.QUESTIONS_SERVICE_URL,
-    changeOrigin: true,
+    ...proxyOptions,
   })
 );
 
@@ -33,7 +34,7 @@ apiRouter.use(
   authMiddleware,
   createProxyMiddleware({
     target: process.env.MATCHING_SERVICE_URL,
-    changeOrigin: true,
+    ...proxyOptions,
   })
 );
 
@@ -42,7 +43,6 @@ apiRouter.use(
   authMiddleware,
   createProxyMiddleware({
     target: process.env.COLLABORATION_SERVICE_URL,
-    changeOrigin: true,
+    ...proxyOptions,
   })
 );
-

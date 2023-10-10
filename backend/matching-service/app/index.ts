@@ -52,13 +52,13 @@ Local development URL: http://localhost:8004`);
 const matchingGateway = new MatchingGateway();
 
 io.on("connection", (socket) => {
-  socket.on(MATCHING_EVENTS.JOIN_ROOM, (user, preferences) => {
+  socket.on(MATCHING_EVENTS.JOIN_ROOM, async (user, preferences) => {
     const matched = matchingGateway.joinRandomRoom({ user, preferences });
     if (matched) {
       socket.join(matched.roomId);
       io.to(matched.roomId).emit(MATCHING_EVENTS.FOUND_ROOM, matched);
     } else {
-      const newRoom = matchingGateway.createRoom({ user, preferences });
+      const newRoom = await matchingGateway.createRoom({ user, preferences });
       socket.join(newRoom);
     }
   });

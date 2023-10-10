@@ -24,6 +24,9 @@ const domainName = `${subdomain}${rootDomain}`;
 
 const acmCertificateArn = config.requireSecret("acmEcsCertificateArn");
 
+// For Auth module
+const apiGatewayAuthSecret = config.requireSecret("apiGatewayAuthSecret");
+
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const isProd = currentEnv === "prod";
 
@@ -134,6 +137,7 @@ const service = new awsx.ecs.FargateService("service", {
         { name: "API_GATEWAY_URL", value: apiGatewayUrl },
         { name: "MONGO_HOST", value: MONGO_HOST },
         { name: "MONGO_PORT", value: MONGO_PORT },
+        { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
       ],
     },
   },

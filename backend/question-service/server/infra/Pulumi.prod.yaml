@@ -6,10 +6,12 @@ config:
     secure: AAABACIOcazvmS1EYjDdnVAoFMKTCFyTZQ5Fn3cjykM73j5f
   question-service-infra:acmEcsCertificateArn:
     secure: AAABAEPKI63kQJV4DYXAg1juSMmE+BzreNtOTVU1NBnf6XZJtZ53Hs64thD1gIS+6kZEbPdjppxSRBkxSOu+AwGwb3rgpOWgI5lqjMWPR8r6/LG5PAJ/7rG9h0BpT5vzkwAi/q+mjox25DQVBSE5/u9OM8m7zOk6
+  question-service-infra:apiGatewayAuthSecret:
+    secure: AAABAAa7juyAoGUHGV+/FnarVuyAEUqhpodBtPnbO3K+H7xXG0OutFJW57W9yRY/ATriui3gIW3BaBY89bIXJ1ZglEErixNtFxCL8SfKMa2ljSbo+Liglu+iBKYVpxx6qGyU1lGwoqABiyiy8xv+kpI0TuaF1BL97e9UWkDK35KsxHx3lE7H0SQZWxbtPyKWU8/eXNHqa31tFSsiO/Mm/LxVMKQd82gfUdDipUDumAxCfzMh+fuEsUlmrfUNaYjT
   question-service-infra:hostedZoneId:
     secure: AAABAHIleSxYEMghB30hmWedm0BN7TjJ9YQtKb5uo8oKC8xUsauoe3qhZtyshddizh+Fmw==
+  question-service-infra:rootDomain: peerprep.net
+  question-service-infra:subdomain: questions.
   question-service:containerPort: "80"
   question-service:cpu: "512"
   question-service:memory: "128"
-  question-service-infra:rootDomain: peerprep.net
-  question-service-infra:subdomain: questions.

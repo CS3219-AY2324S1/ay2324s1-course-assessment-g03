@@ -2,12 +2,20 @@ import { RequestHandler } from "express";
 import { failApiResponse, unwrapJwt } from "./utils";
 import { HTTP_STATUS_CODE } from "../types";
 import { ROLE, User, userSchema } from "../types/user";
+import { API_GATEWAY_AUTH_SECRET } from "./constants";
 
 export const authMiddleware: RequestHandler = async (req, res, next) => {
+  // If the auth secret is provided in the header, bypass the auth middleware
+  if (
+    req.headers[API_GATEWAY_AUTH_SECRET] === process.env.API_GATEWAY_AUTH_SECRET
+  ) {
+    next();
+    return;
+  }
+
   /**
    * Retrieve JWT from cookies
    */
-
   const token = req.cookies[process.env.JWT_COOKIE_NAME];
 
   /**

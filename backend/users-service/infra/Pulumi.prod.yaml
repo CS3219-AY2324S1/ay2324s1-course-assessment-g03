@@ -2,6 +2,8 @@ config:
   aws:region: ap-southeast-1
   users-service-infra:acmEcsCertificateArn:
     secure: AAABAMz6p82vt5eZ3hLTjpX3tAib3lPPeEBW14jvvFpgNnUwdR6ah+fN34lK+4uUDwOfPYZ4peYOR2shE5pPAGtYmIvOnyVPMWbsOiC1C+9kTLLXVqpvVYVE0hDwohsvhCRZ0iGK5YrGVtIfQhq2stzuyExh1GMC
+  users-service-infra:apiGatewayAuthSecret:
+    secure: AAABALuikXMmWcgtFjbcEK7Mn+sh0PaKT2ko9ofpMSb8MR/TLIfKENuRuHK1B97Ypzq1dPjQARsJfwrKepRJQnOW32+4046TpXh7KHrZl6E8Eo1aJQaxPbMKcuJ4877GDDxJEHDLj3q+bShqczzYWNzGIrsQEwG9jWt9LwN8UrpnM8YEwAlpxPkI3APN63YcH5bvdi9/f154aF2Sxkb2Qjl9lNhuq6coOwXNzk3/18W9fJVD6JkE2ngZTNIcQFy/
   users-service-infra:containerPort: "80"
   users-service-infra:cpu: "256"
   users-service-infra:hostedZoneId:
