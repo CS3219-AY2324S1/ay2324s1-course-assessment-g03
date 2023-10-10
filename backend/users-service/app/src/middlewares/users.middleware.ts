@@ -6,7 +6,7 @@ import Elysia from "elysia";
 import { helmet } from "elysia-helmet";
 
 export const middleware = new Elysia()
-    .use(cors({ origin: process.env.FRONTEND_ORIGIN as string }))
-    .use(helmet())
-    .use(logger())
-    .use(swagger())
+  .use(cors({ origin: process.env.FRONTEND_ORIGIN as string }))
+  .use(helmet())
+  .use(logger())
+  .use(swagger());
