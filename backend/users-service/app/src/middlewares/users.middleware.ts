@@ -6,13 +6,7 @@ import Elysia from "elysia";
 import { helmet } from "elysia-helmet";
 
 export const middleware = new Elysia()
-    .use(cors())
+    .use(cors({ origin: process.env.FRONTEND_ORIGIN as string }))
     .use(helmet())
-    .use(
-        jwt({
-            name: 'jwt',
-            secret: process.env.JWT_SECRET as string
-        })
-    )
     .use(logger())
     .use(swagger())

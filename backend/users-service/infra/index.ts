@@ -26,7 +26,6 @@ const apiGatewayAuthSecret = config.requireSecret("apiGatewayAuthSecret");
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const isProd = currentEnv === "prod";
 
-const jwtSecret = config.requireSecret('jwtSecret')
 const databaseUrl = config.requireSecret('databaseUrl')
 
 // Fallback `frontendWebsiteUrl` if the frontend stack is not deployed
@@ -132,7 +131,6 @@ const service = new awsx.ecs.FargateService('service', {
           value: isProd ? 'production' : currentEnv
         },
         { name: 'PORT', value: containerPort.toString() },
-        { name: 'JWT_SECRET', value: jwtSecret },
         { name: 'DATABASE_URL', value: databaseUrl },
         { name: 'FRONTEND_ORIGIN', value: frontendWebsiteUrl },
         { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },

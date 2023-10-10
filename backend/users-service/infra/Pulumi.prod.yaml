@@ -10,8 +10,6 @@ config:
   users-service-infra:cpu: '256'
   users-service-infra:hostedZoneId:
     secure: AAABAJI7xUrzlmZP58/kzcoW/P52p4r3p6/UZSSr3DhDIms5zaLioKYT0uBjRr+JxyxYHg==
-  users-service-infra:jwtSecret:
-    secure: AAABAH7fImn/9Vn+rAyK96MFBF8e/CVJxwxVi/H6oVScuLql+iEWCh+xRuNHIFO5syIKqfzhmWjp0ZoQLShKAr7swN+aFEFR09TN4b66GgaD+0KePuz02d9aSqbcFWuY
   users-service-infra:memory: '128'
   users-service-infra:path: ../app
   users-service-infra:rootDomain: peerprep.net
