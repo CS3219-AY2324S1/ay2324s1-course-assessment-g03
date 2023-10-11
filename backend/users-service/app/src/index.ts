@@ -1,7 +1,12 @@
 import { Elysia } from "elysia";
+import { middleware } from "./middlewares/users.middleware";
+import { users } from "./routes/users.route";
 
-const app = new Elysia().get("/", () => "Users service").listen(80);
+const app = new Elysia({ prefix: "/api" })
+  .use(middleware)
+  .use(users)
+  .listen(process.env.PORT as string);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  `Users service is running at ${app.server?.hostname}:${app.server?.port}`,
 );
