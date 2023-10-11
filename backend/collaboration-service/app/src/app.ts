@@ -1,5 +1,5 @@
 import express from "express";
-import type { Express, Request, Response } from "express";
+import type { Express } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
@@ -18,7 +18,6 @@ app.use(
 );
 app.use(express.json());
 app.use(morgan("dev"));
-
 app.use("/api/collaboration", apiRouter);
 
 export default app;
