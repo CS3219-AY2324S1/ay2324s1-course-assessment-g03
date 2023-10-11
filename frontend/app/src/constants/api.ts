@@ -15,6 +15,11 @@ export const API_ENDPOINT = {
   AUTH_LOGOUT: "/auth/logout",
   AUTH_GITHUB_AUTH_URL: "/auth/github/authorize",
   AUTH_GITHUB_LOGIN: "/auth/github/login",
+
+  /**
+   * User service
+   */
+  USERS: "/users",
 } as const;
 
 /**

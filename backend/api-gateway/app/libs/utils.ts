@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { HTTP_STATUS } from "../types";
 import jwt from "jsonwebtoken";
+import { GithubEmailResponse } from "../types/github";
 
 /**
  * API Utils
@@ -40,4 +41,11 @@ export const unwrapJwt = (
       }
     });
   });
+};
+
+/**
+ * GitHub Auth Utils
+ */
+export const getPrimaryEmail = (githubEmailResponse: GithubEmailResponse) => {
+  return githubEmailResponse.find((email) => email.primary)?.email;
 };
