@@ -34,7 +34,6 @@ roomRouter.get(
       .json({ status: roomInfo.status, data: roomInfo.data });
   }
 ).all("/:roomId", (_req: Request, res: Response) => {
-  console.log("here")
   return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ status: JSEND_STATUS.ERROR, data: { message: METHOD_NOT_ALLOWED_ERROR } });
 });
 
