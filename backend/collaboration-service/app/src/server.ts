@@ -5,7 +5,7 @@ import {
   handleGetDocument,
   handlePullUpdates,
   handlePushUpdates,
-} from "./socket/doc";
+} from "./helpers/socket.helper";
 import { SOCKET_API, SOCKET_INVALID_ROOM_ID } from "./constants/socket";
 
 const port = process.env.PORT || 80;
