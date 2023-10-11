@@ -9,8 +9,17 @@ import {
   GITHUB_USER_ENDPOINT,
   GITHUB_USER_EMAIL_ENDPOINT,
   wrapJwt,
+  getPrimaryEmail,
+  failApiResponse,
 } from "../libs";
 import { cookieOptions } from "../libs/config";
+import {
+  githubEmailResponseSchema,
+  githubUserResponseSchema,
+} from "../types/github";
+import { getUserSchema } from "../types/usersService";
+import { HTTP_STATUS } from "../types";
+import { User } from "../types/user";
 
 export const authRouter = Router();
 
@@ -42,7 +51,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
 
   // Validating state to prevent CSRF
   if (state !== GITHUB_OAUTH_STATE) {
-    return res.status(401).send({ error: "Invalid state" });
+    return res.status(401).send(failApiResponse({ error: "Invalid state" }));
   }
 
   const queryParams: Record<string, string> = {
@@ -62,49 +71,149 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
   const tokenData = await tokenResponse.json();
 
   if (tokenData["error"]) {
-    return res.status(401).send({
-      error: tokenData["error"],
-      error_description: tokenData["error_description"],
-    });
+    return res.status(401).send(
+      failApiResponse({
+        error: tokenData["error"],
+        error_description: tokenData["error_description"],
+      })
+    );
   }
 
   if (!tokenData["access_token"]) {
-    return res.status(401).send({ error: "Access token not found" });
+    return res
+      .status(401)
+      .send(failApiResponse({ error: "Access token not found" }));
   }
 
   const accessToken = tokenData["access_token"];
 
-  // Use access token to get user info and emails
-  const userPromise = fetch(GITHUB_USER_ENDPOINT, {
+  // Use access token to get user email from GitHub
+  const emailResponse = await fetch(GITHUB_USER_EMAIL_ENDPOINT, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+  const emailData = await emailResponse.json();
 
-  const emailPromise = fetch(GITHUB_USER_EMAIL_ENDPOINT, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const safeParsedEmailData = githubEmailResponseSchema.safeParse(emailData);
 
-  const promiseResponses = await Promise.all([userPromise, emailPromise]);
+  if (!safeParsedEmailData.success) {
+    return res.status(500).send(
+      failApiResponse({
+        error: `Failed to parse response from GitHub GET ${GITHUB_USER_EMAIL_ENDPOINT}`,
+      })
+    );
+  }
 
-  const [userData, emailData] = await Promise.all(
-    promiseResponses.map(async (response) => await response.json())
+  const primaryEmail = getPrimaryEmail(safeParsedEmailData.data);
+
+  if (!primaryEmail) {
+    return res
+      .status(500)
+      .send(
+        failApiResponse({ error: "Primary GitHub email not found in response" })
+      );
+  }
+
+  // Check if user exists in database
+  const getUserResponse = await fetch(
+    `${process.env.USERS_SERVICE_URL}/api/users`,
+    {
+      body: JSON.stringify({ email: primaryEmail }),
+    }
   );
+  const getUserData = await getUserResponse.json();
+  const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
 
-  const userObject = {
-    name: userData["name"],
-    email: emailData[0]["email"],
-    avatarUrl: userData["avatar_url"],
-  };
+  if (!safeParsedUserServiceData.success) {
+    return res.status(500).send(
+      failApiResponse({
+        error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL}/api/users (email)`,
+      })
+    );
+  }
 
-  // TODO: Call user service to upsert user data based on email
+  const parsedUserServiceData = safeParsedUserServiceData.data;
 
-  // TODO: Validate user data response from user service
+  // The user object to be populated and then encoded in the JWT
+  let user: User | undefined = undefined;
+  // User does not exist => Create a new user in the service
+  if (parsedUserServiceData.status === "fail") {
+    // Get user data from GitHub
+    const userResponse = await fetch(GITHUB_USER_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const userData = await userResponse.json();
+    const safeParsedUserData = githubUserResponseSchema.safeParse(userData);
+
+    if (!safeParsedUserData.success) {
+      return res.status(500).send(
+        failApiResponse({
+          error: `Failed to parse response from GitHub GET ${GITHUB_USER_ENDPOINT}`,
+        })
+      );
+    }
+
+    const parsedUserData = safeParsedUserData.data;
+
+    // Build the new user object
+    const userObject: Partial<User> = {
+      email: primaryEmail,
+    };
+
+    if (parsedUserData.avatar_url) {
+      userObject["avatarUrl"] = parsedUserData.avatar_url;
+    }
+    if (parsedUserData.name) {
+      userObject["name"] = parsedUserData.name;
+    }
+
+    const createUserResponse = await fetch(
+      `${process.env.USERS_SERVICE_URL}/api/users`,
+      {
+        method: "POST",
+        body: JSON.stringify({ user: userObject }),
+      }
+    );
+    const createUserData = await createUserResponse.json();
+
+    const safeParsedCreateUserData = getUserSchema.safeParse(createUserData);
+
+    if (!safeParsedCreateUserData.success) {
+      return res.status(500).send(
+        failApiResponse({
+          error: `Failed to parse response from user service POST ${process.env.USERS_SERVICE_URL}/api/users`,
+        })
+      );
+    }
+
+    const parsedCreateUserData = safeParsedCreateUserData.data;
+
+    if (parsedCreateUserData.status === HTTP_STATUS.FAIL) {
+      return res.status(500).send(
+        failApiResponse({
+          error: `Failed to create user in user service`,
+        })
+      );
+    }
+
+    user = parsedCreateUserData.data.user;
+  } else {
+    user = parsedUserServiceData.data.user;
+  }
+
+  if (!user) {
+    return res.status(500).send(
+      failApiResponse({
+        error: `Failed to create/generate user in user service`,
+      })
+    );
+  }
 
   // Log the user in by setting JWT in cookie
-  const jwtPayload = { ...userObject };
+  const jwtPayload = { ...user };
 
   const token = wrapJwt(jwtPayload);
 

@@ -18,7 +18,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
-import { API_URL } from "@/constants/api";
 
 type PreferencesFormValues = {
   difficulty: {
@@ -62,7 +61,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
           Select question preferences
         </Text>
         <FormControl isInvalid={!!errors["difficulty"]}>
-          <FormLabel color="white">Difficulty</FormLabel>
+          <FormLabel color="light.100">Difficulty</FormLabel>
           <Controller
             name="difficulty"
             control={control}
@@ -85,7 +84,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={!!errors["category"]}>
-          <FormLabel color="white">Category</FormLabel>
+          <FormLabel color="light.100">Category</FormLabel>
           <Controller
             name="category"
             control={control}

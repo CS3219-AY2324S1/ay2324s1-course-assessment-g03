@@ -17,7 +17,7 @@ export const singleSelectStyles: (
   return {
     container: provided => ({
       ...provided,
-      background: "dark",
+      background: "dark.500",
       borderColor: "light.500",
     }),
     control: provided => ({
@@ -27,7 +27,7 @@ export const singleSelectStyles: (
     dropdownIndicator: provided => ({
       ...provided,
       background: "transparent",
-      color: "white",
+      color: "light.100",
       border: "0px",
       px: "0.5rem",
     }),
@@ -37,7 +37,7 @@ export const singleSelectStyles: (
     valueContainer: provided => ({
       ...provided,
       px: "0.5rem",
-      color: "white",
+      color: "light.100",
       fontSize,
       py: valueContainerPy,
     }),
@@ -47,7 +47,7 @@ export const singleSelectStyles: (
       _hover: {
         background: "light.500",
       },
-      color: "white",
+      color: "light.100",
       fontSize,
       py: "0rem",
     }),
@@ -56,7 +56,11 @@ export const singleSelectStyles: (
       ...provided,
       background: "transparent",
     }),
-    noOptionsMessage: provided => ({ ...provided, color: "white", fontSize }),
+    noOptionsMessage: provided => ({
+      ...provided,
+      color: "light.100",
+      fontSize,
+    }),
   };
 };
 
@@ -67,13 +71,13 @@ export const multiSelectStyles: (
   return {
     container: provided => ({
       ...provided,
-      background: "dark",
+      background: "dark.500",
       borderColor: "light.500",
     }),
     dropdownIndicator: provided => ({
       ...provided,
       background: "transparent",
-      color: "white",
+      color: "light.100",
       border: "0px",
     }),
     indicatorSeparator: () => ({
@@ -86,7 +90,7 @@ export const multiSelectStyles: (
     multiValue: provided => ({
       ...provided,
       background: "transparent",
-      color: "white",
+      color: "light.100",
     }),
     option: provided => ({
       ...provided,
@@ -94,13 +98,13 @@ export const multiSelectStyles: (
       _hover: {
         background: "light.500",
       },
-      color: "white",
+      color: "light.100",
     }),
     menu: provided => ({ ...provided, background: "dark" }),
     menuList: provided => ({
       ...provided,
       background: "transparent",
     }),
-    noOptionsMessage: provided => ({ ...provided, color: "white" }),
+    noOptionsMessage: provided => ({ ...provided, color: "light.100" }),
   };
 };
