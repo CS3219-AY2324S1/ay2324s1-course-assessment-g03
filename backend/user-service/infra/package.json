@@ -1,5 +1,5 @@
 {
-  "name": "users-service-infra",
+  "name": "user-service-infra",
   "devDependencies": {
     "@types/node": "^16"
   },

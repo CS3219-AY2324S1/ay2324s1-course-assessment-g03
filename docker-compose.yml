@@ -23,17 +23,32 @@ services:
     ports:
       - "8001:80"
 
-  users-service:
-    container_name: users-service
+  user-service:
+    container_name: user-service
     build:
-      context: ./backend/users-service/app/
+      context: ./backend/user-service/app/
       dockerfile: Dockerfile.dev
     volumes:
-      - ./backend/users-service/app:/app:delegated
+      - ./backend/user-service/app:/app:delegated
       - /app/node_modules
+    depends_on:
+      user-service-db:
+        condition: service_healthy
     ports:
       - "8002:80"
-  
+
+  user-service-db:
+    container_name: user-service-db
+    image: mongo:latest
+    volumes:
+      - user-service-db-data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep mongod"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
   question-service-server:
     container_name: question-service-server
     build:
@@ -63,7 +78,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
-  
+
   collaboration-service:
     container_name: collaboration-service
     build:
@@ -98,4 +113,5 @@ services:
   #     - "8009:80"
 
 volumes:
+  user-service-db-data:
   question-service-db-data:

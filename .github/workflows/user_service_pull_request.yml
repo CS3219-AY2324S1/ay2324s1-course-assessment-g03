@@ -1,10 +1,10 @@
-name: Users Service Pulumi Preview
+name: User Service Pulumi Preview
 on:
   pull_request:
     branches: ["staging", "master"]
     paths: ["backend/users-service/**"]
 env:
-  WORKING_DIRECTORY_INFRA: ./backend/users-service/infra
+  WORKING_DIRECTORY_INFRA: ./backend/user-service/infra
   STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/users-service-infra/prod' || 'cs3219/users-service-infra/staging'}}
 jobs:
   preview:
