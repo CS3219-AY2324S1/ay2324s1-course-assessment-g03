@@ -8,6 +8,8 @@ config:
   users-service-infra:cpu: "256"
   users-service-infra:hostedZoneId:
     secure: AAABAAqNubrYHxuf6vI2fqAeJOPUDnSjV7a3G4rYgDeFRgu3rnS2ruA4YZK0rIyYD4dueQ==
+  users-service-infra:databaseUrl:
+    secure: AAABAIY3F/BYlcdmGmFn5jFIEeGM+mpXyTn/kC+ZkYHx2Z5uA4MnSiUslicLPhCPrqEYeA+WlUei4Xm+WXqo1ZRVev+UwxZXrxd9gWJxGGX2Sm/dhFCdUL7/TI8UP6pbOYK830RwKeWiV0JQbuAQsMoqHrcBmvpmpnT+1VjANvcx9Kl9DpoPvthpuw==
   users-service-infra:memory: "128"
   users-service-infra:path: ../app
   users-service-infra:rootDomain: peerprep.net
