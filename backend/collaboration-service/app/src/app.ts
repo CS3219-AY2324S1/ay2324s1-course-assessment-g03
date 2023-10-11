@@ -1,10 +1,9 @@
 import express from "express";
-import type { Express, Request, Response } from "express";
+import type { Express } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import apiRouter from "./routes/api";
-import { HttpStatus } from "./utils/HTTP_Status_Codes";
 
 dotenv.config({ path: `.env.development` });
 
