@@ -1,6 +1,9 @@
 {
   "name": "app",
   "version": "1.0.50",
+  "trustedDependencies": [
+    "@prisma/client"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
@@ -30,8 +33,5 @@
   "type": "module",
   "peerDependencies": {
     "typescript": "^5.0.0"
-  },
-  "prisma": {
-    "schema": "src/models/prisma/schema.prisma"
   }
 }
