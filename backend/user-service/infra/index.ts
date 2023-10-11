@@ -26,8 +26,6 @@ const apiGatewayAuthSecret = config.requireSecret("apiGatewayAuthSecret");
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 const isProd = currentEnv === "prod";
 
-const databaseUrl = config.requireSecret("databaseUrl");
-
 // Fallback `frontendWebsiteUrl` if the frontend stack is not deployed
 const fallbackFrontendWebsiteUrl = isProd
   ? "https://peerprep.net"
@@ -42,19 +40,19 @@ const fallbackApiGatewayUrl = isProd
  */
 // Reference the Frontend stack
 const frontendStack = new pulumi.StackReference(
-  `cs3219/frontend-infra/${currentEnv}`,
+  `cs3219/frontend-infra/${currentEnv}`
 );
 const frontendWebsiteUrl = frontendStack
   .getOutput("websiteURL")
-  .apply(url => `${url || fallbackFrontendWebsiteUrl}`);
+  .apply((url) => `${url || fallbackFrontendWebsiteUrl}`);
 
 // Reference the API Gateway stack
 const apiGatewayStack = new pulumi.StackReference(
-  `cs3219/api-gateway-infra/${currentEnv}`,
+  `cs3219/api-gateway-infra/${currentEnv}`
 );
 const apiGatewayUrl = apiGatewayStack
   .getOutput("url")
-  .apply(url => `${url || fallbackApiGatewayUrl}`);
+  .apply((url) => `${url || fallbackApiGatewayUrl}`);
 
 /**
  * Provision ECS resources
@@ -113,7 +111,7 @@ const service = new awsx.ecs.FargateService("service", {
     //   operatingSystemFamily: "LINUX",
     // },
     container: {
-      name: "users-service-container",
+      name: "user-service-container",
       image: image.imageUri,
       cpu: cpu,
       memory: memory,
@@ -131,10 +129,9 @@ const service = new awsx.ecs.FargateService("service", {
           value: isProd ? "production" : currentEnv,
         },
         { name: "PORT", value: containerPort.toString() },
-        { name: "DATABASE_URL", value: databaseUrl },
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
-        { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
         { name: "API_GATEWAY_URL", value: apiGatewayUrl },
+        { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
       ],
     },
   },

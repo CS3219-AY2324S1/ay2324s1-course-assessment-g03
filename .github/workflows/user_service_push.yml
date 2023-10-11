@@ -1,11 +1,11 @@
-name: Users Service Pulumi Update
+name: User Service Pulumi Update
 on:
   push:
     branches: ["staging", "master"]
     paths: ["backend/users-service/**"]
 env:
-  WORKING_DIRECTORY_INFRA: ./backend/users-service/infra
-  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/users-service-infra/prod' || 'cs3219/users-service-infra/staging'}}
+  WORKING_DIRECTORY_INFRA: ./backend/user-service/infra
+  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/user-service-infra/prod' || 'cs3219/user-service-infra/staging'}}
 jobs:
   update:
     name: Update
