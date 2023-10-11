@@ -1,6 +1,13 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
+// Load Pulumi configuration 
+const config = new pulumi.Config();
+
+// For Lambda function parameters
+const cooldownPeriod = config.getNumber("COOLDOWN_PERIOD") || 60 * 60 * 24 * 10; // 10 Days
+const rateLimit = config.getNumber("RATE_LIMIT") || 60;
+
 // The IAM policy document for lambda
 const assumeRole = aws.iam.getPolicyDocument({
   statements: [
@@ -48,11 +55,24 @@ new aws.iam.RolePolicy("rolePolicy", {
 
 // Get Connection String from Pulumi stack
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
-const stackRef = new pulumi.StackReference(
-  `cs3219/question-service-infra/${currentEnv}`
-);
-const mongoConnectionString = stackRef.getOutput("mongoConnectionString");
 
+let stackRef: pulumi.StackReference;
+try {
+  stackRef = new pulumi.StackReference(
+    `cs3219/question-service-infra/${currentEnv}`
+  );
+} catch (error) {
+  throw new Error("Stack deployment failed: " + error);
+}
+
+let mongoConnectionString: pulumi.Output<string>;
+try {
+  mongoConnectionString = stackRef.getOutput(
+    "mongoConnectionString"
+  ) as pulumi.Output<string>;
+} catch (error) {
+  throw new Error("Failed to get mongoConnectionString: " + error);
+}
 // Create a Lambda Layer for Python packages
 const layer = new aws.lambda.LayerVersion("myLayer", {
   compatibleRuntimes: ["python3.9"],
@@ -74,8 +94,8 @@ const lambdaFunction = new aws.lambda.Function("mylambda", {
   environment: {
     variables: {
       MONGO_CONNECTION_STRING: mongoConnectionString,
-      RATE_LIMIT: "60",
-      COOLDOWN_PERIOD: `${60 * 60 * 24 * 10}`, // 10 Days
+      RATE_LIMIT: `${rateLimit}`,
+      COOLDOWN_PERIOD: `${cooldownPeriod}`,
     },
   },
 });

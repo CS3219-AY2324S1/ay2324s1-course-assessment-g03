@@ -23,27 +23,50 @@ collection = None
 def handler(event, context):
     """Lambda function handler. Scrapes Leetcode for questions and saves them to the MongoDB database."""
 
-    # TODO: Implement custom event handling logic
-    print("The event received was: ", event)
+    # Define the response object
+    response = {
+        "status": "fail",
+        "message": ""
+    }
 
-    # Establish a connection to the MongoDB server
-    global client
-    client = connect_to_mongo(MONGO_CONNECTION_STRING)
+    try:
+        # TODO: Implement custom event handling logic
+        print("The event received was: ", event)
 
-    # Select the database and collection
-    db = client['questions_db']
-    global collection
-    collection = db['problems']
+        # Establish a connection to the MongoDB server
+        global client
+        client = connect_to_mongo(MONGO_CONNECTION_STRING)
 
-    all_questions = parse_questions_xml()
-    questions_to_scrape = get_questions_to_scrape(all_questions)
-    problems = scrape_leetcode_from_urls(questions_to_scrape)
-    save_to_mongodb(problems)
+        # Select the database and collection
+        db = client['questions_db']
+        global collection
+        collection = db['problems']
 
-    # Close the connection
-    client.close()
+        all_questions = parse_questions_xml()
+        questions_to_scrape = get_questions_to_scrape(all_questions)
+        problems, failed_urls = scrape_leetcode_from_urls(questions_to_scrape)
+        save_to_mongodb(problems)
 
-    return f"Successfully scraped and saved {len(problems)} questions!"
+        # Update the response object
+        response["status"] = "success" if not failed_urls else "partial success"
+        response["message"] = f"Received {len(questions_to_scrape)} questions to scrape with {len(problems)} questions successfully scraped and {len(failed_urls)} questions failed to scrape."
+        response["problems_saved"] = list(map(lambda problem: problem["url"], problems))
+        response["failed_urls"] = failed_urls
+
+    except Exception as e:
+        # Log the exception for debugging purposes
+        print(f"An error occurred: {e}")
+
+        # Update the response object with error information
+        response["message"] = f"An error occurred: {e}"
+
+    finally:
+        # Close the connection if it's open
+        if 'client' in globals() and client:
+            client.close()
+
+    return response
+
 
 def parse_questions_xml():
     """Parse the Leetcode questions sitemap XML file and return a list of all question URLs."""
@@ -83,22 +106,26 @@ def scrape_leetcode_from_url(url):
         json_data = json.loads(script_tag.string)
         queries = json_data['props']['pageProps']['dehydratedState']['queries']
         details = get_details_from_queries(queries) 
-        return details
+        return details, None  # Return details and None for error
     
-    return None # If the script tag is not found, return None
+    return None, url  # If the script tag is not found, return None and the URL
 
 def scrape_leetcode_from_urls(urls_to_scrape):
     """Scrape Leetcode for the questions in the list of URLs concurrently and return a list of question details."""
     problems = []
+    failed_urls = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(scrape_leetcode_from_url, url) for url in urls_to_scrape]
         for future in concurrent.futures.as_completed(futures):
-            result = future.result()
+            result, error = future.result()
             if result:
                 problems.append(result)
+            elif error:
+                failed_urls.append(error)
 
-    return problems
+    return problems, failed_urls  # Return both the successfully scraped problems and the failed URLs
+
 
 def get_details_from_queries(queries: list[dict]):
     """Return the question details from the question's data queries."""

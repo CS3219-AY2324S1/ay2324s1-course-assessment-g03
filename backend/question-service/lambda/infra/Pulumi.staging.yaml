@@ -1,2 +1,4 @@
 config:
   aws:region: ap-southeast-1
+  question-service-lambda:COOLDOWN_PERIOD: "864000"
+  question-service-lambda:RATE_LIMIT: "60"
