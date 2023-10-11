@@ -7,6 +7,10 @@ const CreateUserBody = t.Object({
   avatarUrl: t.String(),
 });
 
+const ReadUserBody = t.Object({
+  email: t.String({ format: "email", default: "" }),
+});
+
 const UpdateUserBody = t.Object({
   name: t.Optional(t.String()),
   email: t.Optional(t.String({ format: "email", default: "" })),
@@ -15,6 +19,7 @@ const UpdateUserBody = t.Object({
 
 export const UserModel = new Elysia().model({
   CreateUserBody,
+  ReadUserBody,
   UpdateUserBody,
 });
 
