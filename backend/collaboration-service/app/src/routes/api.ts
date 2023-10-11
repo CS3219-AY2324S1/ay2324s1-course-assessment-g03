@@ -4,13 +4,9 @@ import roomRouter from "./room"
 
 const apiRouter = express.Router()
 
-apiRouter.use((req: Request, res: Response, next: NextFunction) => {
+apiRouter.use((_req: Request, _res: Response, next: NextFunction) => {
     console.log('API Request received')
     next()
-})
-
-apiRouter.get("/test", (req: Request, res: Response) => {
-    res.send("Server is healthy!")
 })
 
 apiRouter.use("/room", roomRouter)
