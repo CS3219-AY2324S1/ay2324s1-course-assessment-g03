@@ -3,7 +3,7 @@ import { Dropdown } from "@/components/Dropdown";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
-import { LANGUAGES, DEFAULT_LANGUAGE } from "../../../../constants/language";
+import { LANGUAGES, DEFAULT_LANGUAGE } from "@/constants/language";
 import { SingleValue } from "chakra-react-select";
 import { LanguageSupport } from "node_modules/@codemirror/language/dist";
 import { env } from "@/lib/env";
