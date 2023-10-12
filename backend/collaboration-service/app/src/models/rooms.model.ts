@@ -8,8 +8,8 @@ import { JSEND_STATUS } from "../types/models.type"
 import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
 
 export const createRoom = (roomId: string,
-    difficulty: keyof typeof DIFFICULTY,
-    topic: keyof typeof TOPIC_TAG): types.createRoomType => {
+    difficulties: (keyof typeof DIFFICULTY)[],
+    topics: (keyof typeof TOPIC_TAG)[]): types.createRoomType => {
     if (roomId in rooms) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -20,7 +20,7 @@ export const createRoom = (roomId: string,
         }
     }
 
-    rooms[roomId] = generateNewDocument(roomId, difficulty, topic)
+    rooms[roomId] = generateNewDocument(roomId, difficulties, topics)
 
     return {
         status: JSEND_STATUS.SUCCESS,

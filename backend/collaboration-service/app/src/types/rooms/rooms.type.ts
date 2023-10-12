@@ -31,8 +31,8 @@ export type roomInfo = {
     doc: Text;
     pending: ((value: any) => void)[];
     users: User[];
-    difficulty: keyof typeof DIFFICULTY;
-    topic: keyof typeof TOPIC_TAG;
+    difficulties: (keyof typeof DIFFICULTY)[];
+    topics: (keyof typeof TOPIC_TAG)[];
     language: keyof typeof LANGUAGES;
 }
 

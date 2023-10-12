@@ -14,21 +14,24 @@ roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
-roomRouter.post("/", async (req: Request<{}, {}, { difficulty: string; topic: string; }>, res: Response) => {
+roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topics: string[]; }>, res: Response) => {
 
   const roomId = v4();
 
-  const { difficulty, topic } = req.body;
+  const { difficulties, topics } = req.body;
 
-  if (!difficulty || !Object.keys(DIFFICULTY).includes(difficulty)) {
+  if (!difficulties || !(difficulties.every((d: string) => Object.keys(DIFFICULTY).includes(d)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
   }
 
-  if (!topic || !Object.keys(TOPIC_TAG).includes(topic)) {
+  if (!topics || !(topics.every((t: string) => Object.keys(TOPIC_TAG).includes(t)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
   }
 
-  const { code, data, status } = createRoom(roomId, difficulty as keyof typeof DIFFICULTY, topic as keyof typeof TOPIC_TAG);
+  const mappedDifficulties = difficulties.map((diff) => diff as keyof typeof DIFFICULTY)
+  const mappedTopics = topics.map((t) => t as keyof typeof TOPIC_TAG)
+
+  const { code, data, status } = createRoom(roomId, mappedDifficulties, mappedTopics);
 
   return res.status(code).json({ status, data });
 }).all("/", async (_req: Request, res: Response) => {
