@@ -34,15 +34,13 @@ services:
     ports:
       - "8002:80"
   
-  question-service-server:
-    container_name: question-service-server
+  question-service:
+    container_name: question-service
     build:
       context: ./backend/question-service/server/app/
       dockerfile: Dockerfile.dev
     volumes:
       - ./backend/question-service/server/app:/app:delegated
-    environment:
-      - MONGO_CONNECTION_STRING=mongodb://question-service-db:27017/questions_db
     depends_on:
       question-service-db:
         condition: service_healthy

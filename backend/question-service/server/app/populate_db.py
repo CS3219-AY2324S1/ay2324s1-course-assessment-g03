@@ -5,7 +5,7 @@ from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError, BulkW
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(".env.development")
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
 def connect_to_mongo(db_url, retries=5, delay=5):

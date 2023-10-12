@@ -11,7 +11,7 @@ import warnings
 import concurrent.futures
 
 # Load environment variables
-load_dotenv()
+load_dotenv(".env.development")
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 RATE_LIMIT = int(os.getenv("RATE_LIMIT", 60)) # Default to 60 questions per function invokation - the Rate Limit
 COOLDOWN_PERIOD = int(os.getenv("COOLDOWN_PERIOD", 10 * 24 * 60 * 60)) # Default to 10 days in seconds
@@ -48,7 +48,7 @@ def handler(event, context):
         save_to_mongodb(problems)
 
         # Update the response object
-        response["status"] = "success" if not failed_urls else "partial success"
+        response["status"] = "success" if not failed_urls else "partial_success"
         response["message"] = f"Received {len(questions_to_scrape)} questions to scrape with {len(problems)} questions successfully scraped and {len(failed_urls)} questions failed to scrape."
         response["problems_saved"] = list(map(lambda problem: problem["url"], problems))
         response["failed_urls"] = failed_urls
@@ -214,3 +214,8 @@ def save_to_mongodb(problems):
 
     finally:
         client.close()
+
+# For local testing
+if __name__ == "__main__":
+    response = handler(None, None)
+    print(response)

@@ -13,7 +13,7 @@ class JSendStatus(Enum):
     FAIL = "fail"
     ERROR = "error"
 
-load_dotenv()
+load_dotenv(".env.development")
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
 app = FastAPI()
