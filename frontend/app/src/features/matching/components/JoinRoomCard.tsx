@@ -8,11 +8,16 @@ export const JoinRoomCard = () => {
 
   return (
     <Card
+      backgroundColor="light.600"
+      borderRadius="1rem"
+      cursor="pointer"
       display="flex"
       flexDirection="column"
       gap="1.25rem"
-      cursor="pointer"
+      shadow="0 2px 2px rgba(0,0,0,.2), 0 20px 25px rgba(0,0,0,.5)"
       transition="all 0.2s"
+      w="16rem"
+      h="8rem"
       _hover={{
         background: "light.700",
       }}

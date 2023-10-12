@@ -7,7 +7,6 @@ import {
 } from "@/constants/question";
 import { Preferences } from "@/types/matching";
 import {
-  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -18,6 +17,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
+import { CustomButton } from "@/components/Layout/CustomButton";
 
 type PreferencesFormValues = {
   difficulty: {
@@ -55,7 +55,13 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
   });
 
   return (
-    <Card w="34rem">
+    <Card
+      backgroundColor="light.600"
+      borderRadius="1.2rem"
+      padding="2rem"
+      w="full"
+      maxW="36rem"
+    >
       <VStack as="form" gap="1.25rem" onSubmit={onSubmit}>
         <Text alignSelf="start" textStyle="heading-md">
           Select question preferences
@@ -107,9 +113,9 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
           </FormErrorMessage>
         </FormControl>
         <HStack alignSelf="end">
-          <Button type="submit" colorScheme="light" isLoading={isSubmitting}>
+          <CustomButton type="submit" isLoading={isSubmitting}>
             Join room
-          </Button>
+          </CustomButton>
         </HStack>
       </VStack>
     </Card>
