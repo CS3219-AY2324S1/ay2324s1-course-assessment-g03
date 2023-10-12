@@ -69,17 +69,6 @@ services:
     ports:
       - "8005:80"
 
-  collaboration-service:
-    container_name: collaboration-service
-    build:
-      context: ./backend/collaboration-service/app/
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./backend/collaboration-service/app:/app:delegated
-      - /app/node_modules
-    ports:
-      - "8005:80"
-
   # template-service:
   #   container_name: template-service
   #   build:
