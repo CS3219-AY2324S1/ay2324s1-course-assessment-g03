@@ -2,7 +2,7 @@ import { z } from "zod";
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends EnvSchemaType { }
+    interface ProcessEnv extends EnvSchemaType {}
   }
 }
 
@@ -11,7 +11,12 @@ export const envSchema = z.object({
     .enum(["development", "staging", "production"])
     .default("development"),
   PORT: z.string().default("80"),
-  DATABASE_URL: z.string().url().default("mongodb://admin:password@localhost:27017/user-service?authSource=admin"),
+  DATABASE_URL: z
+    .string()
+    .url()
+    .default(
+      "mongodb://admin:password@localhost:27018/user-service?authSource=admin"
+    ),
   /**
    * For CORS
    */
