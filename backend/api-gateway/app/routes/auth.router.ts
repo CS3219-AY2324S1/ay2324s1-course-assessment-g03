@@ -117,10 +117,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
 
   // Check if user exists in database
   const getUserResponse = await fetch(
-    `${process.env.USERS_SERVICE_URL}/api/users`,
-    {
-      body: JSON.stringify({ email: primaryEmail }),
-    }
+    `${process.env.USERS_SERVICE_URL}/api/users/email/${primaryEmail}`
   );
   const getUserData = await getUserResponse.json();
   const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
@@ -128,7 +125,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
   if (!safeParsedUserServiceData.success) {
     return res.status(500).send(
       failApiResponse({
-        error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL}/api/users (email)`,
+        error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL}/api/users/email`,
       })
     );
   }
