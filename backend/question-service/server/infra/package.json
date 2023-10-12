@@ -4,9 +4,10 @@
     "@types/node": "^16"
   },
   "dependencies": {
-    "typescript": "^4.0.0",
-    "@pulumi/pulumi": "^3.0.0",
     "@pulumi/aws": "^5.10.0",
-    "@pulumi/awsx": "^1.0.0"
+    "@pulumi/awsx": "^1.0.0",
+    "@pulumi/mongodbatlas": "^3.10.1",
+    "@pulumi/pulumi": "^3.0.0",
+    "typescript": "^4.0.0"
   }
 }

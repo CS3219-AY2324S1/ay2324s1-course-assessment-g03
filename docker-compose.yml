@@ -34,21 +34,51 @@ services:
     ports:
       - "8002:80"
   
-  question-service-server:
-    container_name: question-service-server
+  question-service:
+    container_name: question-service
     build:
       context: ./backend/question-service/server/app/
       dockerfile: Dockerfile.dev
     volumes:
       - ./backend/question-service/server/app:/app:delegated
-    environment:
-      - MONGO_HOST=question-service-db
-      - MONGO_PORT=27017
     depends_on:
       question-service-db:
         condition: service_healthy
     ports:
       - "8003:80"
+
+  matching-service:
+    container_name: matching-service
+    build:
+      context: ./backend/matching-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/matching-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8004:80"
+  
+  collaboration-service:
+    container_name: collaboration-service
+    build:
+      context: ./backend/collaboration-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/collaboration-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8005:80"
+
+  # template-service:
+  #   container_name: template-service
+  #   build:
+  #     context: ./backend/template-service/app/
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - ./backend/template-service/app:/app:delegated
+  #     - /app/node_modules
+  #   ports:
+  #     - "8009:80"
 
   question-service-db:
     container_name: question-service-db
@@ -63,39 +93,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
-  
-  collaboration-service:
-    container_name: collaboration-service
-    build:
-      context: ./backend/collaboration-service/app/
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./backend/collaboration-service/app:/app:delegated
-      - /app/node_modules
-    ports:
-      - "8005:80"
-
-  matching-service:
-    container_name: matching-service
-    build:
-      context: ./backend/matching-service/app/
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./backend/matching-service/app:/app:delegated
-      - /app/node_modules
-    ports:
-      - "8004:80"
-
-  # template-service:
-  #   container_name: template-service
-  #   build:
-  #     context: ./backend/template-service/app/
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - ./backend/template-service/app:/app:delegated
-  #     - /app/node_modules
-  #   ports:
-  #     - "8009:80"
+    command: mongod --quiet --logpath /dev/null 
 
 volumes:
   question-service-db-data:
