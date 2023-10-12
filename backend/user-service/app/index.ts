@@ -14,7 +14,7 @@ if (!envServerParsed.success) {
 process.env = envServerParsed.data;
 
 import express, { Request, Response, Application } from "express";
-import { morganConfig, corsConfig, cookieConfig } from "./libs/config";
+import { morganConfig, corsConfig } from "./libs/config";
 import { apiRouter } from "./routes";
 
 /**
@@ -23,7 +23,6 @@ import { apiRouter } from "./routes";
 const app: Application = express();
 app.use(morganConfig); // For logging
 app.use(corsConfig);
-app.use(cookieConfig);
 
 /**
  * Routes
