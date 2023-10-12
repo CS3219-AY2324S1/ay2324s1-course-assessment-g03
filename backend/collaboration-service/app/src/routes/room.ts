@@ -5,6 +5,7 @@ import { createRoom, getRoomInfo } from "../models/rooms.model";
 import { HttpStatus } from "../utils/HTTP_Status_Codes";
 import { JSEND_STATUS } from "../types/models.type";
 import { METHOD_NOT_ALLOWED_ERROR } from "../constants/errors";
+import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
 
 const roomRouter = express.Router();
 
@@ -13,10 +14,22 @@ roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
-roomRouter.post("/", async (_: Request, res: Response) => {
+roomRouter.post("/", async (req: Request<{}, {}, { difficulty: string; topic: string; }>, res: Response) => {
+
   const roomId = v4();
 
-  const { code, data, status } = createRoom(roomId);
+  const { difficulty, topic } = req.body;
+
+  if (!difficulty || !Object.keys(DIFFICULTY).includes(difficulty)) {
+    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
+  }
+
+  if (!topic || !Object.keys(TOPIC_TAG).includes(topic)) {
+    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
+  }
+
+  const { code, data, status } = createRoom(roomId, difficulty as keyof typeof DIFFICULTY, topic as keyof typeof TOPIC_TAG);
+
   return res.status(code).json({ status, data });
 }).all("/", async (_req: Request, res: Response) => {
   return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ status: JSEND_STATUS.ERROR, data: { message: METHOD_NOT_ALLOWED_ERROR } });

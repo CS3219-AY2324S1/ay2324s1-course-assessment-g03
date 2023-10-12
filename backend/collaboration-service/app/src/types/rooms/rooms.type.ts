@@ -3,6 +3,8 @@ import * as failure from "./rooms.error.type";
 import { Update } from "@codemirror/collab";
 import { Text } from "@codemirror/state"
 import { ModelResponse } from "../models.type";
+import { LANGUAGES } from "../../constants/language";
+import { DIFFICULTY, TOPIC_TAG } from "../../constants/question";
 
 export type createRoomType = ModelResponse<success.createRoomData, failure.roomIdError>
 
@@ -16,11 +18,21 @@ export type updateDocType = ModelResponse<success.updateDocData, failure.roomIdE
 
 export type getDocumentType = ModelResponse<success.getDocumentData, failure.roomIdError>
 
+export type User = {
+    id: string;
+    name: string;
+    avatar: string;
+}
+
 export type roomInfo = {
     created: moment.Moment;
     updated: moment.Moment;
     updates: Update[]
     doc: Text;
     pending: ((value: any) => void)[];
+    users: User[];
+    difficulty: keyof typeof DIFFICULTY;
+    topic: keyof typeof TOPIC_TAG;
+    language: keyof typeof LANGUAGES;
 }
 
