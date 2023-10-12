@@ -23,6 +23,7 @@ import { apiRouter } from "./routes";
 const app: Application = express();
 app.use(morganConfig); // For logging
 app.use(corsConfig);
+app.use(express.json()); // For parsing application/json
 
 /**
  * Routes

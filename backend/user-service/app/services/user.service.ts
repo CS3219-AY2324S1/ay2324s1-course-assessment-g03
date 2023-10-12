@@ -1,43 +1,22 @@
 import { db } from "./db.service";
-import { UserPersonalData } from "../types/userPersonalData";
+import { Prisma } from "@prisma/client";
+
+const userPersonalData: Prisma.UserSelect = {
+  avatarUrl: true,
+  email: true,
+  name: true,
+};
 
 export const userService = {
-  create: async (body: UserPersonalData) => {
-    try {
-      return await db.user.create({ data: body });
-    } catch (e) {
-      throw e;
-    }
+  create: (data: Prisma.UserCreateInput) => {
+    return db.user.create({
+      data,
+      select: userPersonalData,
+    });
   },
-  delete: async (id: string) => {
-    try {
-      return await db.user.delete({ where: { id } });
-    } catch (e) {
-      throw e;
-    }
-  },
-  findById: async (id: string) => {
-    try {
-      return await db.user.findUnique({
-        where: { id },
-        include: { questionAttempts: true },
-      });
-    } catch (e) {
-      throw e;
-    }
-  },
-  findByEmail: async (email: string) => {
-    try {
-      return await db.user.findUnique({ where: { email } });
-    } catch (e) {
-      throw e;
-    }
-  },
-  update: async (id: string, body: UserPersonalData) => {
-    try {
-      return await db.user.update({ where: { id }, data: body });
-    } catch (e) {
-      throw e;
-    }
-  },
+  delete: async (id: string) => db.user.delete({ where: { id } }),
+  findById: (id: string) => db.user.findUnique({ where: { id } }),
+  findByEmail: (email: string) => db.user.findUnique({ where: { email } }),
+  update: (id: string, data: Prisma.UserCreateInput) =>
+    db.user.update({ where: { id }, data }),
 };
