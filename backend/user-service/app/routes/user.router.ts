@@ -4,16 +4,16 @@ import { userController } from "../controllers/user.controller";
 export const userRouter = Router();
 
 /* Get user by ID */
-userRouter.get('/id/:userId', userController.getById)
+userRouter.get("/id/:userId", userController.getById);
 
 /* Get user by email */
-userRouter.get('/email/:email', userController.getByEmail)
+userRouter.get("/email/:email", userController.getByEmail);
 
 /* Create user */
-userRouter.post('/', userController.post)
+userRouter.post("/", userController.post);
 
 /* Update user */
-userRouter.put('/', userController.put)
+userRouter.put("/id/:userId", userController.put);
 
 /* Delete user */
-userRouter.delete('/id/:userId', userController.delete)
+userRouter.delete("/id/:userId", userController.delete);
