@@ -33,6 +33,10 @@ def save_to_mongodb(problems):
         db = client['questions_db']
         collection = db['problems']
 
+        # Convert id to integer
+        for problem in problems:
+            problem['id'] = int(problem['id'])
+
         # Create a list of UpdateOne operations
         operations = [
             UpdateOne(
