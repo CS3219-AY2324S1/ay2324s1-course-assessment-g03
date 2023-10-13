@@ -11,7 +11,7 @@ type Props = {
   leaveCallback: () => void;
 };
 
-const TIMEOUT_DURATION = 3;
+const TIMEOUT_DURATION = 30;
 
 export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
   const { data } = useAuth();
