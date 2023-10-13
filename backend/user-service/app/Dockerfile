@@ -14,4 +14,5 @@ COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev
 COPY --from=builder ./app/dist ./dist
 EXPOSE 80
-CMD ["npm", "run", "start"]
+RUN chmod +x migrate-and-start.sh
+CMD ["./migrate-and-start.sh"]
