@@ -94,6 +94,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
+                isClearable={false}
                 isMulti
                 options={Object.values(TOPIC_TAG).map(difficulty => ({
                   value: difficulty,
