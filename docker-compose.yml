@@ -127,5 +127,4 @@ services:
   #     - "8009:80"
 
 volumes:
-  user-service-db-data:
   question-service-db-data:

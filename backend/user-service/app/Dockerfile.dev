@@ -6,8 +6,8 @@ WORKDIR /app
 # Install dependencies first, as they change less often than code.
 COPY package.json package-lock.json* ./
 RUN npm install
+RUN npm install -g dotenv-cli
 COPY . .
-RUN npx prisma generate
 RUN chmod +rwx migrate-and-start-dev.sh
 
 EXPOSE 80

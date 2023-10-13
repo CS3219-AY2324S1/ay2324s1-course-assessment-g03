@@ -5,13 +5,13 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install
 COPY . .
-RUN npx prisma generate
 RUN npm run build
 
 FROM node:18-alpine as server
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev
+RUN npm install -g dotenv-cli
 COPY --from=builder ./app/dist ./dist
 RUN chmod +rwx migrate-and-start.sh
 
