@@ -11,6 +11,7 @@ from enum import Enum
 
 from utils.exception_handler import custom_http_exception_handler
 from routers.questions import router as questions_router
+from routers.admin import router as admin_router
 
 
 load_dotenv(".env.development")
@@ -23,6 +24,7 @@ app.add_exception_handler(HTTPException, custom_http_exception_handler)
 
 # Add routers
 app.include_router(questions_router)
+app.include_router(admin_router)
 
 @app.get("/", include_in_schema=False)
 async def root():
