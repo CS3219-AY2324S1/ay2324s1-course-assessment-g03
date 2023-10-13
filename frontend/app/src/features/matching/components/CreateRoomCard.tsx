@@ -8,18 +8,19 @@ export const CreateRoomCard = () => {
 
   return (
     <Card
-      backgroundColor="light.600"
-      borderRadius="1rem"
       cursor="pointer"
       display="flex"
       flexDirection="column"
       gap="1.25rem"
-      shadow="0 2px 2px rgba(0,0,0,.2), 0 20px 25px rgba(0,0,0,.5)"
       transition="all 0.2s"
-      w="16rem"
-      h="8rem"
+      w="full"
+      maxW="15rem"
+      h="12rem"
       _hover={{
-        background: "light.700",
+        boxShadow:
+          "inset 0 1px 2px #525154, 0 20px 25px -5px rgba(0,0,0,.8), 0 10px 10px -5px rgba(0,0,0,.9)",
+        transform:
+          "translate3d(0px, 0px, 0px) scale3d(1.02, 1.02, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
       }}
       onClick={() => navigate(ROUTE.HOME_CREATE)}
     >

@@ -5,7 +5,7 @@ import { HStack } from "@chakra-ui/react";
 function HomePage() {
   return (
     <Page display="grid" placeItems="center">
-      <HStack gap="1.25rem">
+      <HStack gap="2rem" maxW="2xl">
         <CreateRoomCard />
         <JoinRoomCard />
       </HStack>
