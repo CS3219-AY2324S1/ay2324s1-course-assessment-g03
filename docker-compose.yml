@@ -79,11 +79,10 @@ services:
       dockerfile: Dockerfile.dev
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: user-service
-      MONGO_REPLICA_HOST: localhost
-      MONGO_REPLICA_PORT: "27018"
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: prisma
+      MONGO_REPLICA_HOST: 127.0.0.1
+      MONGO_REPLICA_PORT: 27018
     ports:
       - 27018:27018
     healthcheck:
