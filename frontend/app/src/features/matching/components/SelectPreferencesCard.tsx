@@ -55,13 +55,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
   });
 
   return (
-    <Card
-      backgroundColor="light.600"
-      borderRadius="1.2rem"
-      padding="2rem"
-      w="full"
-      maxW="36rem"
-    >
+    <Card w="full" maxW="36rem">
       <VStack as="form" gap="1.25rem" onSubmit={onSubmit}>
         <Text alignSelf="start" textStyle="heading-md">
           Select question preferences
@@ -75,6 +69,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
+                closeMenuOnSelect={false}
                 isClearable={false}
                 isMulti
                 options={Object.values(DIFFICULTY).map(difficulty => ({
@@ -98,7 +93,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
-                isClearable={false}
+                closeMenuOnSelect={false}
                 isMulti
                 options={Object.values(TOPIC_TAG).map(difficulty => ({
                   value: difficulty,
