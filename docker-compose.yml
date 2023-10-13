@@ -39,9 +39,12 @@ services:
   
   user-service-db:
     container_name: user-service-db
-    build: ./backend/user-service/db/
-    volumes:
-        - user-service-db-data:/data/db
+    # image: prismagraphql/mongo-single-replica:4.2.17-bionic
+    build:
+      context: ./backend/user-service/db
+      dockerfile: Dockerfile.dev
+    # volumes:
+    #   - user-service-db-data:/data/db
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -50,13 +53,21 @@ services:
       MONGO_REPLICA_HOST: localhost
       MONGO_REPLICA_PORT: "27018"
     ports:
-      - 27018:27017
+      - 27018:27018
     healthcheck:
-        test: ["CMD-SHELL", "pgrep mongod"]
-        interval: 10s
-        timeout: 10s
-        retries: 5
-        start_period: 40s
+      test:
+        [
+          "CMD",
+          "mongo",
+          "admin",
+          "--port",
+          "27018",
+          "--eval",
+          "db.adminCommand('ping')",
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   question-service-server:
     container_name: question-service-server
