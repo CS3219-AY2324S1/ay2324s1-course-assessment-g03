@@ -8,6 +8,8 @@ COPY package.json package-lock.json* ./
 RUN npm install
 COPY . .
 RUN npx prisma generate
+RUN chmod +rwx migrate-and-start-dev.sh
+
 EXPOSE 80
-RUN chmod +x migrate-and-start-dev.sh
+
 CMD ["./migrate-and-start-dev.sh"]

@@ -5,25 +5,36 @@ import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { API_ENDPOINT } from "@/constants/api";
-import { User } from "@/types/user";
+import { User, userSchema } from "@/types/user";
 
 const putUserRequestSchema = z.object({
-  name: z.string().optional(),
+  user: userSchema.partial().omit({ id: true, name: true, role: true }),
 });
 type PutUserRequestType = z.infer<typeof putUserRequestSchema>;
 
 const putUserResponseSchema = makeSuccessResponseSchema(
   z.object({
-    message: z.string(),
+    user: userSchema,
   }),
 );
 
 const putUser = async (userId: User["id"], body: PutUserRequestType) => {
   const { data } = await backendApi.put(
-    `${API_ENDPOINT.USERS}/${userId}`,
+    `${API_ENDPOINT.USERS}/id/${userId}`,
     body,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+    },
   );
-  return putUserResponseSchema.parse(data);
+  const parsed = putUserResponseSchema.safeParse(data);
+  if (!parsed.success) {
+    console.error("Unexpected response shape:", parsed.error);
+    return data;
+  }
+  return parsed.data;
 };
 
 export const usePutUser = () => {

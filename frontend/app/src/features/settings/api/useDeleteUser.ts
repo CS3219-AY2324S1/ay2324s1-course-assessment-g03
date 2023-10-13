@@ -15,9 +15,20 @@ const deleteUserResponseSchema = makeSuccessResponseSchema(
   }),
 );
 
-const deleteUser = async (userId: User["id"]) => {
-  const { data } = await backendApi.delete(`${API_ENDPOINT.USERS}/${userId}`);
-  return deleteUserResponseSchema.parse(data);
+const deleteUser = async (userId: User["id"] | undefined) => {
+  if (!userId) {
+    console.error("User ID is missing");
+    return;
+  }
+  const { data } = await backendApi.delete(
+    `${API_ENDPOINT.USERS}/id/${userId}`,
+  );
+  const parsed = deleteUserResponseSchema.safeParse(data);
+  if (!parsed.success) {
+    console.error("Unexpected response shape:", parsed.error);
+    return data;
+  }
+  return parsed.data;
 };
 
 export const useDeleteUser = () => {

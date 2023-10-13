@@ -8,6 +8,7 @@ export const ROLE = {
 export type RoleType = (typeof ROLE)[keyof typeof ROLE];
 
 export const userSchema = z.object({
+  id: z.string(),
   name: z
     .string()
     .nullish()

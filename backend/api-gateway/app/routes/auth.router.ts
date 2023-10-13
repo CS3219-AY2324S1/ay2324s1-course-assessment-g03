@@ -26,8 +26,42 @@ export const authRouter = Router();
 /**
  * Routes (Auth module)
  */
-authRouter.get("/", authMiddleware, (req: Request, res: Response) => {
-  res.send(successApiResponse({ user: res.locals.user }));
+authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
+  const primaryEmail = res.locals.user.email;
+
+  // Fetch user from user service (as data in JWT may be outdated)
+  const getUserResponse = await fetch(
+    `${process.env.USERS_SERVICE_URL}/api/users/email/${primaryEmail}`
+  );
+  const getUserData = await getUserResponse.json();
+  const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
+
+  if (!safeParsedUserServiceData.success) {
+    return res.status(500).send(
+      failApiResponse({
+        error: `Failed to parse response from user service GET ${
+          process.env.USERS_SERVICE_URL
+        }/api/users/email\n\Reason: ${JSON.stringify(
+          safeParsedUserServiceData.error
+        )}`,
+      })
+    );
+  }
+
+  const parsedUserServiceData = safeParsedUserServiceData.data;
+
+  if (parsedUserServiceData.status === HTTP_STATUS.FAIL) {
+    res.clearCookie(process.env.JWT_COOKIE_NAME);
+    return res.status(401).send(
+      failApiResponse({
+        error: `User with email ${primaryEmail} does not exist in user service`,
+      })
+    );
+  }
+
+  return res.send(
+    successApiResponse({ user: parsedUserServiceData.data.user })
+  );
 });
 
 authRouter.get("/github/authorize", async (req: Request, res: Response) => {
@@ -125,7 +159,11 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
   if (!safeParsedUserServiceData.success) {
     return res.status(500).send(
       failApiResponse({
-        error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL}/api/users/email`,
+        error: `Failed to parse response from user service GET ${
+          process.env.USERS_SERVICE_URL
+        }/api/users/email\n\Reason: ${JSON.stringify(
+          safeParsedUserServiceData.error
+        )}`,
       })
     );
   }
@@ -135,7 +173,10 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
   // The user object to be populated and then encoded in the JWT
   let user: User | undefined = undefined;
   // User does not exist => Create a new user in the service
-  if (parsedUserServiceData.status === "fail") {
+  if (parsedUserServiceData.status === HTTP_STATUS.FAIL) {
+    console.log(
+      `User with email ${primaryEmail} does not exist in user service`
+    );
     // Get user data from GitHub
     const userResponse = await fetch(GITHUB_USER_ENDPOINT, {
       headers: {
@@ -172,6 +213,10 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       {
         method: "POST",
         body: JSON.stringify({ user: userObject }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
       }
     );
     const createUserData = await createUserResponse.json();
@@ -198,6 +243,9 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
 
     user = parsedCreateUserData.data.user;
   } else {
+    console.log(
+      `User with email ${primaryEmail} already exists in user service`
+    );
     user = parsedUserServiceData.data.user;
   }
 

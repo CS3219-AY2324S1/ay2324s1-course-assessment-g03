@@ -16,6 +16,9 @@ export const userController = {
     const parsedReq = userGetByIdSchema.parse(req);
     try {
       const user = await userService.findById(parsedReq.params.userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
       res.send(successApiResponse({ user }));
     } catch (e) {
       let message = ERROR_MESSAGE;
@@ -30,6 +33,9 @@ export const userController = {
     try {
       const parsedReq = userGetByEmailSchema.parse(req);
       const user = await userService.findByEmail(parsedReq.params.email);
+      if (!user) {
+        throw new Error("User not found");
+      }
       res.send(successApiResponse({ user }));
     } catch (e) {
       let message = ERROR_MESSAGE;
@@ -42,7 +48,6 @@ export const userController = {
   },
   post: async (req: Request, res: Response) => {
     try {
-      console.log("Req", req.body);
       const parsedReq = userPostSchema.parse(req);
       const user = await userService.create(parsedReq.body.user);
       res.send(successApiResponse({ user }));

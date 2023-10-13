@@ -2,19 +2,23 @@ import dotenv from "dotenv";
 dotenv.config({ path: `.env.development` });
 import { envSchema } from "./types";
 
+
 /**
  * Validate env variables (Do not allow deployment if env variables are not valid)
  */
-if (process.env.NODE_ENV === "development") {
-}
 const envServerParsed = envSchema.safeParse(process.env);
 if (!envServerParsed.success) {
+  console.log(
+    "These were the provided environment variables",
+    JSON.stringify(process.env)
+  );
+  console.error(envServerParsed.error.issues);
   throw new Error("There is an error with the server environment variables");
 }
 process.env = envServerParsed.data;
 
 import express, { Request, Response, Application } from "express";
-import { morganConfig, corsConfig } from "./libs/config";
+import { morganConfig, corsConfig, bodyParserConfig } from "./libs/config";
 import { apiRouter } from "./routes";
 
 /**
@@ -23,7 +27,7 @@ import { apiRouter } from "./routes";
 const app: Application = express();
 app.use(morganConfig); // For logging
 app.use(corsConfig);
-app.use(express.json()); // For parsing application/json
+app.use(bodyParserConfig);
 
 /**
  * Routes

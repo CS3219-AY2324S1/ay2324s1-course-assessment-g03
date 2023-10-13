@@ -34,7 +34,7 @@ export const ProfilePanel = () => {
       },
     });
 
-  const { errors, isSubmitting, touchedFields } = formState;
+  const { errors, isSubmitting, isDirty, isValid } = formState;
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues: Record<string, string> = {};
@@ -42,13 +42,8 @@ export const ProfilePanel = () => {
       parsedValues["name"] = values.name;
     }
 
-    mutate(parsedValues);
+    mutate({ user: parsedValues });
   });
-
-  const haveValuesChanges = Object.values(touchedFields).reduce(
-    (acc, val) => acc || val !== undefined,
-    false,
-  );
 
   return (
     <TabPanel height="full">
@@ -68,7 +63,12 @@ export const ProfilePanel = () => {
                 {errors.name && errors.name.message}
               </FormErrorMessage>
             </FormControl>
-            <Button alignSelf="start" mt="auto" isDisabled={!haveValuesChanges}>
+            <Button
+              alignSelf="start"
+              mt="auto"
+              isDisabled={!isDirty || !isValid}
+              type="submit"
+            >
               {isSubmitting ? <Spinner /> : "Save"}
             </Button>
           </VStack>
