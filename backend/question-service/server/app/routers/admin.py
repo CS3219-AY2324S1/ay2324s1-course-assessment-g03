@@ -33,7 +33,7 @@ async def create_question(question: dict):
 
     question["_id"] = str(question["_id"])
 
-    return jsend_response(JSendStatus.SUCCESS, {"inserted_data": question})
+    return jsend_response(JSendStatus.SUCCESS, {"question": question})
 
 
 @admin_router.get("/questions")
@@ -69,12 +69,29 @@ async def get_questions(
     if not questions or len(questions) == 0:
         raise HTTPException(status_code=404, detail="No questions found.")
 
-    return jsend_response(JSendStatus.SUCCESS, {"questions": questions})
+    # Add pagination metadata
+    total_questions = collection.count_documents({})
+    total_pages = total_questions // limit
+    pagination = {
+        "current_page": skip,
+        "limit": limit,
+        "sort_by": sort_by,
+        "order": order,
+        "total_questions": total_questions,
+        "total_pages": total_pages,
+    }
+
+    return jsend_response(JSendStatus.SUCCESS, {"questions": questions, "pagination": pagination})
 
 
 @admin_router.put("/questions/{question_id}")
-async def update_question(question_id: str, updated_data: dict):
+async def update_question(question_id: int, updated_data: dict):
     """Updates an existing question in the database"""
+
+    # Check if updated_data is empty
+    if not updated_data:
+        raise HTTPException(status_code=400, detail="Updated data not provided.")
+
     result = collection.update_one({"id": question_id}, {"$set": updated_data})
 
     if result.matched_count == 0:

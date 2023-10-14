@@ -6,7 +6,6 @@ from fastapi.responses import JSONResponse
 class JSendStatus(Enum):
     SUCCESS = "success"
     FAIL = "fail"
-    ERROR = "error"
 
 
 def jsend_response(status: JSendStatus, data=None, code=200, message=None):

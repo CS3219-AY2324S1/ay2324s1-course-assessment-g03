@@ -53,7 +53,7 @@ To run the server with Docker:
 
 ```bash
 docker build -t question-service .
-docker run -p 8000:8000 question-service
+docker run -p 8000:80 question-service
 ```
 
 ## API Documentation
@@ -218,7 +218,7 @@ docker run -p 8000:8000 question-service
     {
         "status": "success",
         "data": {
-            "inserted_data": {
+            "question": {
                 "id": "123",
                 "title": "New Question Title",
                 ...
@@ -259,7 +259,15 @@ docker run -p 8000:8000 question-service
                     "title": "Y Find Maximum in Array",
                     ...
                 }
-            ]
+            ],
+        "pagination" = {
+            "current_page": 0, # Page number starts from 0 (0-indexed)
+            "limit": 10,
+            "sort_by": "id",
+            "order": "asc",
+            "total_questions": 20,
+            "total_pages": 1, # Total number of pages (0-indexed)
+    }
         }
     }
     ```
