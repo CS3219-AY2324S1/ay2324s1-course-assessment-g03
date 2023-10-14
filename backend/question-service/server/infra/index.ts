@@ -93,7 +93,7 @@ const mongoCluster = new mongodbatlas.Cluster(
     projectId: project.id,
     name: "Cluster",
     clusterType: "REPLICASET",
-    mongoDbMajorVersion: "5.0",
+    mongoDbMajorVersion: "6.0",
     providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
     backingProviderName: "AWS", // Set cloud provider to AWS
     providerInstanceSizeName: "M0",
