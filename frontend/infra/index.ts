@@ -35,12 +35,11 @@ const apiGatewayUrl = apiGatewayStack
   .apply((url) => `${url || fallbackApiGatewayUrl}`);
 
 // Build the Vite application.
-const build = new local.Command("build", {
-  create: `npm install && npm run build`,
-  update: `npm install && npm run build`,
+local.run({
+  command: `npm install && npm run build`,
   dir: "../app/",
   environment: {
-    VITE_BACKEND_URL: apiGatewayUrl,
+    VITE_BACKEND_URL: apiGatewayUrl.get(),
   },
 });
 
@@ -81,7 +80,7 @@ const bucketFolder = new synced_folder.S3BucketFolder(
     bucketName: bucket.bucket,
     acl: "public-read",
   },
-  { dependsOn: [ownershipControls, publicAccessBlock, build] }
+  { dependsOn: [ownershipControls, publicAccessBlock] }
 );
 
 // Create a CloudFront CDN to distribute and cache the website.
