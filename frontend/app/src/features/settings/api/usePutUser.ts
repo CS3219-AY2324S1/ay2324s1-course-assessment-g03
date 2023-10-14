@@ -18,7 +18,14 @@ const putUserResponseSchema = makeSuccessResponseSchema(
   }),
 );
 
-const putUser = async (userId: User["id"], body: PutUserRequestType) => {
+const putUser = async (
+  userId: User["id"] | undefined,
+  body: PutUserRequestType,
+) => {
+  if (!userId) {
+    console.error("User ID is missing");
+    return;
+  }
   const { data } = await backendApi.put(
     `${API_ENDPOINT.USERS}/id/${userId}`,
     body,
