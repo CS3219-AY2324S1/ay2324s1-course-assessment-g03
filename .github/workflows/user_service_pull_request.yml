@@ -5,7 +5,7 @@ on:
     paths: ["backend/users-service/**"]
 env:
   WORKING_DIRECTORY_INFRA: ./backend/user-service/infra
-  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/users-service-infra/prod' || 'cs3219/users-service-infra/staging'}}
+  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/user-service-infra/prod' || 'cs3219/user-service-infra/staging'}}
 jobs:
   preview:
     name: Preview
