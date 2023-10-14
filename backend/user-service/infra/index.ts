@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as awsx from "@pulumi/awsx";
+import * as mongodbatlas from "@pulumi/mongodbatlas";
 
 /**
  * Import the program's configuration settings.
@@ -10,6 +11,18 @@ const config = new pulumi.Config();
 const containerPort = config.getNumber("containerPort") || 80;
 const cpu = config.getNumber("cpu") || 256;
 const memory = config.getNumber("memory") || 128;
+
+// For Connection to MongoDB
+const MONGODB_ATLAS_ORG_ID = config.requireSecret("MONGODB_ATLAS_ORG_ID");
+const MONGODB_ATLAS_PUBLIC_KEY = config.requireSecret(
+  "MONGODB_ATLAS_PUBLIC_KEY"
+);
+const MONGODB_ATLAS_PRIVATE_KEY = config.requireSecret(
+  "MONGODB_ATLAS_PRIVATE_KEY"
+);
+const MONGO_ATLAS_USERNAME = config.requireSecret("MONGO_ATLAS_USERNAME");
+const MONGO_ATLAS_PASSWORD = config.requireSecret("MONGO_ATLAS_PASSWORD");
+const MONGO_ATLAS_DB_NAME = config.get("MONGO_ATLAS_DB_NAME") || "users_db";
 
 // For custom domain
 const subdomain = config.get("subdomain") || "users.staging.";
@@ -53,6 +66,66 @@ const apiGatewayStack = new pulumi.StackReference(
 const apiGatewayUrl = apiGatewayStack
   .getOutput("url")
   .apply((url) => `${url || fallbackApiGatewayUrl}`);
+
+/**
+ * Provision MongoDB Atlas resources
+ */
+// Create a MongoDB Atlas provider
+const provider = new mongodbatlas.Provider("CS3219", {
+  privateKey: MONGODB_ATLAS_PRIVATE_KEY,
+  publicKey: MONGODB_ATLAS_PUBLIC_KEY,
+});
+
+// Create a MongoDB Atlas project
+const project = new mongodbatlas.Project(
+  `user-service-${currentEnv}`,
+  {
+    orgId: MONGODB_ATLAS_ORG_ID,
+    name: `user-service-${currentEnv}`,
+  },
+  { provider: provider }
+);
+
+// Create a MongoDB Atlas Cluster
+const mongoCluster = new mongodbatlas.Cluster(
+  "Cluster",
+  {
+    projectId: project.id,
+    name: "Cluster",
+    clusterType: "REPLICASET",
+    mongoDbMajorVersion: "5.0",
+    providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
+    backingProviderName: "AWS", // Set cloud provider to AWS
+    providerInstanceSizeName: "M0",
+    providerRegionName: "AP-SOUTHEAST-1",
+    backupEnabled: false, // Disable backups
+  },
+  { provider: provider }
+);
+
+// Create a MongoDB Atlas Database User
+const mongoUser = new mongodbatlas.DatabaseUser(
+  "user",
+  {
+    projectId: project.id,
+    username: MONGO_ATLAS_USERNAME,
+    password: MONGO_ATLAS_PASSWORD,
+    authDatabaseName: "admin",
+    roles: [
+      {
+        databaseName: "admin",
+        roleName: "atlasAdmin",
+      },
+    ],
+  },
+  { provider: provider }
+);
+
+// The connection string for the MongoDB Atlas cluster
+const clusterUri = mongoCluster.connectionStrings
+  .apply((str) => str[0].standardSrv)
+  .apply((str) => str.split("mongodb+srv://")[1]);
+const connectionString = pulumi.interpolate`mongodb+srv://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}?retryWrites=true&w=majority`;
 
 /**
  * Provision ECS resources
@@ -132,6 +205,7 @@ const service = new awsx.ecs.FargateService("service", {
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
         { name: "API_GATEWAY_URL", value: apiGatewayUrl },
         { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
+        { name: "DATABASE_URL", value: connectionString },
       ],
     },
   },
@@ -139,3 +213,6 @@ const service = new awsx.ecs.FargateService("service", {
 
 // The URL at which the container's HTTP endpoint will be available
 export const url = pulumi.interpolate`https://${domainName}`;
+
+// The connection string for the MongoDB Atlas cluster
+export const mongoConnectionString = connectionString;

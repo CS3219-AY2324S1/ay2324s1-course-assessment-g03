@@ -15,14 +15,14 @@ export const envSchema = z.object({
     .string()
     .url()
     .default(
-      "mongodb://admin:password@localhost:27018/user-service?authSource=admin"
+      "mongodb://root:prisma@user-service-db:27018/users_db?authSource=admin&directConnection=true"
     ),
   /**
    * For CORS
    */
   FRONTEND_ORIGIN: z.string().url().default("http://localhost:8000"),
   API_GATEWAY_URL: z.string().url().default("http://api-gateway"),
-  API_GATEWAY_AUTH_SECRET: z.string().nonempty(),
+  API_GATEWAY_AUTH_SECRET: z.string().min(1),
 });
 
 type EnvSchemaType = z.infer<typeof envSchema>;
