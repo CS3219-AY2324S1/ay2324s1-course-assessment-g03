@@ -5,8 +5,11 @@ import { generateNewDocument } from "../helpers/rooms.helper";
 import { rooms } from "../db/rooms.db";
 import { HttpStatus } from "../utils/HTTP_Status_Codes"
 import { JSEND_STATUS } from "../types/models.type"
+import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
 
-export const createRoom = (roomId: string): types.createRoomType => {
+export const createRoom = (roomId: string,
+    difficulties: (keyof typeof DIFFICULTY)[],
+    topics: (keyof typeof TOPIC_TAG)[]): types.createRoomType => {
     if (roomId in rooms) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -17,7 +20,7 @@ export const createRoom = (roomId: string): types.createRoomType => {
         }
     }
 
-    rooms[roomId] = generateNewDocument(roomId)
+    rooms[roomId] = generateNewDocument(roomId, difficulties, topics)
 
     return {
         status: JSEND_STATUS.SUCCESS,
