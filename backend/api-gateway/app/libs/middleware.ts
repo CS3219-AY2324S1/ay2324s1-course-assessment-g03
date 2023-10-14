@@ -46,7 +46,7 @@ export const adminMiddleware: RequestHandler = async (req, res, next) => {
 
   const userData = userSchema.parse(res.locals.user);
 
-  if (userData.roles && userData.roles.includes(ROLE.ADMIN)) {
+  if (userData.role === ROLE.ADMIN) {
     next();
   } else {
     return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).send(
