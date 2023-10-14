@@ -2,7 +2,6 @@ import { z } from "zod";
 import { HTTP_STATUS } from "./http";
 import { userSchema } from "./user";
 
-// TODO: TBC
 export const getUserSchema = z.union([
   z.object({
     status: z.literal(HTTP_STATUS.SUCCESS),
@@ -12,10 +11,12 @@ export const getUserSchema = z.union([
   }),
   z.object({
     status: z.literal(HTTP_STATUS.FAIL),
+    data: z.object({
+      message: z.string(),
+    }),
   }),
 ]);
 
-// TODO: TBC
 export const createUserSchema = z.union([
   z.object({
     status: z.literal(HTTP_STATUS.SUCCESS),
@@ -25,5 +26,8 @@ export const createUserSchema = z.union([
   }),
   z.object({
     status: z.literal(HTTP_STATUS.FAIL),
+    data: z.object({
+      message: z.string(),
+    }),
   }),
 ]);
