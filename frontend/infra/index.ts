@@ -37,6 +37,7 @@ const apiGatewayUrl = apiGatewayStack
 // Install the Vite application dependencies
 const install = new local.Command("install", {
   create: `npm install`,
+  update: "npm install",
   dir: "../app/",
 });
 
@@ -45,6 +46,7 @@ const build = new local.Command(
   "build",
   {
     create: `npm run build`,
+    update: "npm run build",
     dir: "../app/",
     environment: {
       VITE_BACKEND_URL: apiGatewayUrl,
