@@ -2,6 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as synced_folder from "@pulumi/synced-folder";
 import { local } from "@pulumi/command";
+import { execSync } from "child_process";
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
@@ -34,27 +35,34 @@ const apiGatewayUrl = apiGatewayStack
   .getOutput("url")
   .apply((url) => `${url || fallbackApiGatewayUrl}`);
 
-const install = new local.Command("install", {
-  create: "npm install",
-  update: "npm install",
-  delete: "npm install",
-  dir: "../app/",
+// Build the React application
+execSync("cd ../app/ && npm install && npm run build", {
+  env: {
+    VITE_BACKEND_URL: apiGatewayUrl.get(),
+  },
 });
 
+// const install = new local.Command("install", {
+//   create: "npm install",
+//   update: "npm install",
+//   delete: "npm install",
+//   dir: "../app/",
+// });
+
 // Build the Vite application.
-const build = new local.Command(
-  "build",
-  {
-    create: `npm run build`,
-    update: `npm run build`,
-    delete: `npm run build`,
-    dir: "../app/",
-    environment: {
-      VITE_BACKEND_URL: apiGatewayUrl,
-    },
-  },
-  { dependsOn: [install] }
-);
+// const build = new local.Command(
+//   "build",
+//   {
+//     create: `npm run build`,
+//     update: `npm run build`,
+//     delete: `npm run build`,
+//     dir: "../app/",
+//     environment: {
+//       VITE_BACKEND_URL: apiGatewayUrl,
+//     },
+//   },
+//   { dependsOn: [install] }
+// );
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("bucket", {
