@@ -1,37 +1,19 @@
-import time
-from pymongo import MongoClient, UpdateOne
+from pymongo import UpdateOne
 import json
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError, BulkWriteError
 from dotenv import load_dotenv
 import os
 
+from core.database import client, collection
+
 load_dotenv(".env.development")
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
-def connect_to_mongo(db_url, retries=5, delay=5):
-    print(f"Populating DB: Connecting to MongoDB at {db_url}...")
-    client = MongoClient(db_url)
-    for _ in range(retries):
-        try:
-            client.admin.command('ismaster')
-            return client
-        except ConnectionFailure:
-            print(
-                f"Failed to connect to MongoDB. Retrying in {delay} seconds...")
-            time.sleep(delay)
-    raise ConnectionError(
-        "Could not connect to MongoDB after multiple retries.")
-
-
 def save_to_mongodb(problems):
     try:
-        # Establish a connection to the MongoDB server
-        client = connect_to_mongo(MONGO_CONNECTION_STRING)
-        print("Successfully connected to MongoDB!")
-
-        # Select the database and collection
-        db = client['questions_db']
-        collection = db['problems']
+        # Convert id to integer
+        for problem in problems:
+            problem['id'] = int(problem['id'])
 
         # Create a list of UpdateOne operations
         operations = [
@@ -59,7 +41,6 @@ def save_to_mongodb(problems):
     finally:
         # Close the connection (good practice)
         client.close()
-
 
 if __name__ == "__main__":
     # Read problems from /data/BASE_QUESTIONS.json
