@@ -5,6 +5,7 @@ import { createRoom, getRoomInfo } from "../models/rooms.model";
 import { HttpStatus } from "../utils/HTTP_Status_Codes";
 import { JSEND_STATUS } from "../types/models.type";
 import { METHOD_NOT_ALLOWED_ERROR } from "../constants/errors";
+import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
 
 const roomRouter = express.Router();
 
@@ -13,10 +14,25 @@ roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
-roomRouter.post("/", async (_: Request, res: Response) => {
+roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topics: string[]; }>, res: Response) => {
+
   const roomId = v4();
 
-  const { code, data, status } = createRoom(roomId);
+  const { difficulties, topics } = req.body;
+
+  if (!difficulties || !(difficulties.every((d: string) => Object.keys(DIFFICULTY).includes(d)))) {
+    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
+  }
+
+  if (!topics || !(topics.every((t: string) => Object.keys(TOPIC_TAG).includes(t)))) {
+    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
+  }
+
+  const mappedDifficulties = difficulties.map((diff) => diff as keyof typeof DIFFICULTY)
+  const mappedTopics = topics.map((t) => t as keyof typeof TOPIC_TAG)
+
+  const { code, data, status } = createRoom(roomId, mappedDifficulties, mappedTopics);
+
   return res.status(code).json({ status, data });
 }).all("/", async (_req: Request, res: Response) => {
   return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ status: JSEND_STATUS.ERROR, data: { message: METHOD_NOT_ALLOWED_ERROR } });

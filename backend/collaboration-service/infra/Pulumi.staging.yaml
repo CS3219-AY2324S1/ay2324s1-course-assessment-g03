@@ -7,7 +7,7 @@ config:
   collaboration-service-infra:containerPort: "80"
   collaboration-service-infra:cpu: "256"
   collaboration-service-infra:hostedZoneId:
-    secure: AAABAFZZFNVwoNDUu1TSprH36ZyYKQ+IMEL0Fo8tcGmIeF5A1PkY/sLXUbbI4+gUtwsOTYJM
+    secure: AAABAAUN1QoACNKMStyyK6iXiYKB4r2uavWjD0J5gelvylXEL9Olh0AUdnCr/ttjZR0XGg==
   collaboration-service-infra:memory: "128"
   collaboration-service-infra:path: ../app
   collaboration-service-infra:rootDomain: peerprep.net
