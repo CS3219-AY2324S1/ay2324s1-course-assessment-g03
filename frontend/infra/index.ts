@@ -36,11 +36,12 @@ const apiGatewayUrl = apiGatewayStack
   .apply((url) => `${url || fallbackApiGatewayUrl}`);
 
 // Build the React application
-execSync("cd ../app/ && npm install && npm run build", {
-  env: {
-    VITE_BACKEND_URL: apiGatewayUrl.get(),
-  },
-});
+execSync(
+  `cd ../app/ && npm install && VITE_BACKEND_URL=${apiGatewayUrl} npm run build`,
+  {
+    stdio: "inherit",
+  }
+);
 
 // const install = new local.Command("install", {
 //   create: "npm install",
