@@ -42,7 +42,7 @@ authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
         failApiResponse({
           error: `Failed to parse response from user service GET ${
             process.env.USERS_SERVICE_URL
-          }/api/users/email\n\Reason: ${JSON.stringify(
+          }/api/users/email\n\Reason:\n${JSON.stringify(
             safeParsedUserServiceData.error
           )}`,
         })
@@ -154,7 +154,9 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     if (!safeParsedEmailData.success) {
       return res.status(500).send(
         failApiResponse({
-          error: `Failed to parse response from GitHub GET ${GITHUB_USER_EMAIL_ENDPOINT}`,
+          error: `Failed to parse response from GitHub GET ${GITHUB_USER_EMAIL_ENDPOINT}\nReason:\n${JSON.stringify(
+            safeParsedEmailData.error
+          )}`,
         })
       );
     }
@@ -162,13 +164,11 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     const primaryEmail = getPrimaryEmail(safeParsedEmailData.data);
 
     if (!primaryEmail) {
-      return res
-        .status(500)
-        .send(
-          failApiResponse({
-            error: "Primary GitHub email not found in response",
-          })
-        );
+      return res.status(500).send(
+        failApiResponse({
+          error: `Primary GitHub email not found in response\nResponse:\n${safeParsedEmailData.data}`,
+        })
+      );
     }
 
     // Check if user exists in database
@@ -183,7 +183,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
         failApiResponse({
           error: `Failed to parse response from user service GET ${
             process.env.USERS_SERVICE_URL
-          }/api/users/email\n\Reason: ${JSON.stringify(
+          }/api/users/email\nReason:\n${JSON.stringify(
             safeParsedUserServiceData.error
           )}`,
         })
@@ -211,7 +211,9 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       if (!safeParsedUserData.success) {
         return res.status(500).send(
           failApiResponse({
-            error: `Failed to parse response from GitHub GET ${GITHUB_USER_ENDPOINT}`,
+            error: `Failed to parse response from GitHub GET ${GITHUB_USER_ENDPOINT}\nReason:\n${JSON.stringify(
+              safeParsedUserData.error
+            )}`,
           })
         );
       }
@@ -248,7 +250,11 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       if (!safeParsedCreateUserData.success) {
         return res.status(500).send(
           failApiResponse({
-            error: `Failed to parse response from user service POST ${process.env.USERS_SERVICE_URL}/api/users`,
+            error: `Failed to parse response from user service POST ${
+              process.env.USERS_SERVICE_URL
+            }/api/users\nReason:\n${JSON.stringify(
+              safeParsedCreateUserData.error
+            )}`,
           })
         );
       }
@@ -258,7 +264,9 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       if (parsedCreateUserData.status === HTTP_STATUS.FAIL) {
         return res.status(500).send(
           failApiResponse({
-            error: `Failed to create user in user service`,
+            error: `Failed to create user in user service\nResponse:\n${JSON.stringify(
+              parsedCreateUserData.data
+            )}`,
           })
         );
       }
@@ -274,7 +282,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     if (!user) {
       return res.status(500).send(
         failApiResponse({
-          error: `Failed to create/generate user in user service`,
+          error: `Failed to find/generate user in user service`,
         })
       );
     }

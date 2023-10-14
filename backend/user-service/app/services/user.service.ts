@@ -6,6 +6,7 @@ const userPersonalData: Prisma.UserSelect = {
   avatarUrl: true,
   email: true,
   name: true,
+  role: true,
 };
 
 export const userService = {
