@@ -270,15 +270,14 @@ docker run -p 8000:8000 question-service
     - **Path Parameters**:
         - `question_id`: The ID of the question to update.
     - **Request Body**:
-        - `updated_data`: The updated question data in JSON format.
+        - `updated_data`: The updated question data in JSON format. **Only fields specified in the request body will be updated.**
 
     **Sample Request**:
 
     ```json
     PUT /admin/questions/123
     {
-        "title": "Updated Question Title",
-        ...
+        "title": "Updated Question Title", # Only title will be updated
     }
     ```
 
@@ -290,8 +289,7 @@ docker run -p 8000:8000 question-service
         "data": {
             "updated_id": "123",
             "updated_data": {
-                "title": "Updated Question Title",
-                ...
+                "title": "Updated Question Title", # Response indicates that only title was updated
             }
         }
     }

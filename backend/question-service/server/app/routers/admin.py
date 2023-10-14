@@ -1,20 +1,19 @@
-from core.database import collection
-from utils.jsend import JSendStatus, jsend_response
-from fastapi import FastAPI, HTTPException, Request, Query, APIRouter
-from fastapi.responses import JSONResponse
-from typing import Optional, Annotated, List, Union
+from fastapi import HTTPException, Query, APIRouter
+from typing import Optional
 import sys
 
 sys.path.append("..")
+from core.database import collection
+from utils.jsend import JSendStatus, jsend_response
 
 
-router = APIRouter(
+admin_router = APIRouter(
     prefix="/admin",
     tags=["Admin"],
 )
 
 
-@router.post("/questions")
+@admin_router.post("/questions")
 async def create_question(question: dict):
     """Creates a new question in the database"""
 
@@ -37,7 +36,7 @@ async def create_question(question: dict):
     return jsend_response(JSendStatus.SUCCESS, {"inserted_data": question})
 
 
-@router.get("/questions")
+@admin_router.get("/questions")
 async def get_questions(
     skip: int = Query(
         0, alias="page", description="Page number for pagination. Starts from 0."),
@@ -73,7 +72,7 @@ async def get_questions(
     return jsend_response(JSendStatus.SUCCESS, {"questions": questions})
 
 
-@router.put("/questions/{question_id}")
+@admin_router.put("/questions/{question_id}")
 async def update_question(question_id: str, updated_data: dict):
     """Updates an existing question in the database"""
     result = collection.update_one({"id": question_id}, {"$set": updated_data})
@@ -84,7 +83,7 @@ async def update_question(question_id: str, updated_data: dict):
     return jsend_response(JSendStatus.SUCCESS, {"updated_id": question_id, "updated_data": updated_data})
 
 
-@router.delete("/questions/{question_id}")
+@admin_router.delete("/questions/{question_id}")
 async def delete_question(question_id: str):
     """Deletes a question from the database"""
     result = collection.delete_one({"id": question_id})

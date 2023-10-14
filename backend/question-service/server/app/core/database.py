@@ -10,7 +10,7 @@ load_dotenv(dotenv_path=env_path)
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
 
-def connect_to_mongo(db_url, retries=5, delay=5):
+def connect_to_mongo(db_url, retries=5, delay=1):
     print(f"Connecting to MongoDB at {db_url}...")
     client = MongoClient(db_url)
     for _ in range(retries):
