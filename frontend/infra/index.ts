@@ -101,7 +101,7 @@ const bucketFolder = new synced_folder.S3BucketFolder(
     bucketName: bucket.bucket,
     acl: "public-read",
   },
-  { dependsOn: [ownershipControls, publicAccessBlock, build] }
+  { dependsOn: [ownershipControls, publicAccessBlock] }
 );
 
 // Create a CloudFront CDN to distribute and cache the website.
