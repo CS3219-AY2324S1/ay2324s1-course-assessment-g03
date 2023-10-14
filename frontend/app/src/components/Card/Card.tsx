@@ -11,7 +11,7 @@ export const Card = ({ children, ...boxProps }: CardProps) => {
       borderColor="light.500"
       borderWidth="1px"
       borderRadius="6px"
-      background="dark"
+      background="dark.500"
       p="1.25rem"
       {...boxProps}
     >

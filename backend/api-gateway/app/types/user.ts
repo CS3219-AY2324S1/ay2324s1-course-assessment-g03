@@ -8,10 +8,18 @@ export const ROLE = {
 export type RoleType = (typeof ROLE)[keyof typeof ROLE];
 
 export const userSchema = z.object({
-  name: z.string().optional().nullable(),
+  id: z.string(),
+  name: z
+    .string()
+    .nullish()
+    .transform((val) => val ?? undefined),
   email: z.string().email().nonempty(),
-  avatarUrl: z.string().url(),
-  role: z.nativeEnum(ROLE).optional(),
+  avatarUrl: z
+    .string()
+    .url()
+    .nullish()
+    .transform((val) => val ?? undefined),
+  role: z.nativeEnum(ROLE),
 });
 
 export type User = z.infer<typeof userSchema>;

@@ -11,7 +11,12 @@ function LandingPage() {
   return (
     <Page display="grid" placeItems="center" position="relative">
       <VStack position="relative" zIndex="1" gap="2rem">
-        <Text textStyle="heading-3xl" textAlign="center" color="white" w="75%">
+        <Text
+          textStyle="heading-3xl"
+          textAlign="center"
+          color="light.50"
+          w="75%"
+        >
           Let your peers help you ace technical interviews
         </Text>
         {data?.user ? (

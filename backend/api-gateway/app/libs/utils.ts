@@ -1,19 +1,28 @@
 import { z } from "zod";
 import { HTTP_STATUS } from "../types";
 import jwt from "jsonwebtoken";
+import { GithubEmailResponse } from "../types/github";
 
 /**
  * API Utils
  */
-export const successApiResponse = (data: any) => ({
-  status: HTTP_STATUS.SUCCESS,
-  data,
-});
+export const successApiResponse = (data: any) => {
+  const res = {
+    status: HTTP_STATUS.SUCCESS,
+    data,
+  };
+  console.log(res);
+  return res;
+};
 
-export const failApiResponse = (data: any) => ({
-  status: HTTP_STATUS.FAIL,
-  data,
-});
+export const failApiResponse = (data: any) => {
+  const res = {
+    status: HTTP_STATUS.FAIL,
+    data,
+  };
+  console.log(res);
+  return res;
+};
 
 /**
  * JWT Utils
@@ -40,4 +49,11 @@ export const unwrapJwt = (
       }
     });
   });
+};
+
+/**
+ * GitHub Auth Utils
+ */
+export const getPrimaryEmail = (githubEmailResponse: GithubEmailResponse) => {
+  return githubEmailResponse.find((email) => email.primary)?.email;
 };
