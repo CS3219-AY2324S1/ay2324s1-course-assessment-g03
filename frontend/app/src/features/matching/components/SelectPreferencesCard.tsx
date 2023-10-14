@@ -18,7 +18,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
-import { API_URL } from "@/constants/api";
 
 type PreferencesFormValues = {
   difficulty: {
