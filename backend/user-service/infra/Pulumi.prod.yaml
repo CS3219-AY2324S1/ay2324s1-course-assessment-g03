@@ -13,6 +13,10 @@ config:
   template-service-infra:rootDomain: peerprep.net
   template-service-infra:subdomain: template.
   user-service-infra:acmEcsCertificateArn:
-    secure: AAABADB7w4MqhYZroTgpD7z6CHHD9MI0yI/plQm2zJi/j+2YYykOnwBsujIGJJGWQXqifnLXkOZ3CHw3MTJ942n3Y3VNLxzxCEtJRUfl+KPAxAO2ql8tBujOENsB+7PBU8/iiE9CdMyRIKn0QxBoXjTqdQzF7Wrk
+    secure: AAABABfVPz1lrxMIq0tHzvKSuWtgOfu2uUxyd0qP4uz0jS7PJjdMgBZIyGsSNywoi97kCh/L15W+sxpQPBOlmCWW0I40xxfYzUDIIkL30gJwoZSAzanNSBN8ii2dw3yCRrDnrDeC9xTxp3QteO4RPB+z6cZqzaXc
+  user-service-infra:apiGatewayAuthSecret:
+    secure: AAABALE+SH/FwVzVxxXP1gABIp5/fNUktl+UvZyXsrVrmyD5H1qtwcFvWZPk2korFz4QBUDdm64lS/V09dpm5nQJpXzJ/UGitf+rXTAq8z5v/vsTH1HYUkzMDaWrvPECjaoQR9jRZUn9lsH1bH8Gr1YnEQKiLPNq2jX7DDnIzOxOS/c8L6Eo+65o9tsANboS4/LiPuM6jRJf2CSUy8ccSVWdSmrYI6BwJ9J6Wo4leSsJjotJymL+/kE7qbH/nMjR
+  user-service-infra:hostedZoneID:
+    secure: AAABAHSwRJHb5rGPJk6+3XTvT5pBJcbaTs/2tUBTlL4+JsPts/ZYJdw1yueSp/ccPjKRTA==
   user-service-infra:hostedZoneId:
     secure: AAABAPo+L6MruYRAe+3DrUVHDytqg9h7GMUj0ofzzxPBoBc6P1/FCfs4kS6qE7K6EqJ0lA==
