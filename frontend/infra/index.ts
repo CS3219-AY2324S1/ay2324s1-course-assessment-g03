@@ -34,28 +34,15 @@ const apiGatewayUrl = apiGatewayStack
   .getOutput("url")
   .apply((url) => `${url || fallbackApiGatewayUrl}`);
 
-// Install the Vite application dependencies
-const install = new local.Command("install", {
-  create: `npm install`,
-  update: `npm install`,
-  dir: "../app/",
-});
-
 // Build the Vite application.
-const build = new local.Command(
-  "build",
-  {
-    create: `npm run build`,
-    update: `npm run build`,
-    dir: "../app/",
-    environment: {
-      VITE_BACKEND_URL: apiGatewayUrl,
-    },
+const build = new local.Command("build", {
+  create: `npm install && npm run build`,
+  update: `npm install && npm run build`,
+  dir: "../app/",
+  environment: {
+    VITE_BACKEND_URL: apiGatewayUrl,
   },
-  {
-    dependsOn: [install],
-  }
-);
+});
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("bucket", {
