@@ -2,7 +2,7 @@ name: User Service Pulumi Update
 on:
   push:
     branches: ["staging", "master"]
-    paths: ["backend/users-service/**"]
+    paths: ["backend/user-service/**"]
 env:
   WORKING_DIRECTORY_INFRA: ./backend/user-service/infra
   STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/user-service-infra/prod' || 'cs3219/user-service-infra/staging'}}
