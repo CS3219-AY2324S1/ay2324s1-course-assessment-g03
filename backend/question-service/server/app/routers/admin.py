@@ -1,6 +1,7 @@
 from fastapi import HTTPException, Query, APIRouter
 from typing import Optional
 import sys
+import math
 
 sys.path.append("..")
 from core.database import collection
@@ -38,8 +39,8 @@ async def create_question(question: dict):
 
 @admin_router.get("/questions")
 async def get_questions(
-    skip: int = Query(
-        0, alias="page", description="Page number for pagination. Starts from 0."),
+    page: int = Query(
+        0, description="Page number for pagination. Starts from 0."),
     limit: int = Query(
         10, description="Number of items to retrieve per page."),
     sort_by: Optional[str] = Query(
@@ -63,7 +64,7 @@ async def get_questions(
 
     # Fetch data from MongoDB with sorting and pagination
     cursor = collection.find({}, {"_id": False}).sort(
-        sort_data).skip(skip).limit(limit)
+        sort_data).skip(page * limit).limit(limit)
     questions = list(cursor)
 
     if not questions or len(questions) == 0:
@@ -71,9 +72,9 @@ async def get_questions(
 
     # Add pagination metadata
     total_questions = collection.count_documents({})
-    total_pages = total_questions // limit
+    total_pages = math.ceil(total_questions / limit)
     pagination = {
-        "current_page": skip,
+        "current_page": page,
         "limit": limit,
         "sort_by": sort_by,
         "order": order,
@@ -101,7 +102,7 @@ async def update_question(question_id: int, updated_data: dict):
 
 
 @admin_router.delete("/questions/{question_id}")
-async def delete_question(question_id: str):
+async def delete_question(question_id: int):
     """Deletes a question from the database"""
     result = collection.delete_one({"id": question_id})
 
