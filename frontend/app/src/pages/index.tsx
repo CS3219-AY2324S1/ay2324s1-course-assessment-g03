@@ -3,8 +3,7 @@ import { useAuth } from "@/hooks";
 import { LoginWithGithubButton } from "@/features/auth";
 import { Link } from "react-router-dom";
 import { ROUTE } from "@/constants/route";
-import { Page } from "@/components";
-import { CustomButton } from "@/components/Layout/CustomButton";
+import { CustomButton, Page } from "@/components";
 
 function LandingPage() {
   const { data } = useAuth();
@@ -15,7 +14,7 @@ function LandingPage() {
         <Text
           textStyle="heading-3xl"
           textAlign="center"
-          color="light.50"
+          color="light.100"
           w="75%"
         >
           Let your peers help you ace technical interviews

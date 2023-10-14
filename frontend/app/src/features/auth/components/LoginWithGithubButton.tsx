@@ -1,4 +1,4 @@
-import { CustomButton } from "@/components/Layout/CustomButton";
+import { CustomButton } from "@/components";
 import { useGetGithubAuthUrl } from "@/features/auth/api";
 
 type LoginWithGithubButtonProps = {
@@ -9,9 +9,7 @@ export const LoginWithGithubButton = ({ text }: LoginWithGithubButtonProps) => {
   const { refetch: loginWithGithub } = useGetGithubAuthUrl();
 
   return (
-    <CustomButton
-      onClick={() => loginWithGithub()}
-    >
+    <CustomButton onClick={() => loginWithGithub()}>
       {text || "Try with GitHub"}
     </CustomButton>
   );

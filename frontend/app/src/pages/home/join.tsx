@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Socket, io } from "socket.io-client";
 import { Page } from "@/components";
-import { MATCHING_EVENTS } from "@/constants/matching";
+import { COUNTDOWN_TO_JOIN, MATCHING_EVENTS } from "@/constants/matching";
 import { ROUTE } from "@/constants/route";
 import { FindingMatchCard, SelectPreferencesCard } from "@/features/matching";
 import { useAuth } from "@/hooks";
@@ -37,7 +37,7 @@ function JoinPage() {
       setOtherUser(user1.id === user?.id ? user2 : user1);
       setTimeout(() => {
         navigate(`${ROUTE.ROOM}/${roomId}`);
-      }, 5000);
+      }, COUNTDOWN_TO_JOIN * 1000);
     });
   };
 

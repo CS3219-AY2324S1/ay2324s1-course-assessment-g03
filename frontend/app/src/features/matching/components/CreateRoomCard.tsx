@@ -8,6 +8,8 @@ export const CreateRoomCard = () => {
 
   return (
     <Card
+      backgroundImage="linear-gradient(#242325,#171619)"
+      boxShadow="inset 0 1px 2px #525154, 0 13px 10px rgba(0,0,0,.35)"
       cursor="pointer"
       display="flex"
       flexDirection="column"

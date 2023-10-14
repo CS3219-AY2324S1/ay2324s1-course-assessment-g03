@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, VStack, Text, HStack } from "@chakra-ui/react";
+import { VStack, Text, HStack } from "@chakra-ui/react";
 import { UserCard } from ".";
-import { Card } from "@/components";
+import { Card, CustomButton } from "@/components";
 import { useAuth } from "@/hooks";
 import { User } from "@/types/user";
 import { useStopwatch } from "react-timer-hook";
+import { COUNTDOWN_TO_JOIN } from "@/constants/matching";
 
 type Props = {
   otherUser: User | undefined;
@@ -18,7 +19,7 @@ export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
   const [expired, setExpired] = useState(false);
 
   const { seconds, minutes } = useStopwatch({ autoStart: true });
-  const [timeToJoin, setTimeToJoin] = useState(5);
+  const [timeToJoin, setTimeToJoin] = useState(COUNTDOWN_TO_JOIN);
 
   const user = data?.user;
 
@@ -55,6 +56,10 @@ export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
     return "Finding a match";
   };
 
+  const formatSeconds = (seconds: number) => {
+    return seconds < 10 ? `0${seconds}` : `${seconds}`;
+  };
+
   return (
     <Card w="full" maxW="36rem">
       <VStack gap="1.25rem">
@@ -66,7 +71,7 @@ export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
             ) : (
               <>
                 <span>{minutes}:</span>
-                <span>{seconds}</span>
+                <span>{formatSeconds(seconds)}</span>
               </>
             )}
           </Text>
@@ -75,19 +80,8 @@ export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
           <UserCard user={user} />
           <UserCard user={otherUser} />
         </HStack>
-        <HStack alignSelf="end">
-          <Button
-            colorScheme="light"
-            border="1px solid"
-            borderRadius="6.25rem"
-            borderColor="light.400"
-            _hover={{
-              borderColor: "light.300",
-            }}
-            onClick={leaveCallback}
-          >
-            Leave room
-          </Button>
+        <HStack alignSelf="end" paddingTop="1rem">
+          <CustomButton onClick={leaveCallback}>Leave room</CustomButton>
         </HStack>
       </VStack>
     </Card>

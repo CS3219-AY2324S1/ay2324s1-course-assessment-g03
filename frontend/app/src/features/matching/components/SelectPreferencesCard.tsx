@@ -1,4 +1,4 @@
-import { Card } from "@/components";
+import { Card, CustomButton } from "@/components";
 import {
   DIFFICULTY,
   DifficultyType,
@@ -17,7 +17,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
-import { CustomButton } from "@/components/Layout/CustomButton";
 
 type PreferencesFormValues = {
   difficulty: {
@@ -70,7 +69,6 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
-                isClearable={false}
                 isMulti
                 options={Object.values(DIFFICULTY).map(difficulty => ({
                   value: difficulty,
@@ -94,7 +92,6 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
-                isClearable={false}
                 isMulti
                 options={Object.values(TOPIC_TAG).map(difficulty => ({
                   value: difficulty,
@@ -108,7 +105,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
             {errors["category"] && errors["category"].message}
           </FormErrorMessage>
         </FormControl>
-        <HStack alignSelf="end">
+        <HStack alignSelf="end" paddingTop="0.5rem">
           <CustomButton type="submit" isLoading={isSubmitting}>
             Join room
           </CustomButton>
