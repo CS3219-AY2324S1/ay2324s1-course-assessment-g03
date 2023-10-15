@@ -22,22 +22,14 @@ const acmCertificateArn = config.requireSecret("acmCloudfrontCertificateArn");
 
 const currentEnv = pulumi.getStack(); // 'staging' or 'prod'
 
-const fallbackApiGatewayUrl =
+const apiGatewayUrl =
   currentEnv === "prod"
     ? "https://api.peerprep.net"
     : "https://api.staging.peerprep.net";
 
-// Reference the API Gateway stack
-const apiGatewayStack = new pulumi.StackReference(
-  `cs3219/api-gateway-infra/${currentEnv}`
-);
-const apiGatewayUrl = apiGatewayStack
-  .getOutput("url")
-  .apply((url) => `${url || fallbackApiGatewayUrl}`);
-
 // Build the React application
 execSync(
-  `cd ../app/ && npm install && VITE_BACKEND_URL=https://api.staging.peerprep.net npm run build`,
+  `cd ../app/ && npm install && VITE_BACKEND_URL=${apiGatewayUrl} npm run build`,
   {
     stdio: "inherit",
   }
