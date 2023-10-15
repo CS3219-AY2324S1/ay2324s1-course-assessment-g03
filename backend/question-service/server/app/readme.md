@@ -58,9 +58,9 @@ docker run -p 8000:80 question-service
 
 ## API Documentation
 
-### `/questions` Endpoints
+### `/api/questions` Endpoints
 
-1. `GET /questions` Get Questions by Criteria
+1. `GET /api/questions` Get Questions by Criteria
 
     - **Description**: Returns a list of questions (ids and titles) matching the given criteria: Difficulty and Topic.
     - **Query Parameters**:
@@ -71,15 +71,15 @@ docker run -p 8000:80 question-service
     **Sample Request**:
 
     ```
-    GET /questions # Returns all questions (no filters)
+    GET /api/questions # Returns all questions (no filters)
     ```
 
     ```
-    GET /questions?difficulty=Easy&topic=Arrays # Returns all Easy questions with topic Arrays
+    GET /api/questions?difficulty=Easy&topic=Arrays # Returns all Easy questions with topic Arrays
     ```
 
     ```
-    GET /questions?difficulty=Easy&difficulty=Medium&topic=Hash%20Tables&topic=Arrays # Returns all Easy or Medium questions with topic Hash Tables or Arrays
+    GET /api/questions?difficulty=Easy&difficulty=Medium&topic=Hash%20Tables&topic=Arrays # Returns all Easy or Medium questions with topic Hash Tables or Arrays
     ```
 
     **Sample Response**:
@@ -104,14 +104,14 @@ docker run -p 8000:80 question-service
     }
     ```
 
-2. `GET /questions/all` Get All Questions
+2. `GET /api/questions/all` Get All Questions
 
     - **Description**: Returns a list of all questions with all fields.
 
     **Sample Request**:
 
     ```
-    GET /questions/all
+    GET /api/questions/all
     ```
 
     **Sample Response**:
@@ -140,7 +140,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-3. `GET /questions/{question_id}` Get a Single Question
+3. `GET /api/questions/{question_id}` Get a Single Question
 
     - **Description**: Returns a single question matching the given id.
     - **Path Parameters**:
@@ -149,7 +149,7 @@ docker run -p 8000:80 question-service
     **Sample Request**:
 
     ```
-    GET /questions/1
+    GET /api/questions/1
     ```
 
     **Sample Response**:
@@ -169,14 +169,14 @@ docker run -p 8000:80 question-service
     }
     ```
 
-4. `GET /questions/filters` Get Question Filters
+4. `GET /api/questions/filters` Get Question Filters
 
     - **Description**: Returns a list of all possible filters for questions: Difficulty and Topic.
 
     **Sample Request**:
 
     ```
-    GET /questions/filters
+    GET /api/questions/filters
     ```
 
     **Sample Response**:
@@ -192,9 +192,9 @@ docker run -p 8000:80 question-service
     }
     ```
 
-### `/admin` Endpoints
+### `/api/admin` Endpoints
 
-1. `POST /admin/questions` Create a New Question
+1. `POST /api/admin/questions` Create a New Question
 
     - **Description**: Creates a new question in the database.
     - **Request Body**:
@@ -203,7 +203,7 @@ docker run -p 8000:80 question-service
     **Sample Request**:
 
     ```json
-    POST /admin/questions
+    POST /api/admin/questions
     {
         "title": "New Question Title",
         "difficulty": "Easy",
@@ -227,7 +227,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-2. `GET /admin/questions` Retrieve Questions with Pagination and Sorting
+2. `GET /api/admin/questions` Retrieve Questions with Pagination and Sorting
 
     - **Description**: Retrieve questions with optional sorting and pagination. Used for admin portal view.
     - **Query Parameters**:
@@ -239,7 +239,7 @@ docker run -p 8000:80 question-service
     **Sample Request**:
 
     ```
-    GET /admin/questions?page=1&limit=5&sort_by=title&order=desc
+    GET /api/admin/questions?page=1&limit=5&sort_by=title&order=desc
     ```
 
     **Sample Response**:
@@ -272,7 +272,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-3. `PUT /admin/questions/{question_id}` Update an Existing Question
+3. `PUT /api/admin/questions/{question_id}` Update an Existing Question
 
     - **Description**: Updates an existing question in the database.
     - **Path Parameters**:
@@ -283,7 +283,7 @@ docker run -p 8000:80 question-service
     **Sample Request**:
 
     ```json
-    PUT /admin/questions/123
+    PUT /api/admin/questions/123
     {
         "title": "Updated Question Title", # Only title will be updated
     }
@@ -303,7 +303,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-4. `DELETE /admin/questions/{question_id}` Delete a Question
+4. `DELETE /api/admin/questions/{question_id}` Delete a Question
 
     - **Description**: Deletes a question from the database.
     - **Path Parameters**:
@@ -312,7 +312,7 @@ docker run -p 8000:80 question-service
     **Sample Request**:
 
     ```
-    DELETE /admin/questions/123
+    DELETE /api/admin/questions/123
     ```
 
     **Sample Response**:

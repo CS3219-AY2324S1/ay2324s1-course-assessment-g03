@@ -7,7 +7,7 @@ from core.database import collection
 from utils.jsend import JSendStatus, jsend_response
 
 questions_router = APIRouter(
-    prefix="/questions",
+    prefix="/api/questions",
     tags=["Questions"],
 )
 

@@ -9,7 +9,7 @@ from utils.jsend import JSendStatus, jsend_response
 
 
 admin_router = APIRouter(
-    prefix="/admin",
+    prefix="/api/admin",
     tags=["Admin"],
 )
 
