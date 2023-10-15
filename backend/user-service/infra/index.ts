@@ -97,7 +97,7 @@ const mongoCluster = new mongodbatlas.Cluster(
     providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
     backingProviderName: "AWS", // Set cloud provider to AWS
     providerInstanceSizeName: "M0",
-    providerRegionName: "AP-SOUTHEAST-1",
+    providerRegionName: "AP_SOUTHEAST_1",
     backupEnabled: false, // Disable backups
   },
   { provider: provider }
