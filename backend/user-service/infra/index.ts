@@ -92,7 +92,7 @@ const mongoClusterName = "user-service-cluster";
 const mongoClusterCheck = project.id.apply((id) =>
   mongodbatlas.getCluster(
     { projectId: id, name: mongoClusterName },
-    { async: true }
+    { async: false, provider: provider }
   )
 );
 // Create a MongoDB Atlas Cluster
