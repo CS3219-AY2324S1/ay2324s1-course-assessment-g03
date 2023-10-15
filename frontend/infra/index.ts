@@ -37,33 +37,11 @@ const apiGatewayUrl = apiGatewayStack
 
 // Build the React application
 execSync(
-  `cd ../app/ && npm install && VITE_BACKEND_URL=${apiGatewayUrl} npm run build`,
+  `cd ../app/ && npm install && VITE_BACKEND_URL=https://api.staging.peerprep.net npm run build`,
   {
     stdio: "inherit",
   }
 );
-
-// const install = new local.Command("install", {
-//   create: "npm install",
-//   update: "npm install",
-//   delete: "npm install",
-//   dir: "../app/",
-// });
-
-// Build the Vite application.
-// const build = new local.Command(
-//   "build",
-//   {
-//     create: `npm run build`,
-//     update: `npm run build`,
-//     delete: `npm run build`,
-//     dir: "../app/",
-//     environment: {
-//       VITE_BACKEND_URL: apiGatewayUrl,
-//     },
-//   },
-//   { dependsOn: [install] }
-// );
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("bucket", {
