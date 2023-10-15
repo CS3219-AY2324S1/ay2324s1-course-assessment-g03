@@ -98,20 +98,23 @@ const mongoClusterCheck = project.id.apply((id) =>
 // Create a MongoDB Atlas Cluster
 const mongoCluster = mongoClusterCheck.apply((foundCluster) => {
   if (!foundCluster) {
-    return new mongodbatlas.Cluster(
-      mongoClusterName,
-      {
-        projectId: project.id,
-        name: mongoClusterName,
-        clusterType: "REPLICASET",
-        mongoDbMajorVersion: "6.0",
-        providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
-        backingProviderName: "AWS", // Set cloud provider to AWS
-        providerInstanceSizeName: "M0",
-        providerRegionName: "AP_SOUTHEAST_1",
-        backupEnabled: false, // Disable backups
-      },
-      { provider: provider }
+    return project.id.apply(
+      (id) =>
+        new mongodbatlas.Cluster(
+          mongoClusterName,
+          {
+            projectId: id,
+            name: mongoClusterName,
+            clusterType: "REPLICASET",
+            mongoDbMajorVersion: "6.0",
+            providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
+            backingProviderName: "AWS", // Set cloud provider to AWS
+            providerInstanceSizeName: "M0",
+            providerRegionName: "AP_SOUTHEAST_1",
+            backupEnabled: false, // Disable backups
+          },
+          { provider: provider }
+        )
     );
   }
 
@@ -140,14 +143,21 @@ mongoClusterCheck.apply((foundCluster) => foundCluster.connectionStrings);
 mongoCluster.apply((cluster) => cluster?.connectionStrings);
 
 // The connection string for the MongoDB Atlas cluster
-const clusterUri = pulumi
+// const clusterUri = pulumi
+//   .all([mongoCluster, mongoClusterCheck])
+//   .apply(([clust, checkClust]) =>
+//     clust ? clust.connectionStrings.get() : checkClust.connectionStrings
+//   )
+//   .apply((str) => str[0].standardSrv)
+//   .apply((str) => str.split("mongodb+srv://")[1]);
+// const connectionString = pulumi.interpolate`mongodb+srv://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}`;
+const connectionString = pulumi
   .all([mongoCluster, mongoClusterCheck])
   .apply(([clust, checkClust]) =>
-    clust ? clust.connectionStrings.get() : checkClust.connectionStrings
-  )
-  .apply((str) => str[0].standardSrv)
-  .apply((str) => str.split("mongodb+srv://")[1]);
-const connectionString = pulumi.interpolate`mongodb+srv://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}?retryWrites=true&w=majority&directConnection=true`;
+    clust
+      ? clust.connectionStrings.apply((x) => x[0].standardSrv)
+      : checkClust.connectionStrings[0].standardSrv
+  );
 
 /**
  * Provision ECS resources
