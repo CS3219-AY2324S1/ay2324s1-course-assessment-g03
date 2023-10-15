@@ -18,6 +18,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource-variable/inter": "^5.0.8",
+    "@tanstack/react-query": "^4.36.1",
+    "@tanstack/react-table": "^8.10.7",
     "@uiw/codemirror-extensions-basic-setup": "^4.21.18",
     "@uiw/codemirror-extensions-langs": "^4.21.18",
     "@uiw/codemirror-theme-monokai": "^4.21.18",

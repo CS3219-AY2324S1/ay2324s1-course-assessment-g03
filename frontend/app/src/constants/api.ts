@@ -20,6 +20,12 @@ export const API_ENDPOINT = {
    * User service
    */
   USERS: "/users",
+
+  /**
+   * Question service
+   */
+  QUESTIONS: "/questions",
+  ADMIN_QUESTIONS: "/admin/questions",
 } as const;
 
 /**
