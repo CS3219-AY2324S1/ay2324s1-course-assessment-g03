@@ -16,7 +16,13 @@ export const backendApi = axios.create({
  */
 const failResponseSchema = z.object({
   status: z.literal(API_RESPONSE_STATUS.FAIL),
-  data: z.object({ message: z.string() }),
+  data: z
+    .object({
+      message: z.string().optional(),
+      error: z.string().optional(),
+      error_description: z.string().optional(),
+    })
+    .optional(),
 });
 
 export const anyApiResponseSchema = z.union([
@@ -41,13 +47,25 @@ function responseHandler(response: AxiosResponse | undefined) {
 
   if (parsedResponseData.data.status === API_RESPONSE_STATUS.FAIL) {
     // Whitelisted responses that should fail silently
-    if (parsedResponseData.data.data.message === "User is not authenticated") {
+    if (
+      parsedResponseData.data?.data?.message === "User is not authenticated"
+    ) {
       return response;
     }
 
-    throw new Error(
-      parsedResponseData.data.data.message ?? API_ERROR.STATUS_FAIL,
-    );
+    let errorMessage;
+
+    if (parsedResponseData.data.data?.error_description) {
+      errorMessage = parsedResponseData.data.data.error_description;
+    } else if (parsedResponseData.data.data?.error) {
+      errorMessage = parsedResponseData.data.data.error;
+    } else if (parsedResponseData.data.data?.message) {
+      errorMessage = parsedResponseData.data.data.message;
+    } else {
+      errorMessage = API_ERROR.STATUS_FAIL;
+    }
+
+    throw new Error(errorMessage);
   }
 
   return response;
