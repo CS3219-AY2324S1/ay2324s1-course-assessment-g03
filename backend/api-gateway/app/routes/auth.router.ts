@@ -20,6 +20,7 @@ import {
 import { getUserSchema } from "../types/usersService";
 import { HTTP_STATUS } from "../types";
 import { User } from "../types/user";
+import { getRoomIdFromUserIdSchema } from "../types/collaborationService";
 
 export const authRouter = Router();
 
@@ -60,9 +61,31 @@ authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
       );
     }
 
-    return res.send(
-      successApiResponse({ user: parsedUserServiceData.data.user })
-    );
+    let user: User & { roomId?: string } = parsedUserServiceData.data.user;
+
+    // Check if user is currently in a room (Do not fail if user is not in a room)
+    const userId = user.id;
+    try {
+      const getRoomIdResponse = await fetch(
+        `${process.env.COLLABORATION_SERVICE_URL}/api/collaboration/room/user/${userId}`
+      );
+      const getRoomIdData = await getRoomIdResponse.json();
+      const safeParsedRoomIdData =
+        getRoomIdFromUserIdSchema.safeParse(getRoomIdData);
+      if (safeParsedRoomIdData.success) {
+        const parsedRoomIdData = safeParsedRoomIdData.data;
+        if (parsedRoomIdData.status === HTTP_STATUS.SUCCESS) {
+          user = { ...user, roomId: parsedRoomIdData.data.roomId };
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Error getting room ID:",
+        error instanceof Error ? error.message : JSON.stringify(error)
+      );
+    }
+
+    return res.send(successApiResponse({ user }));
   } catch (error) {
     return res.status(500).send(
       failApiResponse({
