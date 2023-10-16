@@ -29,9 +29,8 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
           <Text
             as={Link}
             to={user ? ROUTE.HOME : ROUTE.ROOT}
-            fontWeight="900"
-            fontSize="2rem"
-            color="light.50"
+            fontWeight="600"
+            fontSize="1.2rem"
           >
             PeerPrep
           </Text>

@@ -73,6 +73,14 @@ export const multiSelectStyles: (
       ...provided,
       background: "dark.500",
       borderColor: "light.500",
+      borderRadius: "0.375rem",
+    }),
+    clearIndicator: provided => ({
+      ...provided,
+      color: "light.100",
+      _hover: {
+        background: "light.400",
+      },
     }),
     dropdownIndicator: provided => ({
       ...provided,
@@ -103,7 +111,8 @@ export const multiSelectStyles: (
     menu: provided => ({ ...provided, background: "dark" }),
     menuList: provided => ({
       ...provided,
-      background: "transparent",
+      background: "dark.500",
+      borderColor: "light.400",
     }),
     noOptionsMessage: provided => ({ ...provided, color: "light.100" }),
   };

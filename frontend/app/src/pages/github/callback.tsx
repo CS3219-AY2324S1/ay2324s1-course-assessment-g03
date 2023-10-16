@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGithubLogin } from "@/features/auth/api";
-import { VStack, Text, Button, Spinner } from "@chakra-ui/react";
+import { VStack, Text, Spinner } from "@chakra-ui/react";
 import { ROUTE } from "@/constants/route";
-import { Page } from "@/components/Page/Page";
+import { CustomButton, Page } from "@/components";
 
 function GitHubCallbackPage() {
   const [searchParams] = useSearchParams();
@@ -17,7 +17,7 @@ function GitHubCallbackPage() {
           <Text textStyle="heading-md">
             An error has occurred, please try again
           </Text>
-          <Button onClick={() => navigate(ROUTE.ROOT)}>Back</Button>
+          <CustomButton onClick={() => navigate(ROUTE.ROOT)}>Back</CustomButton>
         </VStack>
       ) : null}
     </Page>

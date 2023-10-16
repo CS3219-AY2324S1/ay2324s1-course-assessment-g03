@@ -20,6 +20,7 @@ export class MatchingGateway {
               }
             : {}),
         },
+        body: JSON.stringify(roomParams.preferences),
       }
     );
     const dataJson = await res.json();

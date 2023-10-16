@@ -1,4 +1,4 @@
-import { Card } from "@/components";
+import { Card, CustomButton } from "@/components";
 import {
   DIFFICULTY,
   DifficultyType,
@@ -7,7 +7,6 @@ import {
 } from "@/constants/question";
 import { Preferences } from "@/types/matching";
 import {
-  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -55,7 +54,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
   });
 
   return (
-    <Card w="34rem">
+    <Card w="full" maxW="36rem">
       <VStack as="form" gap="1.25rem" onSubmit={onSubmit}>
         <Text alignSelf="start" textStyle="heading-md">
           Select question preferences
@@ -69,7 +68,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
-                isClearable={false}
+                closeMenuOnSelect={false}
                 isMulti
                 options={Object.values(DIFFICULTY).map(difficulty => ({
                   value: difficulty,
@@ -92,7 +91,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
-                isClearable={false}
+                closeMenuOnSelect={false}
                 isMulti
                 options={Object.values(TOPIC_TAG).map(difficulty => ({
                   value: difficulty,
@@ -106,10 +105,10 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
             {errors["category"] && errors["category"].message}
           </FormErrorMessage>
         </FormControl>
-        <HStack alignSelf="end">
-          <Button type="submit" colorScheme="light" isLoading={isSubmitting}>
+        <HStack alignSelf="end" paddingTop="0.5rem">
+          <CustomButton type="submit" isLoading={isSubmitting}>
             Join room
-          </Button>
+          </CustomButton>
         </HStack>
       </VStack>
     </Card>
