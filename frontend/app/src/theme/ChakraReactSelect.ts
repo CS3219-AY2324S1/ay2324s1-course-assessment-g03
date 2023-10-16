@@ -17,7 +17,7 @@ export const singleSelectStyles: (
   return {
     container: provided => ({
       ...provided,
-      background: "dark.500",
+      background: "dark.950",
       borderColor: "light.500",
     }),
     control: provided => ({
@@ -71,7 +71,7 @@ export const multiSelectStyles: (
   return {
     container: provided => ({
       ...provided,
-      background: "dark.500",
+      background: "dark.950",
       borderColor: "light.500",
     }),
     dropdownIndicator: provided => ({

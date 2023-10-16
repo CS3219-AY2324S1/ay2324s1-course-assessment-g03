@@ -30,10 +30,10 @@ export const AvatarMenu = ({ user }: AvatarMenuProps) => {
         src={user.avatarUrl}
       />
       {/* TODO: Abstract into theme components (for some reason doesn't work) */}
-      <MenuList bg="dark.500">
+      <MenuList bg="dark.950">
         <MenuItem
           icon={<Icon as={BiUser} />}
-          bg="dark.500"
+          bg="dark.950"
           _hover={{ bg: "dark.400" }}
           color="light.100"
           onClick={() => navigate(`${ROUTE.PROFILE}/${user.id}`)}
@@ -42,7 +42,7 @@ export const AvatarMenu = ({ user }: AvatarMenuProps) => {
         </MenuItem>
         <MenuItem
           icon={<Icon as={BiCog} />}
-          bg="dark.500"
+          bg="dark.950"
           _hover={{ bg: "dark.400" }}
           color="light.100"
           onClick={() => navigate(`${ROUTE.SETTINGS}`)}
@@ -52,7 +52,7 @@ export const AvatarMenu = ({ user }: AvatarMenuProps) => {
         <MenuDivider />
         <MenuItem
           icon={<Icon as={BiLogOut} />}
-          bg="dark.500"
+          bg="dark.950"
           _hover={{ bg: "dark.400", color: "red.400" }}
           color="light.100"
           onClick={() => logout()}
