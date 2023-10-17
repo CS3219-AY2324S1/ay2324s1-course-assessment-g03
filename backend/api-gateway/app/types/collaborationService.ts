@@ -5,7 +5,8 @@ export const getRoomIdFromUserIdSchema = z.union([
   z.object({
     status: z.literal(HTTP_STATUS.SUCCESS),
     data: z.object({
-      roomId: z.string(),
+      roomId: z.string().optional(),
+      userId: z.string(),
     }),
   }),
   z.object({

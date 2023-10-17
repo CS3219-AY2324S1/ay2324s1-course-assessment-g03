@@ -74,7 +74,10 @@ authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
         getRoomIdFromUserIdSchema.safeParse(getRoomIdData);
       if (safeParsedRoomIdData.success) {
         const parsedRoomIdData = safeParsedRoomIdData.data;
-        if (parsedRoomIdData.status === HTTP_STATUS.SUCCESS) {
+        if (
+          parsedRoomIdData.status === HTTP_STATUS.SUCCESS &&
+          parsedRoomIdData.data.roomId
+        ) {
           user = { ...user, roomId: parsedRoomIdData.data.roomId };
         }
       }
