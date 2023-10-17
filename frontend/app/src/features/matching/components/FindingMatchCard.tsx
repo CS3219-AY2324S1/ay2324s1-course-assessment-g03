@@ -81,7 +81,7 @@ export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
           <UserCard user={otherUser} />
         </HStack>
         <HStack alignSelf="end" paddingTop="1rem">
-          <CustomButton onClick={leaveCallback}>Leave room</CustomButton>
+          <CustomButton isDisabled={!!otherUser} onClick={leaveCallback}>Leave room</CustomButton>
         </HStack>
       </VStack>
     </Card>
