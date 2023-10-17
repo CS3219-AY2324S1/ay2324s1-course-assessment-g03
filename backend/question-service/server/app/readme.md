@@ -231,7 +231,7 @@ docker run -p 8000:80 question-service
 
     - **Description**: Retrieve questions with optional sorting and pagination. Used for admin portal view.
     - **Query Parameters**:
-        - `page`: Page number for pagination. Starts from 0. Default is 0.
+        - `page`: Page number for pagination. Starts from 1. Default is 1.
         - `limit`: Number of items to retrieve per page. Default is 10.
         - `sort_by`: Field to sort by (e.g., `title`). Default is `id`.
         - `order`: Order of sorting. Use 'asc' for ascending and 'desc' for descending. Default is `asc`.
@@ -261,12 +261,12 @@ docker run -p 8000:80 question-service
                 }
             ],
         "pagination" = {
-            "current_page": 0, # Page number starts from 0 (0-indexed)
+            "current_page": 1, # Page number starts from 1 (1-indexed)
             "limit": 10,
             "sort_by": "id",
             "order": "asc",
             "total_questions": 20,
-            "total_pages": 1, # Total number of pages (0-indexed)
+            "total_pages": 2, # Total number of pages (1-indexed)
     }
         }
     }

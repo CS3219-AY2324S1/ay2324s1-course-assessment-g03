@@ -40,7 +40,7 @@ async def create_question(question: dict):
 @admin_router.get("/questions")
 async def get_questions(
     page: int = Query(
-        0, description="Page number for pagination. Starts from 0."),
+        1, description="Page number for pagination. Starts from 1."),
     limit: int = Query(
         10, description="Number of items to retrieve per page."),
     sort_by: Optional[str] = Query(
@@ -62,9 +62,12 @@ async def get_questions(
     # If sort_by is provided, use it for sorting
     sort_data = [(sort_by, sort_order)] if sort_by else [("id", sort_order)]
 
+    # Get skip count
+    skip_count = (page - 1) * limit
+
     # Fetch data from MongoDB with sorting and pagination
     cursor = collection.find({}, {"_id": False}).sort(
-        sort_data).skip(page * limit).limit(limit)
+        sort_data).skip(skip_count).limit(limit)
     questions = list(cursor)
 
     if not questions or len(questions) == 0:
