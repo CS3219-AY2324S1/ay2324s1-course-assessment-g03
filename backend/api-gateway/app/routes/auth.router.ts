@@ -170,14 +170,10 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       );
     }
 
-    console.log("reached here")
-
     // Check if user exists in database
     const getUserResponse = await fetch(
       `${process.env.USERS_SERVICE_URL}/api/users/email/${primaryEmail}`
     );
-
-    console.log("reached here 2")
     const getUserData = await getUserResponse.json();
     const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
 
@@ -259,8 +255,6 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
           })
         );
       }
-
-      console.log("reached here 3")
 
       const parsedCreateUserData = safeParsedCreateUserData.data;
 
