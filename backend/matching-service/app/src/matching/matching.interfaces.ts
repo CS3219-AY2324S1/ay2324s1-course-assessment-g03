@@ -1,12 +1,12 @@
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
   avatarUrl?: string;
 }
 export interface Preferences {
-  difficulty: string[];
-  category: string[];
+  difficulties: string[];
+  topics: string[];
 }
 
 export interface RoomParams {

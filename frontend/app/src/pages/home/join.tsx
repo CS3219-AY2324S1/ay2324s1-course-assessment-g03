@@ -44,7 +44,9 @@ function JoinPage() {
   const leaveWaiting = () => {
     setIsWaitingForMatch(false);
     if (socketRef.current !== null) {
-      socketRef.current.disconnect();
+      const { current: socket } = socketRef;
+      socket.emit(MATCHING_EVENTS.LEAVE_ROOM, user);
+      socket.disconnect();
     }
   };
 

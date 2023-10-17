@@ -61,7 +61,7 @@ export const FindingMatchCard = ({ otherUser, leaveCallback }: Props) => {
   };
 
   return (
-    <Card w="full" maxW="36rem">
+    <Card w="full" maxW="42rem">
       <VStack gap="1.25rem">
         <HStack w="full" justify="space-between">
           <Text textStyle="heading-md">{headerText()}</Text>
