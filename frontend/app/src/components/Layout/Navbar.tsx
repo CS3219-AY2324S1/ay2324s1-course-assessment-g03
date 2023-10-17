@@ -13,7 +13,6 @@ type NavbarProps = {
 
 export const Navbar = ({ isBorderless }: NavbarProps) => {
   const { data } = useAuth();
-  const session: any = undefined; // TODO: Populate session with data from the service
 
   const user = data?.user;
 
@@ -25,7 +24,7 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
     >
       <Container maxW={MAX_WIDTH} px={WINDOW_X_PADDING} py="1.25rem">
         <HStack position="relative" justifyContent="space-between">
-          {session ? <SessionBar session={session} /> : null}
+          <SessionBar />
           <Text
             as={Link}
             to={user ? ROUTE.HOME : ROUTE.ROOT}
