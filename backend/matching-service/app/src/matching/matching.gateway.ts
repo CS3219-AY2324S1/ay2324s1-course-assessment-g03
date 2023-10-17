@@ -1,5 +1,11 @@
-import { MatchedRoom, RoomParams, WaitingUser } from "./matching.interfaces";
+import {
+  MatchedRoom,
+  RoomParams,
+  WaitingUser,
+  User,
+} from "./matching.interfaces";
 import { comparePreferences } from "../utils/preferences";
+import { TIMEOUT_DURATION } from "./matching.constants";
 
 export class MatchingGateway {
   private waiting: WaitingUser[] = [];
@@ -13,6 +19,7 @@ export class MatchingGateway {
       {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           ...(process.env.API_GATEWAY_AUTH_SECRET
             ? {
                 ["api-gateway-auth-secret"]:
@@ -39,6 +46,11 @@ export class MatchingGateway {
       preferences: roomParams.preferences,
     };
     this.waiting.push(newWaiting);
+
+    setTimeout(() => {
+      this.leaveRoom(roomParams.user);
+    }, TIMEOUT_DURATION * 1000);
+
     return roomId;
   }
 
@@ -57,5 +69,12 @@ export class MatchingGateway {
       }
     }
     return null;
+  }
+
+  leaveRoom(user: User) {
+    const index = this.waiting.findIndex((w) => w.user.id === user.id);
+    if (index !== -1) {
+      this.waiting.splice(index, 1);
+    }
   }
 }

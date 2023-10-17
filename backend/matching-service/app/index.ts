@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 
 import { MATCHING_EVENTS } from "./src/matching/matching.constants";
 import { MatchingGateway } from "./src/matching/matching.gateway";
+import { Preferences, User } from "./src/matching/matching.interfaces";
 
 /**
  * Configuration
@@ -52,14 +53,22 @@ Local development URL: http://localhost:8004`);
 const matchingGateway = new MatchingGateway();
 
 io.on("connection", (socket) => {
-  socket.on(MATCHING_EVENTS.JOIN_ROOM, async (user, preferences) => {
-    const matched = matchingGateway.joinRandomRoom({ user, preferences });
-    if (matched) {
-      socket.join(matched.roomId);
-      io.to(matched.roomId).emit(MATCHING_EVENTS.FOUND_ROOM, matched);
-    } else {
-      const newRoom = await matchingGateway.createRoom({ user, preferences });
-      socket.join(newRoom);
+  socket.on(
+    MATCHING_EVENTS.JOIN_ROOM,
+    async (user: User, preferences: Preferences) => {
+      const matched = matchingGateway.joinRandomRoom({ user, preferences });
+
+      if (matched) {
+        socket.join(matched.roomId);
+        io.to(matched.roomId).emit(MATCHING_EVENTS.FOUND_ROOM, matched);
+      } else {
+        const newRoom = await matchingGateway.createRoom({ user, preferences });
+        socket.join(newRoom);
+      }
     }
+  );
+
+  socket.on(MATCHING_EVENTS.LEAVE_ROOM, async (user: User) => {
+    matchingGateway.leaveRoom(user);
   });
 });
