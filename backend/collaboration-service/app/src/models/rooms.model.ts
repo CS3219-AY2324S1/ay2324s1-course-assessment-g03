@@ -185,6 +185,8 @@ export const leaveRoom = (roomId: string, userId: string): types.leaveRoomType =
             data: { userId: "User not found" }
         }
     } else {
+
+        rooms[roomId].users.set(userId, { id: userId, connected: false })
         return {
             status: JSEND_STATUS.SUCCESS,
             code: HttpStatus.OK,
