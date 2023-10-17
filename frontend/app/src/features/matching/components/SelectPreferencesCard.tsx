@@ -1,10 +1,6 @@
+import React, { useEffect, useMemo, useRef } from "react";
 import { Card, CustomButton } from "@/components";
-import {
-  DIFFICULTY,
-  DifficultyType,
-  TOPIC_TAG,
-  TopicTagType,
-} from "@/constants/question";
+import { DIFFICULTY, DifficultyType, TopicTagType } from "@/constants/question";
 import { Preferences } from "@/types/matching";
 import {
   FormControl,
@@ -17,6 +13,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
+import { useGetQuestionFilters } from "../api";
 
 type PreferencesFormValues = {
   difficulties: {
@@ -33,9 +30,47 @@ type Props = {
   joinCallback: (preferences: Preferences) => void;
 };
 
-export const SelectPreferencesCard = ({ joinCallback }: Props) => {
+const getTopicsForDifficulty = (
+  difficulties: {
+    value: DifficultyType;
+    label: DifficultyType;
+  }[],
+  data?: {
+    Easy: string[];
+    Medium: string[];
+    Hard: string[];
+  },
+) => {
+  const topicsSet: Map<
+    string,
+    {
+      value: TopicTagType;
+      label: TopicTagType;
+    }
+  > = new Map();
+
+  if (!data) return topicsSet;
+
+  for (const difficulty of difficulties) {
+    const topics = data[difficulty.value];
+    if (topics) {
+      topics.forEach(topic =>
+        topicsSet.set(topic, {
+          value: topic as TopicTagType,
+          label: topic as TopicTagType,
+        }),
+      );
+    }
+  }
+
+  return topicsSet;
+};
+
+export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
   const {
     handleSubmit,
+    setValue,
+    watch,
     control,
     formState: { errors, isSubmitting },
   } = useForm<PreferencesFormValues>({
@@ -44,6 +79,39 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
       topics: [],
     },
   });
+  const watchDifficulties = watch("difficulties");
+  const watchTopics = watch("topics");
+  const prevTopicsLength = useRef(watchTopics.length);
+  const { isLoading, data } = useGetQuestionFilters();
+
+  const difficultyOptions = useMemo(() => {
+    return Object.values(DIFFICULTY).map(difficulty => ({
+      value: difficulty,
+      label: difficulty,
+    }));
+  }, []);
+
+  const topicOptions = useMemo(
+    () => getTopicsForDifficulty(watchDifficulties, data?.data),
+    [watchDifficulties],
+  );
+
+  // Filter user selected topics when difficulty changes
+  useEffect(() => {
+    // Only filter new topics when difficulties are added
+    const currLength = watchTopics.length;
+    const prevLength = prevTopicsLength.current;
+    if (currLength <= prevLength) return;
+
+    const onDifficultiesChange = () => {
+      setValue(
+        "topics",
+        watchTopics.filter(topic => topicOptions.has(topic.value)),
+      );
+    };
+
+    onDifficultiesChange();
+  }, [watchDifficulties]);
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues = {
@@ -70,10 +138,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
                 isMulti
-                options={Object.values(DIFFICULTY).map(difficulty => ({
-                  value: difficulty,
-                  label: difficulty,
-                }))}
+                options={difficultyOptions}
                 onChange={field.onChange}
               />
             )}
@@ -92,12 +157,11 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
+                isLoading={isLoading}
                 isMulti
-                options={Object.values(TOPIC_TAG).map(difficulty => ({
-                  value: difficulty,
-                  label: difficulty,
-                }))}
+                options={[...topicOptions.values()]}
                 onChange={field.onChange}
+                value={watchTopics}
               />
             )}
           />
@@ -113,4 +177,4 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
       </VStack>
     </Card>
   );
-};
+});
