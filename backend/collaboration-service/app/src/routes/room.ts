@@ -1,7 +1,7 @@
 import express from "express";
 import type { Request, Response, NextFunction } from "express";
 import { v4 } from "uuid";
-import { createRoom, getRoomInfo } from "../models/rooms.model";
+import { createRoom, findUser, getRoomInfo } from "../models/rooms.model";
 import { HttpStatus } from "../utils/HTTP_Status_Codes";
 import { JSEND_STATUS } from "../types/models.type";
 import { METHOD_NOT_ALLOWED_ERROR } from "../constants/errors";
@@ -14,22 +14,22 @@ roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
-roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topics: string[]; }>, res: Response) => {
+roomRouter.post("/", async (req: Request<{}, {}, { difficulty: string[]; topic: string[]; }>, res: Response) => {
 
   const roomId = v4();
 
-  const { difficulties, topics } = req.body;
+  const { difficulty, topic } = req.body;
 
-  if (!difficulties || !(difficulties.every((d: string) => Object.keys(DIFFICULTY).includes(d)))) {
+  if (!difficulty || !(difficulty.every((d: string) => Object.keys(DIFFICULTY).includes(d)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
   }
 
-  if (!topics || !(topics.every((t: string) => Object.keys(TOPIC_TAG).includes(t)))) {
+  if (!topic || !(topic.every((t: string) => Object.keys(TOPIC_TAG).includes(t)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
   }
 
-  const mappedDifficulties = difficulties.map((diff) => diff as keyof typeof DIFFICULTY)
-  const mappedTopics = topics.map((t) => t as keyof typeof TOPIC_TAG)
+  const mappedDifficulties = difficulty.map((diff) => diff as keyof typeof DIFFICULTY)
+  const mappedTopics = topic.map((t) => t as keyof typeof TOPIC_TAG)
 
   const { code, data, status } = createRoom(roomId, mappedDifficulties, mappedTopics);
 
@@ -37,6 +37,14 @@ roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topic
 }).all("/", async (_req: Request, res: Response) => {
   return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ status: JSEND_STATUS.ERROR, data: { message: METHOD_NOT_ALLOWED_ERROR } });
 });
+
+roomRouter.get("/user/:userId", (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  const { code, status, data } = findUser(userId)
+
+  return res.status(code).json({ status, data });
+})
 
 roomRouter.get(
   "/:roomId",

@@ -40,11 +40,10 @@ authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
     if (!safeParsedUserServiceData.success) {
       return res.status(500).send(
         failApiResponse({
-          error: `Failed to parse response from user service GET ${
-            process.env.USERS_SERVICE_URL
-          }/api/users/email\n\Reason:\n${JSON.stringify(
-            safeParsedUserServiceData.error
-          )}`,
+          error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL
+            }/api/users/email\n\Reason:\n${JSON.stringify(
+              safeParsedUserServiceData.error
+            )}`,
         })
       );
     }
@@ -171,21 +170,24 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       );
     }
 
+    console.log("reached here")
+
     // Check if user exists in database
     const getUserResponse = await fetch(
       `${process.env.USERS_SERVICE_URL}/api/users/email/${primaryEmail}`
     );
+
+    console.log("reached here 2")
     const getUserData = await getUserResponse.json();
     const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
 
     if (!safeParsedUserServiceData.success) {
       return res.status(500).send(
         failApiResponse({
-          error: `Failed to parse response from user service GET ${
-            process.env.USERS_SERVICE_URL
-          }/api/users/email\nReason:\n${JSON.stringify(
-            safeParsedUserServiceData.error
-          )}`,
+          error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL
+            }/api/users/email\nReason:\n${JSON.stringify(
+              safeParsedUserServiceData.error
+            )}`,
         })
       );
     }
@@ -250,14 +252,15 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       if (!safeParsedCreateUserData.success) {
         return res.status(500).send(
           failApiResponse({
-            error: `Failed to parse response from user service POST ${
-              process.env.USERS_SERVICE_URL
-            }/api/users\nReason:\n${JSON.stringify(
-              safeParsedCreateUserData.error
-            )}`,
+            error: `Failed to parse response from user service POST ${process.env.USERS_SERVICE_URL
+              }/api/users\nReason:\n${JSON.stringify(
+                safeParsedCreateUserData.error
+              )}`,
           })
         );
       }
+
+      console.log("reached here 3")
 
       const parsedCreateUserData = safeParsedCreateUserData.data;
 

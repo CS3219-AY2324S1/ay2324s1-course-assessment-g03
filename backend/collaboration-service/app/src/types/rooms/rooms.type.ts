@@ -18,10 +18,15 @@ export type updateDocType = ModelResponse<success.updateDocData, failure.roomIdE
 
 export type getDocumentType = ModelResponse<success.getDocumentData, failure.roomIdError>
 
+export type joinRoomType = ModelResponse<success.joinRoomData, failure.roomIdError>
+
+export type leaveRoomType = ModelResponse<success.leaveRoomData, failure.roomIdError | failure.userIdError>
+
+export type findRoomUserType = ModelResponse<success.findRoomUserData, null>
+
 export type User = {
     id: string;
-    name: string;
-    avatar: string;
+    connected: boolean;
 }
 
 export type roomInfo = {
@@ -30,9 +35,10 @@ export type roomInfo = {
     updates: Update[]
     doc: Text;
     pending: ((value: any) => void)[];
-    users: User[];
+    users: Map<string, User>;
     difficulties: (keyof typeof DIFFICULTY)[];
     topics: (keyof typeof TOPIC_TAG)[];
     language: keyof typeof LANGUAGES;
+    open: boolean;
 }
 

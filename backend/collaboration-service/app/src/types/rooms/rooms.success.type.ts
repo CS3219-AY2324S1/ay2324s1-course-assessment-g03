@@ -1,5 +1,6 @@
 import { Text } from "@codemirror/state"
 import { Update } from "@codemirror/collab"
+import { User } from "./rooms.type";
 
 export type createRoomData = {
     created: moment.Moment;
@@ -33,4 +34,19 @@ export type updateDocData = {
 export type getDocumentData = {
     updates: Update[];
     doc: Text;
+}
+
+export type joinRoomData = {
+    roomId: string;
+    user: User;
+}
+
+export type leaveRoomData = {
+    roomId: string;
+    userId: string;
+}
+
+export type findRoomUserData = {
+    roomId?: string;
+    userId: string;
 }

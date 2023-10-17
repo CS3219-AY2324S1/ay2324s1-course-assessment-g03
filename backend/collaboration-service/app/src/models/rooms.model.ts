@@ -36,7 +36,7 @@ export const getRoomInfo = (roomId: string): types.getRoomType => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: {
                 roomId: "Room not found"
             }
@@ -58,7 +58,7 @@ export const getPullUpdatesInfo = (roomId: string): types.getPullUpdatesType => 
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: {
                 roomId: "Room not found"
             }
@@ -81,7 +81,7 @@ export const getUpdateInfo = (roomId: string): types.getUpdateType => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: { roomId: "Room not found" }
         }
     }
@@ -101,7 +101,7 @@ export const updateDocInfo = (roomId: string, doc: Text): types.updateDocType =>
     if (!(roomId in rooms)) {
         return {
             status: "fail",
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: { roomId: "Room not found" }
         }
     }
@@ -123,7 +123,7 @@ export const getDocumentInfo = (roomId: string): types.getDocumentType => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: { roomId: "Room not found" }
         }
     }
@@ -136,5 +136,79 @@ export const getDocumentInfo = (roomId: string): types.getDocumentType => {
         data: {
             updates, doc
         }
+    }
+}
+
+export const joinRoom = (roomId: string, userId: string): types.joinRoomType => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    const users = rooms[roomId].users
+
+    const currentUser = users.get(userId)
+
+    if (currentUser) {
+        currentUser.connected = true
+    } else {
+        users.set(userId, { id: userId, connected: true })
+    }
+
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: { roomId, user: { id: userId, connected: true } }
+    }
+}
+
+export const leaveRoom = (roomId: string, userId: string): types.leaveRoomType => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    const { users } = rooms[roomId]
+
+    const currentUser = users.get(userId)
+
+    if (!currentUser) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { userId: "User not found" }
+        }
+    } else {
+        return {
+            status: JSEND_STATUS.SUCCESS,
+            code: HttpStatus.OK,
+            data: { roomId, userId: currentUser.id }
+        }
+    }
+}
+
+export const findUser = (userId: string): types.findRoomUserType => {
+    for (const roomId in rooms) {
+        const { users } = rooms[roomId]
+
+        if (users.get(userId)) {
+            return {
+                status: "success",
+                code: HttpStatus.OK,
+                data: { roomId, userId }
+            }
+        }
+    }
+
+    return {
+        status: "success",
+        code: HttpStatus.OK,
+        data: { userId },
     }
 }
