@@ -20,11 +20,11 @@ roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topic
 
   const { difficulties, topics } = req.body;
 
-  if (!difficulties || !(difficulties.every((d: string) => Object.values(DIFFICULTY).includes(d as DifficultyValue)))) {
+  if (difficulties && !(difficulties.every((d: string) => Object.values(DIFFICULTY).includes(d as DifficultyValue)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
   }
 
-  if (!topics || !(topics.every((t: string) => Object.values(TOPIC_TAG).includes(t as TopicValue)))) {
+  if (topics && !(topics.every((t: string) => Object.values(TOPIC_TAG).includes(t as TopicValue)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
   }
 
