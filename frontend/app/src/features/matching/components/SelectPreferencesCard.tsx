@@ -146,6 +146,7 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
                 closeMenuOnSelect={false}
                 isLoading={isLoading}
                 isMulti
+                menuPlacement="auto"
                 options={topicOptions}
                 onChange={onChange}
                 value={selectedTopics}
