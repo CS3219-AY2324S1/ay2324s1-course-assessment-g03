@@ -18,7 +18,6 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
 
   return (
     <Box
-      background="dark.500"
       borderBottomWidth={isBorderless ? "0px" : "1px"}
       borderBottomColor="light"
     >
