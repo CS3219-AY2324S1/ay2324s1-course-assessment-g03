@@ -21,7 +21,7 @@ export const API_ENDPOINT = {
    */
   QUESTIONS: "/questions",
   QUESTIONS_GET_ALL: "/questions/all",
-  QUESTIONS_GET_FILTERS: "questions/filters",
+  QUESTIONS_GET_FILTERS: "/questions/filters",
 
   /**
    * User service

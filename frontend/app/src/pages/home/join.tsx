@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Socket, io } from "socket.io-client";
 import { Page } from "@/components";
@@ -19,36 +19,39 @@ function JoinPage() {
   const [otherUser, setOtherUser] = useState<User | undefined>();
   const socketRef = useRef<Socket | null>(null);
 
-  const joinRoom = async (preferences: Preferences) => {
-    if (socketRef.current == null) {
-      socketRef.current = io(env.VITE_BACKEND_URL, {
-        path: WEBSOCKET_PATH.MATCHING,
-        withCredentials: true,
+  const joinRoom = useCallback(
+    async (preferences: Preferences) => {
+      if (socketRef.current == null) {
+        socketRef.current = io(env.VITE_BACKEND_URL, {
+          path: WEBSOCKET_PATH.MATCHING,
+          withCredentials: true,
+        });
+      }
+
+      const { current: socket } = socketRef;
+
+      setIsWaitingForMatch(true);
+      socket.connect();
+      socket.emit(MATCHING_EVENTS.JOIN_ROOM, user, preferences);
+      socket.on(MATCHING_EVENTS.FOUND_ROOM, room => {
+        const { user1, user2, roomId } = matchingSchema.parse(room);
+        setOtherUser(user1.id === user?.id ? user2 : user1);
+        setTimeout(() => {
+          navigate(`${ROUTE.ROOM}/${roomId}`);
+        }, COUNTDOWN_TO_JOIN * 1000);
       });
-    }
+    },
+    [navigate, user],
+  );
 
-    const { current: socket } = socketRef;
-
-    setIsWaitingForMatch(true);
-    socket.connect();
-    socket.emit(MATCHING_EVENTS.JOIN_ROOM, user, preferences);
-    socket.on(MATCHING_EVENTS.FOUND_ROOM, room => {
-      const { user1, user2, roomId } = matchingSchema.parse(room);
-      setOtherUser(user1.id === user?.id ? user2 : user1);
-      setTimeout(() => {
-        navigate(`${ROUTE.ROOM}/${roomId}`);
-      }, COUNTDOWN_TO_JOIN * 1000);
-    });
-  };
-
-  const leaveWaiting = () => {
+  const leaveWaiting = useCallback(() => {
     setIsWaitingForMatch(false);
     if (socketRef.current !== null) {
       const { current: socket } = socketRef;
       socket.emit(MATCHING_EVENTS.LEAVE_ROOM, user);
       socket.disconnect();
     }
-  };
+  }, [user]);
 
   return (
     <Page display="grid" placeItems="center">
