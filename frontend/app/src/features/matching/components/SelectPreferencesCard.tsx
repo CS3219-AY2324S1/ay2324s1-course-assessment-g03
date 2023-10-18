@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import { Card, CustomButton } from "@/components";
 import { DIFFICULTY, DifficultyType, TopicTagType } from "@/constants/question";
 import { Preferences } from "@/types/matching";
@@ -49,7 +49,7 @@ const getTopicsForDifficulty = (
     }
   > = new Map();
 
-  if (!data) return topicsSet;
+  if (!data || !difficulties) return topicsSet;
 
   for (const difficulty of difficulties) {
     const topics = data[difficulty.value];
@@ -69,7 +69,6 @@ const getTopicsForDifficulty = (
 export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
   const {
     handleSubmit,
-    setValue,
     watch,
     control,
     formState: { errors, isSubmitting },
@@ -81,7 +80,6 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
   });
   const watchDifficulties = watch("difficulties");
   const watchTopics = watch("topics");
-  const prevTopicsLength = useRef(watchTopics.length);
   const { isLoading, data } = useGetQuestionFilters();
 
   const difficultyOptions = useMemo(() => {
@@ -91,27 +89,16 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
     }));
   }, []);
 
-  const topicOptions = useMemo(
+  const topicOptionsMap = useMemo(
     () => getTopicsForDifficulty(watchDifficulties, data?.data),
-    [watchDifficulties],
+    [data?.data, watchDifficulties],
   );
 
-  // Filter user selected topics when difficulty changes
-  useEffect(() => {
-    // Only filter new topics when difficulties are added
-    const currLength = watchTopics.length;
-    const prevLength = prevTopicsLength.current;
-    if (currLength <= prevLength) return;
+  const topicOptions = [...topicOptionsMap.values()];
 
-    const onDifficultiesChange = () => {
-      setValue(
-        "topics",
-        watchTopics.filter(topic => topicOptions.has(topic.value)),
-      );
-    };
-
-    onDifficultiesChange();
-  }, [watchDifficulties]);
+  const selectedTopics = watchTopics.filter(topic =>
+    topicOptionsMap.has(topic.value),
+  );
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues = {
@@ -132,14 +119,14 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
           <Controller
             name="difficulties"
             control={control}
-            render={({ field }) => (
+            render={({ field: { onChange } }) => (
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
                 isMulti
                 options={difficultyOptions}
-                onChange={field.onChange}
+                onChange={onChange}
               />
             )}
           />
@@ -152,16 +139,16 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
           <Controller
             name="topics"
             control={control}
-            render={({ field }) => (
+            render={({ field: { onChange } }) => (
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
                 isLoading={isLoading}
                 isMulti
-                options={[...topicOptions.values()]}
-                onChange={field.onChange}
-                value={watchTopics}
+                options={topicOptions}
+                onChange={onChange}
+                value={selectedTopics}
               />
             )}
           />

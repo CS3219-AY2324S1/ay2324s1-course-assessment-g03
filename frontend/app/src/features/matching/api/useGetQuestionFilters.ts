@@ -3,14 +3,15 @@ import { makeSuccessResponseSchema } from "@/lib/api";
 import { useQuery } from "react-query";
 import { z } from "zod";
 import { API_ENDPOINT } from "@/constants/api";
+import { DIFFICULTY } from "@/constants/question";
 
 const GET_QUESTION_FILTERS = "question-filters";
 
 const getQuestionFiltersSchema = makeSuccessResponseSchema(
   z.object({
-    Easy: z.array(z.string()),
-    Medium: z.array(z.string()),
-    Hard: z.array(z.string()),
+    [DIFFICULTY.EASY]: z.array(z.string()),
+    [DIFFICULTY.MEDIUM]: z.array(z.string()),
+    [DIFFICULTY.HARD]: z.array(z.string()),
   }),
 );
 
