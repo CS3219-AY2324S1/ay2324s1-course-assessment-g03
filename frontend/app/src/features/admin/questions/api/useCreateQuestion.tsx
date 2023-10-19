@@ -4,11 +4,11 @@ import { safeParse } from "@/lib/safeParse";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   CreateQuestionVariables,
+  GetQuestionsResponse,
   PostQuestionResponse,
   postQuestionResponseSchema,
 } from "../types";
 import { QUESTIONS_QUERY_KEY } from "../constants";
-import { GetQuestionsResponse } from "./useQuestions";
 
 const queryKey = [QUESTIONS_QUERY_KEY];
 
