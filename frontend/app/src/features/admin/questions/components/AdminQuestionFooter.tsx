@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 import {
+  PiCaretDoubleLeftBold,
+  PiCaretDoubleRightBold,
   PiCaretDownBold,
   PiCaretLeftBold,
   PiCaretRightBold,
@@ -37,7 +39,7 @@ const AdminQuestionFooter = ({
 }: AdminQuestionFooterProps) => (
   <HStack spacing="4" alignSelf="end">
     <HStack>
-      <Text fontWeight="semibold" fontSize="sm">
+      <Text fontWeight="medium" fontSize="sm">
         Rows per page
       </Text>
       <NumberInput
@@ -74,32 +76,56 @@ const AdminQuestionFooter = ({
       </NumberInput>
     </HStack>
     <HStack>
-      <Text fontWeight="semibold" fontSize="sm">
-        Page {currPage + 1} of {pageCount}
+      <Text fontWeight="medium" fontSize="sm">
+        Page {currPage} of {pageCount}
       </Text>
       <IconButton
+        aria-label="First Page"
+        icon={<PiCaretDoubleLeftBold />}
+        size="sm"
         variant="outline"
+        onClick={async () => {
+          await setPageNum(1);
+          refetch();
+        }}
+        isLoading={isRefetching}
+        isDisabled={currPage === 1}
+      />
+      <IconButton
         aria-label="Previous Page"
         icon={<PiCaretLeftBold />}
         size="sm"
+        variant="outline"
         onClick={async () => {
           await setPageNum(pageNum - 1);
           refetch();
         }}
         isLoading={isRefetching}
-        isDisabled={currPage === 0}
+        isDisabled={currPage === 1}
       />
       <IconButton
-        variant="outline"
         aria-label="Next Page"
         icon={<PiCaretRightBold />}
         size="sm"
+        variant="outline"
         onClick={async () => {
           await setPageNum(pageNum + 1);
           refetch();
         }}
         isLoading={isRefetching}
-        isDisabled={currPage + 1 === pageCount}
+        isDisabled={currPage === pageCount}
+      />
+      <IconButton
+        aria-label="Last Page"
+        icon={<PiCaretDoubleRightBold />}
+        size="sm"
+        variant="outline"
+        onClick={async () => {
+          await setPageNum(pageCount);
+          refetch();
+        }}
+        isLoading={isRefetching}
+        isDisabled={currPage === pageCount}
       />
     </HStack>
   </HStack>
