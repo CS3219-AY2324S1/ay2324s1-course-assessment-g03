@@ -19,11 +19,11 @@ import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
 
 type PreferencesFormValues = {
-  difficulty: {
+  difficulties: {
     value: DifficultyType;
     label: DifficultyType;
   }[];
-  category: {
+  topics: {
     value: TopicTagType;
     label: TopicTagType;
   }[];
@@ -40,15 +40,15 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
     formState: { errors, isSubmitting },
   } = useForm<PreferencesFormValues>({
     defaultValues: {
-      difficulty: [],
-      category: [],
+      difficulties: [],
+      topics: [],
     },
   });
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues = {
-      difficulty: values.difficulty.map(difficulty => difficulty.value),
-      category: values.category.map(category => category.value),
+      difficulties: values.difficulties.map(difficulty => difficulty.value),
+      topics: values.topics.map(topic => topic.value),
     };
     joinCallback(parsedValues);
   });
@@ -59,10 +59,10 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
         <Text alignSelf="start" textStyle="heading-md">
           Select question preferences
         </Text>
-        <FormControl isInvalid={!!errors["difficulty"]}>
+        <FormControl isInvalid={!!errors["difficulties"]}>
           <FormLabel color="light.100">Difficulty</FormLabel>
           <Controller
-            name="difficulty"
+            name="difficulties"
             control={control}
             render={({ field }) => (
               <Select
@@ -79,13 +79,13 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
             )}
           />
           <FormErrorMessage>
-            {errors["difficulty"] && errors["difficulty"].message}
+            {errors["difficulties"] && errors["difficulties"].message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={!!errors["category"]}>
+        <FormControl isInvalid={!!errors["topics"]}>
           <FormLabel color="light.100">Category</FormLabel>
           <Controller
-            name="category"
+            name="topics"
             control={control}
             render={({ field }) => (
               <Select
@@ -102,7 +102,7 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
             )}
           />
           <FormErrorMessage>
-            {errors["category"] && errors["category"].message}
+            {errors["topics"] && errors["topics"].message}
           </FormErrorMessage>
         </FormControl>
         <HStack alignSelf="end" paddingTop="0.5rem">

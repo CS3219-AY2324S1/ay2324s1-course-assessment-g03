@@ -18,8 +18,9 @@ import {
   githubUserResponseSchema,
 } from "../types/github";
 import { getUserSchema } from "../types/usersService";
-import { HTTP_STATUS } from "../types";
+import { HTTP_STATUS, HTTP_STATUS_CODE } from "../types";
 import { User } from "../types/user";
+import { getRoomIdFromUserIdSchema } from "../types/collaborationService";
 
 export const authRouter = Router();
 
@@ -38,7 +39,7 @@ authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
     const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
 
     if (!safeParsedUserServiceData.success) {
-      return res.status(500).send(
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
         failApiResponse({
           error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL
             }/api/users/email\n\Reason:\n${JSON.stringify(
@@ -52,18 +53,43 @@ authRouter.get("/", authMiddleware, async (req: Request, res: Response) => {
 
     if (parsedUserServiceData.status === HTTP_STATUS.FAIL) {
       res.clearCookie(process.env.JWT_COOKIE_NAME);
-      return res.status(401).send(
+      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).send(
         failApiResponse({
           error: `User with email ${primaryEmail} does not exist in user service`,
         })
       );
     }
 
-    return res.send(
-      successApiResponse({ user: parsedUserServiceData.data.user })
-    );
+    let user: User & { roomId?: string } = parsedUserServiceData.data.user;
+
+    // Check if user is currently in a room (Do not fail if user is not in a room)
+    const userId = user.id;
+    try {
+      const getRoomIdResponse = await fetch(
+        `${process.env.COLLABORATION_SERVICE_URL}/api/collaboration/room/user/${userId}`
+      );
+      const getRoomIdData = await getRoomIdResponse.json();
+      const safeParsedRoomIdData =
+        getRoomIdFromUserIdSchema.safeParse(getRoomIdData);
+      if (safeParsedRoomIdData.success) {
+        const parsedRoomIdData = safeParsedRoomIdData.data;
+        if (
+          parsedRoomIdData.status === HTTP_STATUS.SUCCESS &&
+          parsedRoomIdData.data.roomId
+        ) {
+          user = { ...user, roomId: parsedRoomIdData.data.roomId };
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Error getting room ID:",
+        error instanceof Error ? error.message : JSON.stringify(error)
+      );
+    }
+
+    return res.send(successApiResponse({ user }));
   } catch (error) {
-    return res.status(500).send(
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
       failApiResponse({
         error: error instanceof Error ? error.message : "An error has occurred",
       })
@@ -87,7 +113,7 @@ authRouter.get("/github/authorize", async (req: Request, res: Response) => {
 
     res.send(successApiResponse({ url: response.url }));
   } catch (error) {
-    return res.status(500).send(
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
       failApiResponse({
         error: error instanceof Error ? error.message : "An error has occurred",
       })
@@ -101,7 +127,9 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
 
     // Validating state to prevent CSRF
     if (state !== GITHUB_OAUTH_STATE) {
-      return res.status(401).send(failApiResponse({ error: "Invalid state" }));
+      return res
+        .status(HTTP_STATUS_CODE.UNAUTHORIZED)
+        .send(failApiResponse({ error: "Invalid state" }));
     }
 
     const queryParams: Record<string, string> = {
@@ -124,7 +152,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     const tokenData = await tokenResponse.json();
 
     if (tokenData["error"]) {
-      return res.status(401).send(
+      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).send(
         failApiResponse({
           error: tokenData["error"],
           error_description: tokenData["error_description"],
@@ -134,7 +162,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
 
     if (!tokenData["access_token"]) {
       return res
-        .status(401)
+        .status(HTTP_STATUS_CODE.UNAUTHORIZED)
         .send(failApiResponse({ error: "Access token not found" }));
     }
 
@@ -151,7 +179,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     const safeParsedEmailData = githubEmailResponseSchema.safeParse(emailData);
 
     if (!safeParsedEmailData.success) {
-      return res.status(500).send(
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
         failApiResponse({
           error: `Failed to parse response from GitHub GET ${GITHUB_USER_EMAIL_ENDPOINT}\nReason:\n${JSON.stringify(
             safeParsedEmailData.error
@@ -163,7 +191,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     const primaryEmail = getPrimaryEmail(safeParsedEmailData.data);
 
     if (!primaryEmail) {
-      return res.status(500).send(
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
         failApiResponse({
           error: `Primary GitHub email not found in response\nResponse:\n${safeParsedEmailData.data}`,
         })
@@ -178,7 +206,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     const safeParsedUserServiceData = getUserSchema.safeParse(getUserData);
 
     if (!safeParsedUserServiceData.success) {
-      return res.status(500).send(
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
         failApiResponse({
           error: `Failed to parse response from user service GET ${process.env.USERS_SERVICE_URL
             }/api/users/email\nReason:\n${JSON.stringify(
@@ -207,7 +235,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       const safeParsedUserData = githubUserResponseSchema.safeParse(userData);
 
       if (!safeParsedUserData.success) {
-        return res.status(500).send(
+        return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
           failApiResponse({
             error: `Failed to parse response from GitHub GET ${GITHUB_USER_ENDPOINT}\nReason:\n${JSON.stringify(
               safeParsedUserData.error
@@ -246,7 +274,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       const safeParsedCreateUserData = getUserSchema.safeParse(createUserData);
 
       if (!safeParsedCreateUserData.success) {
-        return res.status(500).send(
+        return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
           failApiResponse({
             error: `Failed to parse response from user service POST ${process.env.USERS_SERVICE_URL
               }/api/users\nReason:\n${JSON.stringify(
@@ -259,7 +287,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
       const parsedCreateUserData = safeParsedCreateUserData.data;
 
       if (parsedCreateUserData.status === HTTP_STATUS.FAIL) {
-        return res.status(500).send(
+        return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
           failApiResponse({
             error: `Failed to create user in user service\nResponse:\n${JSON.stringify(
               parsedCreateUserData.data
@@ -277,7 +305,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     }
 
     if (!user) {
-      return res.status(500).send(
+      return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
         failApiResponse({
           error: `Failed to find/generate user in user service`,
         })
@@ -292,7 +320,7 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
     res.cookie(process.env.JWT_COOKIE_NAME, token, cookieOptions);
     return res.send(successApiResponse({ message: "Successfully logged in" }));
   } catch (error) {
-    return res.status(500).send(
+    return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(
       failApiResponse({
         error: error instanceof Error ? error.message : "An error has occurred",
       })
