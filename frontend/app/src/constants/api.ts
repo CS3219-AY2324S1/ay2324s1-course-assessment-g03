@@ -20,6 +20,16 @@ export const API_ENDPOINT = {
    * User service
    */
   USERS: "/users",
+
+  /**
+   * Collaboration service
+   */
+  COLLABORATION: "/collaboration",
+
+  /**
+   * Question service
+   */
+  QUESTIONS: "/questions"
 } as const;
 
 /**

@@ -1,11 +1,11 @@
 import { ChangeSet } from "@codemirror/state";
-import { getDocumentInfo, getPullUpdatesInfo, getUpdateInfo, updateDocInfo } from "../models/rooms.model";
 import { Socket } from "socket.io"
 import { SOCKET_API } from "../constants/socket";
 import { JSEND_STATUS } from "../types/models.type";
+import { getOneRoomDoc, updateOneDoc } from "../models/rooms.model";
 
 export function handlePullUpdates(socket: Socket, version: number, roomId: string) {
-    const pullUpdatesData = getPullUpdatesInfo(roomId)
+    const pullUpdatesData = getOneRoomDoc(roomId)
 
     if (pullUpdatesData.status !== JSEND_STATUS.SUCCESS) {
         return console.error(pullUpdatesData.data)
@@ -21,7 +21,7 @@ export function handlePullUpdates(socket: Socket, version: number, roomId: strin
 
 export function handlePushUpdates(socket: Socket, version: number, docUpdatesData: string, roomId: string) {
     const docUpdates = JSON.parse(docUpdatesData);
-    const updateInfo = getUpdateInfo(roomId)
+    const updateInfo = getOneRoomDoc(roomId)
     if (updateInfo.status !== JSEND_STATUS.SUCCESS) {
         console.error(updateInfo.data)
     } else {
@@ -37,7 +37,7 @@ export function handlePushUpdates(socket: Socket, version: number, docUpdatesDat
                     newUpdates.push({ changes, clientID: update.clientID });
                     updates.push({ changes, clientID: update.clientID });
                     doc = changes.apply(doc);
-                    updateDocInfo(roomId, doc)
+                    updateOneDoc(roomId, doc)
                 }
                 socket.emit(SOCKET_API.PUSH_UPDATES_RESPONSE, true);
 
@@ -52,7 +52,7 @@ export function handlePushUpdates(socket: Socket, version: number, docUpdatesDat
 }
 
 export function handleGetDocument(socket: Socket, roomId: string) {
-    const docData = getDocumentInfo(roomId)
+    const docData = getOneRoomDoc(roomId)
     if (docData.status !== JSEND_STATUS.SUCCESS) {
         console.log(docData.data)
     } else {

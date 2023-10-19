@@ -1,15 +1,18 @@
 import moment from "moment";
 import { Text } from "@codemirror/state"
 import * as types from "../types/rooms/rooms.type"
-import { generateNewDocument } from "../helpers/rooms.helper";
 import { rooms } from "../db/rooms.db";
 import { HttpStatus } from "../utils/HTTP_Status_Codes"
 import { JSEND_STATUS } from "../types/models.type"
-import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
+import { DEFAULT_LANGUAGE } from "../constants/language";
+import { v4 } from "uuid";
+import { DifficultyType, TopicType } from "../constants/question";
 
-export const createRoom = (roomId: string,
-    difficulties: (keyof typeof DIFFICULTY)[],
-    topics: (keyof typeof TOPIC_TAG)[]): types.createRoomType => {
+export const createOneRoom = (difficulty: DifficultyType[],
+    topic: TopicType[]) => {
+
+    const roomId = v4()
+
     if (roomId in rooms) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -20,7 +23,21 @@ export const createRoom = (roomId: string,
         }
     }
 
-    rooms[roomId] = generateNewDocument(roomId, difficulties, topics)
+    const newRoom = {
+        created: moment(),
+        updated: moment(),
+        updates: [],
+        doc: Text.of([`Welcome to Room ${roomId}`]),
+        pending: [],
+        difficulty,
+        topic,
+        users: new Map<string, types.User>(),
+        userOrder: [],
+        open: true,
+        language: DEFAULT_LANGUAGE
+    }
+
+    rooms[roomId] = newRoom
 
     return {
         status: JSEND_STATUS.SUCCESS,
@@ -32,7 +49,7 @@ export const createRoom = (roomId: string,
     }
 }
 
-export const getRoomInfo = (roomId: string): types.getRoomType => {
+export const getOneRoomInfo = (roomId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -43,18 +60,21 @@ export const getRoomInfo = (roomId: string): types.getRoomType => {
         }
     }
 
-    const { updates, doc, pending, updated, created } = rooms[roomId]
+    // Transform users into list
+    const { users, userOrder, ...roomData } = rooms[roomId]
+    const mappedUsers = userOrder.map(userId => users.get(userId))
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
         data: {
-            updates, doc, pending, updated, created
+            users: mappedUsers,
+            ...roomData
         }
     }
 }
 
-export const getPullUpdatesInfo = (roomId: string): types.getPullUpdatesType => {
+export const getOneRoomDoc = (roomId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -65,19 +85,18 @@ export const getPullUpdatesInfo = (roomId: string): types.getPullUpdatesType => 
         }
     }
 
-    const { updates, pending } = rooms[roomId]
+    const { updates, pending, doc } = rooms[roomId]
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
         data: {
-            updates, pending
+            updates, pending, doc
         }
     }
-
 }
 
-export const getUpdateInfo = (roomId: string): types.getUpdateType => {
+export const getOneUpdateData = (roomId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -97,7 +116,7 @@ export const getUpdateInfo = (roomId: string): types.getUpdateType => {
     }
 }
 
-export const updateDocInfo = (roomId: string, doc: Text): types.updateDocType => {
+export const updateOneDoc = (roomId: string, doc: Text) => {
     if (!(roomId in rooms)) {
         return {
             status: "fail",
@@ -118,28 +137,7 @@ export const updateDocInfo = (roomId: string, doc: Text): types.updateDocType =>
     }
 }
 
-
-export const getDocumentInfo = (roomId: string): types.getDocumentType => {
-    if (!(roomId in rooms)) {
-        return {
-            status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.NOT_FOUND,
-            data: { roomId: "Room not found" }
-        }
-    }
-
-    const { updates, doc } = rooms[roomId]
-
-    return {
-        status: JSEND_STATUS.SUCCESS,
-        code: HttpStatus.OK,
-        data: {
-            updates, doc
-        }
-    }
-}
-
-export const joinRoom = (roomId: string, userId: string): types.joinRoomType => {
+export const joinOneRoom = (roomId: string, userId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -150,22 +148,22 @@ export const joinRoom = (roomId: string, userId: string): types.joinRoomType => 
 
     const users = rooms[roomId].users
 
-    const currentUser = users.get(userId)
-
-    if (currentUser) {
-        currentUser.connected = true
-    } else {
-        users.set(userId, { id: userId, connected: true })
+    if (!users.has(userId)) {
+        rooms[roomId].userOrder.push(userId)
     }
+
+    users.set(userId, { id: userId, connected: true })
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
-        data: { roomId, user: { id: userId, connected: true } }
+        data: {
+            user: { id: userId, connected: true }
+        }
     }
 }
 
-export const leaveRoom = (roomId: string, userId: string): types.leaveRoomType => {
+export const leaveOneRoom = (roomId: string, userId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -174,36 +172,38 @@ export const leaveRoom = (roomId: string, userId: string): types.leaveRoomType =
         }
     }
 
-    const { users } = rooms[roomId]
+    const users = rooms[roomId].users
 
-    const currentUser = users.get(userId)
-
-    if (!currentUser) {
+    if (!users.has(userId)) {
         return {
             status: JSEND_STATUS.FAILURE,
             code: HttpStatus.NOT_FOUND,
             data: { userId: "User not found" }
         }
-    } else {
+    }
 
-        rooms[roomId].users.set(userId, { id: userId, connected: false })
-        return {
-            status: JSEND_STATUS.SUCCESS,
-            code: HttpStatus.OK,
-            data: { roomId, userId: currentUser.id }
+    users.set(userId, { id: userId, connected: false })
+
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: {
+            user: { id: userId, connected: false }
         }
     }
 }
 
-export const findUser = (userId: string): types.findRoomUserType => {
+export const findUserInRoom = (userId: string) => {
     for (const roomId in rooms) {
         const { users } = rooms[roomId]
 
         if (users.get(userId)) {
             return {
-                status: "success",
+                status: JSEND_STATUS.SUCCESS,
                 code: HttpStatus.OK,
-                data: { roomId, userId }
+                data: {
+                    roomId, userId
+                }
             }
         }
     }
@@ -211,6 +211,6 @@ export const findUser = (userId: string): types.findRoomUserType => {
     return {
         status: "success",
         code: HttpStatus.OK,
-        data: { userId },
+        data: { userId }
     }
 }

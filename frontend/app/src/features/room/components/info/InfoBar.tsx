@@ -1,28 +1,26 @@
 import { HStack } from "@chakra-ui/react";
 import { DifficultyBadge, TopicBadge } from "@/features/room";
-import { DifficultyType } from "@/constants/question";
+import { DifficultyType, TopicTagType } from "@/constants/question";
 import { UserInfo } from "@/components/UserInfo/UserInfo";
-import { useAuth } from "@/hooks";
+import { User } from "@/types/user";
 
 interface InfoBarProps {
-  difficulty: DifficultyType;
-  topic: string;
+  difficulty: DifficultyType[];
+  topic: TopicTagType[];
+  users: User[];
 }
 
-export const InfoBar = ({ difficulty, topic }: InfoBarProps) => {
-
-  const currentUser = useAuth().data?.user;
+export const InfoBar = ({ difficulty, topic, users }: InfoBarProps) => {
 
   return (
     <HStack justifyContent={"space-between"}>
       <HStack>
-        <UserInfo user={currentUser} />
-        <UserInfo user={undefined} />
+        {users.map((user) => (<UserInfo user={user} />))}
       </HStack>
       <HStack>
-        <DifficultyBadge difficulty={difficulty} />
-        <TopicBadge topic={topic} />
+        {difficulty.map((d) => <DifficultyBadge key={d} difficulty={d} />)}
+        {topic.map((t) => <TopicBadge key={t} topic={t} />)}
       </HStack>
-    </HStack>
+    </HStack >
   );
 };

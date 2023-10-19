@@ -7,8 +7,8 @@ import {
   handlePushUpdates,
 } from "./helpers/socket.helper";
 import { SOCKET_API, SOCKET_INVALID_ROOM_ID, SOCKET_INVALID_USER_ID } from "./constants/socket";
-import { joinRoom, leaveRoom } from "./models/rooms.model";
 import { rooms } from "./db/rooms.db";
+import { joinOneRoom, leaveOneRoom } from "./models/rooms.model";
 
 const port = process.env.PORT || 80;
 
@@ -42,7 +42,7 @@ io.on(SOCKET_API.CONNECT, (socket) => {
   }
 
   socket.join(roomId);
-  joinRoom(roomId, userId)
+  joinOneRoom(roomId, userId)
   socket.to(roomId).emit(SOCKET_API.CONNECT_RESPONSE, userId)
 
   /* Socket API to pull updates from the server */
@@ -65,7 +65,7 @@ io.on(SOCKET_API.CONNECT, (socket) => {
 
   /* Socket API to disconnect from the server */
   socket.on(SOCKET_API.DISCONNECT, () => {
-    leaveRoom(roomId, userId)
+    leaveOneRoom(roomId, userId)
     socket.to(roomId).emit(SOCKET_API.DISCONNECT_RESPONSE, userId)
   });
 });
