@@ -8,8 +8,7 @@ import {
   MutationCache,
   Query,
   QueryKey,
-} from "react-query";
-import { QueryClientProvider as QueryClientProviderNew } from "@tanstack/react-query";
+} from "@tanstack/react-query";
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { globalToastOptions, theme } from "@/theme";
 import "@fontsource-variable/inter";
@@ -54,11 +53,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ToastContainer />
     <ChakraProvider theme={theme} toastOptions={globalToastOptions}>
-      <QueryClientProviderNew client={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </QueryClientProviderNew>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,
 );

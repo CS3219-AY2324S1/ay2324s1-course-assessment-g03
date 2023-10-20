@@ -2,7 +2,7 @@ import { API_ENDPOINT } from "@/constants/api";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { backendApi } from "@/lib/axios";
 import { userSchema } from "@/types/user";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
