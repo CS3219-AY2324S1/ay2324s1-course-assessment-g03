@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { LANGUAGES, DEFAULT_LANGUAGE } from "@/constants/language";
-import { SingleValue } from "chakra-react-select";
-import { LanguageSupport } from "node_modules/@codemirror/language/dist";
 import { env } from "@/lib/env";
 import { API_ENDPOINT, API_RESPONSE_STATUS, WEBSOCKET_PATH } from "@/constants/api";
 import { DifficultyType, TopicTagType } from "@/constants/question";
@@ -36,8 +34,8 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
   const [questionOptions, setQuestionOptions] = useState<{ label: string; value: string; }[]>([]);
   const [questionId, setQuestionId] = useState(0);
   const [loading, setLoading] = useState(true)
-  const id = useAuth().data?.user?.id
 
+  const id = useAuth().data?.user?.id
 
   useEffect(() => {
     const connectSocket = io(`${env.VITE_BACKEND_URL}`, {
@@ -79,17 +77,6 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
     getQuestionOptions()
   }, [topic, difficulty])
 
-
-  const handleLanguageChange = (
-    e: SingleValue<{
-      label: string;
-      value: LanguageSupport;
-    }>,
-  ) => {
-    setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE);
-  };
-
-
   if (loading || !id) { return <Spinner /> }
 
   const options = (
@@ -111,16 +98,11 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
             value: languageSupport,
           }),
         )}
-        onChangeHandler={handleLanguageChange}
+        onChangeHandler={(e) => setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)}
       />
     </HStack>
   );
 
-  const codeEditor = socket ? (
-    <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
-  ) : (
-    <Spinner />
-  );
 
   const visibleView = (
     <HStack height="full" width="full">
@@ -130,7 +112,7 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
       </VStack>
       <VStack align="left" height="full" width="50%">
         <Text textStyle="sm">Code</Text>
-        {codeEditor}
+        <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
       </VStack>
     </HStack>
   );
@@ -138,7 +120,7 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
   const hiddenView = (
     <VStack align="left" height="full" width="full">
       {options}
-      {codeEditor}
+      <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
     </VStack>
   );
 

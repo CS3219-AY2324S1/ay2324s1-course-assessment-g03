@@ -7,7 +7,7 @@ import { getDocument, peerExtension } from "@/lib/collab";
 import { Spinner } from "@chakra-ui/react";
 
 interface CodeEditorProps {
-  socket: Socket;
+  socket?: Socket | null;
   className?: string;
   roomId: string;
   language: LanguageSupport;
@@ -20,7 +20,10 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
+      if (!socket) {
+        return;
+      }
       try {
         const { version, doc } = await getDocument(socket, roomId);
         setVersion(version);
@@ -30,20 +33,20 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
         setError(error);
       }
       setLoading(false);
-    };
+    }
 
     fetchData();
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("pullUpdateResponse");
-      socket.off("pushUpdateResponse");
-      socket.off("getDocumentResponse");
+      socket?.off("connect");
+      socket?.off("disconnect");
+      socket?.off("pullUpdateResponse");
+      socket?.off("pushUpdateResponse");
+      socket?.off("getDocumentResponse");
     };
   }, [socket, roomId]);
 
-  if (isLoading) {
+  if (isLoading || !socket) {
     return <Spinner />;
   } else if (error || version === null || doc === null) {
     return (
@@ -54,7 +57,6 @@ export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
   } else {
     return (
       <Box>
-        <Text>{`You are in room ${roomId}`}</Text>
         <CodeMirror
           height="100%"
           basicSetup={false}

@@ -31,7 +31,6 @@ export const QuestionDetails = ({ questionId }: QuestionDetailsProps) => {
         }
 
         getQuestionDetails()
-
     }, [questionId])
 
     return (

@@ -63,6 +63,11 @@ io.on(SOCKET_API.CONNECT, (socket) => {
     handleGetDocument(socket, roomId);
   });
 
+  /* Socket API to change the question */
+  socket.on(SOCKET_API.CHANGE_QUESTION, () => {
+
+  })
+
   /* Socket API to disconnect from the server */
   socket.on(SOCKET_API.DISCONNECT, () => {
     leaveOneRoom(roomId, userId)
