@@ -1,14 +1,18 @@
+import { ROUTE } from "@/constants/route";
+import { useAuth } from "@/hooks";
 import { Box, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-/**
- * TODO: Set up once the service is implemented
- */
-type SessionBarProps = {
-  session: any;
-};
+export const SessionBar = () => {
+  const { data } = useAuth();
+  const navigate = useNavigate();
 
-export const SessionBar = ({ session }: SessionBarProps) => {
-  console.log(session);
+  const roomId = data?.user?.roomId;
+
+  if (!roomId) {
+    return null;
+  }
+
   return (
     <Box
       inset="0"
@@ -16,13 +20,21 @@ export const SessionBar = ({ session }: SessionBarProps) => {
       position="absolute"
       h="fit-content"
       w="fit-content"
-      px="4.5rem"
-      py="0.5rem"
-      borderWidth="3px"
+      px="4rem"
+      py="0.375rem"
+      borderWidth="2px"
       borderRadius="full"
-      borderColor="light.500"
+      borderColor="primary.500"
+      background="dark.500"
+      onClick={() => navigate(`${ROUTE.ROOM}/${roomId}`)}
+      cursor="pointer"
+      _hover={{
+        borderColor: "primary.300",
+        background: "dark.400",
+      }}
+      transition="all 0.2s"
     >
-      <Text>Session in progress...</Text>
+      <Text textStyle="text-sm">Session in progress...</Text>
     </Box>
   );
 };

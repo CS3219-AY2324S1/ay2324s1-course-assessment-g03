@@ -139,7 +139,7 @@ def get_details_from_queries(queries: list[dict]):
     question_details["title"] = data.get("title", "")
     question_details["url"] = f"https://leetcode.com/problems/{data.get('titleSlug', '')}/"
     question_details["difficulty"] = data.get("difficulty", "")
-    question_details["id"] = data.get("questionId", "")
+    question_details["id"] = int(data.get("questionId", 0))
     question_details["paid_only"] = data.get("isPaidOnly", "")
     question_details["category"] = data.get("categoryTitle", "")
 

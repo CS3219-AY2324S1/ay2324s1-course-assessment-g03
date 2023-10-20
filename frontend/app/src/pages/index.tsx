@@ -1,9 +1,9 @@
-import { Button, Image, Text, VStack } from "@chakra-ui/react";
+import { Image, Text, VStack } from "@chakra-ui/react";
 import { useAuth } from "@/hooks";
 import { LoginWithGithubButton } from "@/features/auth";
 import { Link } from "react-router-dom";
 import { ROUTE } from "@/constants/route";
-import { Page } from "@/components";
+import { CustomButton, Page } from "@/components";
 
 function LandingPage() {
   const { data } = useAuth();
@@ -14,16 +14,16 @@ function LandingPage() {
         <Text
           textStyle="heading-3xl"
           textAlign="center"
-          color="light.50"
+          color="light.100"
           w="75%"
         >
           Let your peers help you ace technical interviews
         </Text>
         {data?.user ? (
           <>
-            <Button colorScheme="primary" as={Link} to={ROUTE.HOME}>
+            <CustomButton as={Link} to={ROUTE.HOME}>
               Get started
-            </Button>
+            </CustomButton>
           </>
         ) : (
           <LoginWithGithubButton />

@@ -8,11 +8,13 @@ interface CardProps extends BoxProps {
 export const Card = ({ children, ...boxProps }: CardProps) => {
   return (
     <Box
-      borderColor="light.500"
+      backgroundColor="light.500"
+      borderRadius="1.5rem"
+      borderColor="rgba(255,255,255,0.08)"
       borderWidth="1px"
-      borderRadius="6px"
+      boxShadow="0 4px 12px rgba(0,0,0,.24)"
       background="dark.950"
-      p="1.25rem"
+      p="2rem"
       {...boxProps}
     >
       {children}

@@ -5,7 +5,7 @@ import { createRoom, getRoomInfo } from "../models/rooms.model";
 import { HttpStatus } from "../utils/HTTP_Status_Codes";
 import { JSEND_STATUS } from "../types/models.type";
 import { METHOD_NOT_ALLOWED_ERROR } from "../constants/errors";
-import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
+import { DIFFICULTY, DifficultyValue, TOPIC_TAG, TopicValue } from "../constants/question";
 
 const roomRouter = express.Router();
 
@@ -20,11 +20,11 @@ roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topic
 
   const { difficulties, topics } = req.body;
 
-  if (!difficulties || !(difficulties.every((d: string) => Object.keys(DIFFICULTY).includes(d)))) {
+  if (difficulties && !(difficulties.every((d: string) => Object.values(DIFFICULTY).includes(d as DifficultyValue)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
   }
 
-  if (!topics || !(topics.every((t: string) => Object.keys(TOPIC_TAG).includes(t)))) {
+  if (topics && !(topics.every((t: string) => Object.values(TOPIC_TAG).includes(t as TopicValue)))) {
     return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
   }
 

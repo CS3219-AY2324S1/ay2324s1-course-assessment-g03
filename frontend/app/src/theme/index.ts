@@ -15,6 +15,13 @@ export const theme = extendTheme({
   colors,
   textStyles,
   fonts,
+  styles: {
+    global: {
+      body: {
+        background: "dark.500",
+      },
+    },
+  },
 });
 
 export * from "./Toast";

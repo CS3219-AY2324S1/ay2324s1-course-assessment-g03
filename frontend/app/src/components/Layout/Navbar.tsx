@@ -14,34 +14,31 @@ type NavbarProps = {
 
 export const Navbar = ({ isBorderless }: NavbarProps) => {
   const { data } = useAuth();
-  const session: any = undefined; // TODO: Populate session with data from the service
 
   const user = data?.user;
   const location = useLocation();
 
   return (
     <Box
-      background="dark.950"
       borderBottomWidth={isBorderless ? "0px" : "1px"}
       borderBottomColor="light"
     >
       <Container maxW={MAX_WIDTH} px={WINDOW_X_PADDING} py="1.25rem">
         <HStack position="relative" justifyContent="space-between">
-          {session ? <SessionBar session={session} /> : null}
+          <SessionBar />
           <HStack alignItems="center" spacing={8}>
             <Text
               as={Link}
               to={user ? ROUTE.HOME : ROUTE.ROOT}
-              fontWeight="900"
-              fontSize="2rem"
-              color="light.50"
+              fontWeight="600"
+              fontSize="1.2rem"
             >
               PeerPrep
             </Text>
             <Text
               as={Link}
               to={ROUTE.HOME}
-              fontWeight="semibold"
+              fontWeight="medium"
               color={location.pathname === ROUTE.HOME ? "dark.100" : "dark.300"}
             >
               Home
@@ -50,7 +47,7 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
               <Text
                 as={Link}
                 to={ROUTE.ADMIN_QUESTIONS}
-                fontWeight="semibold"
+                fontWeight="medium"
                 color={
                   location.pathname === ROUTE.ADMIN_QUESTIONS
                     ? "dark.100"
@@ -61,7 +58,6 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
               </Text>
             )}
           </HStack>
-
           {user ? (
             <AvatarMenu user={user} />
           ) : (

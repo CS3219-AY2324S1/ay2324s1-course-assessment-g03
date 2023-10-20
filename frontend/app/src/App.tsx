@@ -25,7 +25,7 @@ function App() {
           <Route path={ROUTE.ROOM_ROOMID} element={<RoomPage />} />
         </Route>
         {/* With border-ful Navbar */}
-        <Route element={<Layout requireAuthentication />}>
+        <Route element={<Layout requireAuthentication isNavbarBorderless />}>
           <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.HOME_JOIN} element={<JoinPage />} />
           <Route path={ROUTE.HOME_CREATE} element={<CreatePage />} />

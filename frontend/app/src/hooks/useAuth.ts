@@ -10,7 +10,9 @@ export const GET_AUTH_QUERY_KEY = "auth";
 
 const getAuthResponseSchema = makeSuccessResponseSchema(
   z.object({
-    user: userSchema,
+    user: userSchema.extend({
+      roomId: z.string().optional(),
+    }),
   }),
 );
 
