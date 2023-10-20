@@ -1,10 +1,6 @@
+import React, { useMemo } from "react";
 import { Card, CustomButton } from "@/components";
-import {
-  DIFFICULTY,
-  DifficultyType,
-  TOPIC_TAG,
-  TopicTagType,
-} from "@/constants/question";
+import { DIFFICULTY, DifficultyType, TopicTagType } from "@/constants/question";
 import { Preferences } from "@/types/matching";
 import {
   FormControl,
@@ -17,6 +13,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Select } from "chakra-react-select";
 import { multiSelectStyles } from "@/theme";
+import { useGetQuestionFilters } from "../api";
 
 type PreferencesFormValues = {
   difficulties: {
@@ -33,9 +30,46 @@ type Props = {
   joinCallback: (preferences: Preferences) => void;
 };
 
-export const SelectPreferencesCard = ({ joinCallback }: Props) => {
+const getTopicsForDifficulty = (
+  difficulties: {
+    value: DifficultyType;
+    label: DifficultyType;
+  }[],
+  data?: {
+    Easy: string[];
+    Medium: string[];
+    Hard: string[];
+  },
+) => {
+  const topicsSet: Map<
+    string,
+    {
+      value: TopicTagType;
+      label: TopicTagType;
+    }
+  > = new Map();
+
+  if (!data || !difficulties) return topicsSet;
+
+  for (const difficulty of difficulties) {
+    const topics = data[difficulty.value];
+    if (topics) {
+      topics.forEach(topic =>
+        topicsSet.set(topic, {
+          value: topic as TopicTagType,
+          label: topic as TopicTagType,
+        }),
+      );
+    }
+  }
+
+  return topicsSet;
+};
+
+export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
   const {
     handleSubmit,
+    watch,
     control,
     formState: { errors, isSubmitting },
   } = useForm<PreferencesFormValues>({
@@ -44,6 +78,27 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
       topics: [],
     },
   });
+  const watchDifficulties = watch("difficulties");
+  const watchTopics = watch("topics");
+  const { isLoading, data } = useGetQuestionFilters();
+
+  const difficultyOptions = useMemo(() => {
+    return Object.values(DIFFICULTY).map(difficulty => ({
+      value: difficulty,
+      label: difficulty,
+    }));
+  }, []);
+
+  const topicOptionsMap = useMemo(
+    () => getTopicsForDifficulty(watchDifficulties, data?.data),
+    [data?.data, watchDifficulties],
+  );
+
+  const topicOptions = [...topicOptionsMap.values()];
+
+  const selectedTopics = watchTopics.filter(topic =>
+    topicOptionsMap.has(topic.value),
+  );
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues = {
@@ -64,17 +119,14 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
           <Controller
             name="difficulties"
             control={control}
-            render={({ field }) => (
+            render={({ field: { onChange } }) => (
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
                 isMulti
-                options={Object.values(DIFFICULTY).map(difficulty => ({
-                  value: difficulty,
-                  label: difficulty,
-                }))}
-                onChange={field.onChange}
+                options={difficultyOptions}
+                onChange={onChange}
               />
             )}
           />
@@ -87,17 +139,17 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
           <Controller
             name="topics"
             control={control}
-            render={({ field }) => (
+            render={({ field: { onChange } }) => (
               <Select
                 // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
                 chakraStyles={multiSelectStyles()}
                 closeMenuOnSelect={false}
+                isLoading={isLoading}
                 isMulti
-                options={Object.values(TOPIC_TAG).map(difficulty => ({
-                  value: difficulty,
-                  label: difficulty,
-                }))}
-                onChange={field.onChange}
+                menuPlacement="auto"
+                options={topicOptions}
+                onChange={onChange}
+                value={selectedTopics}
               />
             )}
           />
@@ -113,4 +165,4 @@ export const SelectPreferencesCard = ({ joinCallback }: Props) => {
       </VStack>
     </Card>
   );
-};
+});
