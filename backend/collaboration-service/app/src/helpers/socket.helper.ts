@@ -2,7 +2,7 @@ import { ChangeSet } from "@codemirror/state";
 import { Socket } from "socket.io"
 import { SOCKET_API } from "../constants/socket";
 import { JSEND_STATUS } from "../types/models.type";
-import { getOneRoomDoc, updateOneDoc } from "../models/rooms.model";
+import { getOneRoomDoc, updateOneDoc, updateOneRoomQuestionId } from "../models/rooms.model";
 
 export function handlePullUpdates(socket: Socket, version: number, roomId: string) {
     const pullUpdatesData = getOneRoomDoc(roomId)
@@ -59,4 +59,12 @@ export function handleGetDocument(socket: Socket, roomId: string) {
         const { updates, doc } = docData.data
         socket.emit(SOCKET_API.GET_DOCUMENT_RESPONSE, updates.length, doc.toString())
     }
+}
+
+export function handleQuestionChange(socket: Socket, roomId: string, questionId: number) {
+    const updateQuestion = updateOneRoomQuestionId(roomId, questionId)
+    if (updateQuestion.status !== JSEND_STATUS.SUCCESS) {
+        console.log(updateQuestion.data)
+    }
+    socket.to(roomId).emit(SOCKET_API.CHANGE_QUESTION_RESPONSE, questionId)
 }

@@ -11,11 +11,13 @@ import { useAuth } from "@/hooks";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import z from "zod";
 import { backendApi } from "@/lib/axios";
+import { SingleValue } from "chakra-react-select";
 
 interface CollaboratorProps {
   roomId: string;
   topic: TopicTagType[];
   difficulty: DifficultyType[];
+  questionId?: number;
 }
 
 const getQuestionOptionsResponseSchema = makeSuccessResponseSchema(
@@ -27,12 +29,12 @@ const getQuestionOptionsResponseSchema = makeSuccessResponseSchema(
   })
 )
 
-export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) => {
+export const Collaborator = ({ roomId, topic, difficulty, questionId }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE);
   const [questionOptions, setQuestionOptions] = useState<{ label: string; value: string; }[]>([]);
-  const [questionId, setQuestionId] = useState(0);
+  const [activeQuestionId, setActiveQuestionId] = useState(questionId ?? 0);
   const [loading, setLoading] = useState(true)
 
   const id = useAuth().data?.user?.id
@@ -77,7 +79,19 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
     getQuestionOptions()
   }, [topic, difficulty])
 
-  if (loading || !id) { return <Spinner /> }
+  if (loading || !id || !socket) { return <Spinner /> }
+
+  socket?.on("changeQuestionResponse", (qId: number) => {
+    setActiveQuestionId(qId)
+  })
+
+  function handleQuestionChange(newValue: SingleValue<{
+    label: string;
+    value: string;
+  }>) {
+    setActiveQuestionId(Number(newValue?.value ?? 0))
+    socket?.emit("changeQuestion", newValue?.value ?? 0)
+  }
 
   const options = (
     <HStack>
@@ -85,8 +99,9 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
         size="sm"
         title="Question"
         placeholder="Select Question"
+        value={activeQuestionId ?? undefined}
         options={questionOptions}
-        onChangeHandler={(e) => setQuestionId(Number(e?.value ?? 0))}
+        onChangeHandler={handleQuestionChange}
       />
       <Dropdown
         size="sm"
@@ -108,7 +123,7 @@ export const Collaborator = ({ roomId, topic, difficulty }: CollaboratorProps) =
     <HStack height="full" width="full">
       <VStack align="left" height="full" width="50%">
         {options}
-        <QuestionDetails questionId={questionId} />
+        <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <VStack align="left" height="full" width="50%">
         <Text textStyle="sm">Code</Text>

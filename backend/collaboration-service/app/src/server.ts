@@ -5,6 +5,7 @@ import {
   handleGetDocument,
   handlePullUpdates,
   handlePushUpdates,
+  handleQuestionChange,
 } from "./helpers/socket.helper";
 import { SOCKET_API, SOCKET_INVALID_ROOM_ID, SOCKET_INVALID_USER_ID } from "./constants/socket";
 import { rooms } from "./db/rooms.db";
@@ -64,8 +65,9 @@ io.on(SOCKET_API.CONNECT, (socket) => {
   });
 
   /* Socket API to change the question */
-  socket.on(SOCKET_API.CHANGE_QUESTION, () => {
-
+  socket.on(SOCKET_API.CHANGE_QUESTION, (questionId: number) => {
+    console.log("QUESTION CHANGED")
+    handleQuestionChange(socket, roomId, questionId)
   })
 
   /* Socket API to disconnect from the server */

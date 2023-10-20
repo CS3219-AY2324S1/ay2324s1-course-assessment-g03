@@ -214,3 +214,22 @@ export const findUserInRoom = (userId: string) => {
         data: { userId }
     }
 }
+
+export const updateOneRoomQuestionId = (roomId: string, questionId: number) => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    rooms[roomId].questionId = questionId
+    console.log(rooms[roomId].questionId + "HERE HERE HERE")
+
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: { questionId }
+    }
+}

@@ -20,4 +20,5 @@ export type Room = {
     topic: TopicType[];
     language: keyof typeof LANGUAGES;
     open: boolean;
+    questionId?: number;
 }

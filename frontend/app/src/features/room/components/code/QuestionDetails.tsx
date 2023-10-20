@@ -35,7 +35,7 @@ export const QuestionDetails = ({ questionId }: QuestionDetailsProps) => {
 
     return (
         <Box flex={1} padding={"0.75rem"} border="1px" borderColor={"ActiveBorder"} rounded="md" height="full">
-            <Text>{loading ? "Loading..." : details}</Text>
+            <Text whiteSpace={"pre-wrap"}>{loading ? "Loading..." : details}</Text>
         </Box>
     )
 }
