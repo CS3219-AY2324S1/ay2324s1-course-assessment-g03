@@ -49,10 +49,10 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
             {user?.role === ROLE.ADMIN && (
               <Text
                 as={Link}
-                to={ROUTE.QUESTIONS}
+                to={ROUTE.ADMIN_QUESTIONS}
                 fontWeight="semibold"
                 color={
-                  location.pathname === ROUTE.QUESTIONS
+                  location.pathname === ROUTE.ADMIN_QUESTIONS
                     ? "dark.100"
                     : "dark.300"
                 }

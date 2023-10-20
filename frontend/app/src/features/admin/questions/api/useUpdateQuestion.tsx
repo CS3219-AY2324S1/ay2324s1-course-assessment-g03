@@ -3,8 +3,11 @@ import { backendApi } from "@/lib/axios";
 import { safeParse } from "@/lib/safeParse";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUESTIONS_QUERY_KEY } from "../constants";
-import { putQuestionResponseSchema, updateQuestionVariables } from "../types";
-import { GetQuestionsResponse } from "./useQuestions";
+import {
+  GetQuestionsResponse,
+  putQuestionResponseSchema,
+  UpdateQuestionVariables,
+} from "../types";
 
 const queryKey = [QUESTIONS_QUERY_KEY];
 
@@ -12,7 +15,7 @@ export const useUpdateQuestion = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (updatedQuestion: updateQuestionVariables) => {
+    mutationFn: async (updatedQuestion: UpdateQuestionVariables) => {
       const { data } = await backendApi.put(
         `${API_ENDPOINT.ADMIN_QUESTIONS}/${updatedQuestion.id}`,
         updatedQuestion,

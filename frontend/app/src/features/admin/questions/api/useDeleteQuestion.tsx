@@ -3,9 +3,9 @@ import { backendApi } from "@/lib/axios";
 import { safeParse } from "@/lib/safeParse";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUESTIONS_QUERY_KEY } from "../constants";
-import { GetQuestionsResponse } from "./useQuestions";
 import {
   DeleteQuestionVariables,
+  GetQuestionsResponse,
   deleteQuestionResponseSchema,
 } from "../types";
 

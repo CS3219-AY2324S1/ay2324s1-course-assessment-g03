@@ -2,6 +2,20 @@ import { makeSuccessResponseSchema } from "@/lib/api";
 import { questionSchema } from "@/types/question";
 import { z } from "zod";
 
+export enum SortBy {
+  Id = "id",
+  Title = "title",
+  Category = "category",
+  Difficulty = "difficulty",
+  Paid = "paid_only",
+  Topic = "topic_tags",
+}
+
+export enum SortOrder {
+  Asc = "asc",
+  Desc = "desc",
+}
+
 export const getQuestionsResponseSchema = makeSuccessResponseSchema(
   z.object({
     questions: z.array(questionSchema),
@@ -40,15 +54,11 @@ export const postQuestionResponseSchema = makeSuccessResponseSchema(
 
 export type PostQuestionResponse = z.infer<typeof postQuestionResponseSchema>;
 
-export const deleteQuestionVariablesSchema = z.object({
-  questionId: questionSchema.shape.id,
-});
-
 export const updateQuestionVariablesSchema = questionSchema
   .partial()
-  .omit({ id: true });
+  .required({ id: true });
 
-export type updateQuestionVariables = z.infer<
+export type UpdateQuestionVariables = z.infer<
   typeof updateQuestionVariablesSchema
 >;
 
@@ -65,12 +75,16 @@ export const putQuestionResponseSchema = makeSuccessResponseSchema(
   }),
 );
 
+export const deleteQuestionVariablesSchema = z.object({
+  questionId: questionSchema.shape.id,
+});
+
 export type DeleteQuestionVariables = z.infer<
   typeof deleteQuestionVariablesSchema
 >;
 
 export const deleteQuestionResponseSchema = makeSuccessResponseSchema(
   z.object({
-    deleted_id: questionSchema.partial().pick({ id: true }),
+    deleted_id: questionSchema.shape.id,
   }),
 );

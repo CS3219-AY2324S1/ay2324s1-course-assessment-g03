@@ -9,7 +9,7 @@ import CreatePage from "@/pages/home/create";
 import RoomPage from "./pages/room/[roomId]";
 import ProfilePage from "./pages/profile/[userId]";
 import SettingsPage from "./pages/settings";
-import QuestionsPage from "./pages/questions";
+import AdminQuestionsPage from "./pages/admin/questions";
 
 function App() {
   return (
@@ -29,7 +29,10 @@ function App() {
           <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.HOME_JOIN} element={<JoinPage />} />
           <Route path={ROUTE.HOME_CREATE} element={<CreatePage />} />
-          <Route path={ROUTE.QUESTIONS} element={<QuestionsPage />} />
+          <Route
+            path={ROUTE.ADMIN_QUESTIONS}
+            element={<AdminQuestionsPage />}
+          />
           <Route path={ROUTE.SETTINGS} element={<SettingsPage />} />
           <Route path={ROUTE.PROFILE_USERID} element={<ProfilePage />} />
         </Route>
