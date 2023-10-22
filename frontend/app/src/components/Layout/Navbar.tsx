@@ -2,11 +2,10 @@ import { ROUTE } from "@/constants/route";
 import { MAX_WIDTH, WINDOW_X_PADDING } from "@/constants/style";
 import { LoginWithGithubButton } from "@/features/auth";
 import { useAuth } from "@/hooks";
-import { Box, Container, HStack, Text } from "@chakra-ui/react";
-import { Link, useLocation } from "react-router-dom";
+import { Box, Container, HStack, Text, Link } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
 import { AvatarMenu } from "./AvatarMenu";
 import { SessionBar } from "./SessionBar";
-import { ROLE } from "@/types/user";
 
 type NavbarProps = {
   isBorderless?: boolean;
@@ -27,36 +26,25 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
         <HStack position="relative" justifyContent="space-between">
           <SessionBar />
           <HStack alignItems="center" spacing={8}>
-            <Text
-              as={Link}
-              to={user ? ROUTE.HOME : ROUTE.ROOT}
-              fontWeight="600"
-              fontSize="1.2rem"
-            >
+            <Link href={user ? ROUTE.HOME : ROUTE.ROOT} variant="logo">
               PeerPrep
-            </Text>
-            <Text
-              as={Link}
-              to={ROUTE.HOME}
-              fontWeight="medium"
+            </Link>
+            <Link
+              href={ROUTE.HOME}
               color={location.pathname === ROUTE.HOME ? "dark.100" : "dark.300"}
+              variant="nav"
             >
               Home
-            </Text>
-            {user?.role === ROLE.ADMIN && (
-              <Text
-                as={Link}
-                to={ROUTE.ADMIN_QUESTIONS}
-                fontWeight="medium"
-                color={
-                  location.pathname === ROUTE.ADMIN_QUESTIONS
-                    ? "dark.100"
-                    : "dark.300"
-                }
-              >
-                Questions
-              </Text>
-            )}
+            </Link>
+            <Link
+              href={ROUTE.QUESTIONS}
+              color={
+                location.pathname === ROUTE.QUESTIONS ? "dark.100" : "dark.300"
+              }
+              variant="nav"
+            >
+              Questions
+            </Link>
           </HStack>
           {user ? (
             <AvatarMenu user={user} />
