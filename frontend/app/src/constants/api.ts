@@ -17,13 +17,6 @@ export const API_ENDPOINT = {
   AUTH_GITHUB_LOGIN: "/auth/github/login",
 
   /**
-   * Question service
-   */
-  QUESTIONS: "/questions",
-  QUESTIONS_GET_ALL: "/questions/all",
-  QUESTIONS_GET_FILTERS: "/questions/filters",
-
-  /**
    * User service
    */
   USERS: "/users",
@@ -32,6 +25,8 @@ export const API_ENDPOINT = {
    * Question service
    */
   QUESTIONS: "/questions",
+  QUESTIONS_GET_ALL: "/questions/all",
+  QUESTIONS_GET_FILTERS: "/questions/filters",
   ADMIN_QUESTIONS: "/admin/questions",
 } as const;
 

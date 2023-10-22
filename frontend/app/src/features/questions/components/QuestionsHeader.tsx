@@ -1,10 +1,10 @@
 import { Box, Button, HStack, Skeleton, Text } from "@chakra-ui/react";
 import { PiPlusBold } from "react-icons/pi";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import { useQuestions } from "../providers/QuestionsProvider";
 
-const AdminQuestionsHeader = () => {
+const QuestionsHeader = () => {
   const { data, isLoading, setCurrQuestion, onUpsertModalOpen } =
-    useAdminQuestions();
+    useQuestions();
 
   if (isLoading) {
     return (
@@ -39,4 +39,4 @@ const AdminQuestionsHeader = () => {
   );
 };
 
-export default AdminQuestionsHeader;
+export default QuestionsHeader;

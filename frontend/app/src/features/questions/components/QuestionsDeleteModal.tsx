@@ -9,11 +9,11 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useDeleteQuestion } from "../api/useDeleteQuestion";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import { useQuestions } from "../providers/QuestionsProvider";
 
-const AdminQuestionsDeleteModal = () => {
+const QuestionsDeleteModal = () => {
   const { isDeleteModalOpen, onDeleteModalClose, currQuestion } =
-    useAdminQuestions();
+    useQuestions();
   const deleteQuestion = useDeleteQuestion();
 
   return (
@@ -46,4 +46,4 @@ const AdminQuestionsDeleteModal = () => {
   );
 };
 
-export default AdminQuestionsDeleteModal;
+export default QuestionsDeleteModal;

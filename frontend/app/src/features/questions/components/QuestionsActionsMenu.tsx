@@ -13,15 +13,15 @@ import {
   PiPencilBold,
   PiTrashBold,
 } from "react-icons/pi";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import { useQuestions } from "../providers/QuestionsProvider";
 
-interface AdminQuestionsActionsMenuProps {
+interface QuestionsActionsMenuProps {
   row: Row<Question>;
 }
 
-const AdminQuestionsActionsMenu = ({ row }: AdminQuestionsActionsMenuProps) => {
+const QuestionsActionsMenu = ({ row }: QuestionsActionsMenuProps) => {
   const { onDetailsDrawerOpen, setCurrQuestion, onDeleteModalOpen } =
-    useAdminQuestions();
+    useQuestions();
 
   return (
     <>
@@ -66,4 +66,4 @@ const AdminQuestionsActionsMenu = ({ row }: AdminQuestionsActionsMenuProps) => {
   );
 };
 
-export default AdminQuestionsActionsMenu;
+export default QuestionsActionsMenu;

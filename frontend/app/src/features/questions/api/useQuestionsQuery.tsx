@@ -6,17 +6,17 @@ import { safeParse } from "@/lib/safeParse";
 import { SortBy, SortOrder, getQuestionsResponseSchema } from "../types";
 import { SortingState } from "@tanstack/react-table";
 
-interface AdminQuestionsQueryOptions {
+interface QuestionsQueryOptions {
   pageNum: number;
   pageSize: number;
   sorting: SortingState;
 }
 
-export const useAdminQuestionsQuery = ({
+export const useQuestionsQuery = ({
   pageNum,
   pageSize,
   sorting,
-}: AdminQuestionsQueryOptions) => {
+}: QuestionsQueryOptions) => {
   return useQuery({
     queryKey: [QUESTIONS_QUERY_KEY],
     queryFn: async () => {

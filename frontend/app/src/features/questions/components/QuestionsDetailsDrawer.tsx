@@ -10,7 +10,7 @@ import {
   Text,
   Box,
 } from "@chakra-ui/react";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import { useQuestions } from "../providers/QuestionsProvider";
 
 const format = (data: Object) => {
   return Object.entries(data).map(([key, value]) => {
@@ -27,9 +27,9 @@ const format = (data: Object) => {
   });
 };
 
-const AdminQuestionsDetailsDrawer = () => {
+const QuestionsDetailsDrawer = () => {
   const { currQuestion, isDetailsDrawerOpen, onDetailsDrawerClose, btnRef } =
-    useAdminQuestions();
+    useQuestions();
 
   return (
     <Drawer
@@ -65,4 +65,4 @@ const AdminQuestionsDetailsDrawer = () => {
   );
 };
 
-export default AdminQuestionsDetailsDrawer;
+export default QuestionsDetailsDrawer;

@@ -26,14 +26,14 @@ import {
   PiSortAscendingBold,
   PiSortDescendingBold,
 } from "react-icons/pi";
-import AdminQuestionsActionsMenu from "./AdminQuestionsActionsMenu";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import QuestionsActionsMenu from "./QuestionsActionsMenu";
+import { useQuestions } from "../providers/QuestionsProvider";
 import { DEFAULT_SORTING_STATE } from "../constants";
 
 const columnHelper = createColumnHelper<Question>();
 
-const AdminQuestionsTable = () => {
-  const { sorting, setSorting, data, refetch, isLoading } = useAdminQuestions();
+const QuestionsTable = () => {
+  const { sorting, setSorting, data, refetch, isLoading } = useQuestions();
 
   const columns = useMemo(
     () => [
@@ -94,7 +94,7 @@ const AdminQuestionsTable = () => {
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <AdminQuestionsActionsMenu row={row} />,
+        cell: ({ row }) => <QuestionsActionsMenu row={row} />,
       }),
     ],
     [],
@@ -232,4 +232,4 @@ const AdminQuestionsTable = () => {
   );
 };
 
-export default AdminQuestionsTable;
+export default QuestionsTable;

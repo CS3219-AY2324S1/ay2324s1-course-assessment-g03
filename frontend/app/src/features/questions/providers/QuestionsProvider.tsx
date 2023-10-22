@@ -15,9 +15,9 @@ import {
 } from "../constants";
 import { SortingState } from "@tanstack/react-table";
 import { useDisclosure } from "@chakra-ui/react";
-import { useAdminQuestionsQuery } from "../api/useAdminQuestionsQuery";
+import { useQuestionsQuery } from "../api/useQuestionsQuery";
 
-interface AdminQuestionsContextDefaultValue {
+interface QuestionsContextDefaultValue {
   pageNum: number;
   setPageNum: Dispatch<SetStateAction<number>>;
   pageSize: number;
@@ -42,7 +42,7 @@ interface AdminQuestionsContextDefaultValue {
   btnRef: React.RefObject<any>;
 }
 
-const AdminQuestionsContext = createContext<AdminQuestionsContextDefaultValue>({
+const QuestionsContext = createContext<QuestionsContextDefaultValue>({
   pageNum: DEFAULT_PAGE_NUM,
   setPageNum: () => {},
   pageSize: DEFAULT_PAGE_SIZE,
@@ -67,17 +67,15 @@ const AdminQuestionsContext = createContext<AdminQuestionsContextDefaultValue>({
   btnRef: { current: null },
 });
 
-interface AdminQuestionsProviderProps {
+interface QuestionsProviderProps {
   children: ReactNode;
 }
 
-export const AdminQuestionsProvider = ({
-  children,
-}: AdminQuestionsProviderProps) => {
+export const QuestionsProvider = ({ children }: QuestionsProviderProps) => {
   const [pageNum, setPageNum] = useState(DEFAULT_PAGE_NUM);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING_STATE);
-  const { data, isLoading, isRefetching, refetch } = useAdminQuestionsQuery({
+  const { data, isLoading, isRefetching, refetch } = useQuestionsQuery({
     pageNum,
     pageSize,
     sorting,
@@ -101,7 +99,7 @@ export const AdminQuestionsProvider = ({
   } = useDisclosure();
 
   return (
-    <AdminQuestionsContext.Provider
+    <QuestionsContext.Provider
       value={{
         pageNum,
         setPageNum,
@@ -128,8 +126,8 @@ export const AdminQuestionsProvider = ({
       }}
     >
       {children}
-    </AdminQuestionsContext.Provider>
+    </QuestionsContext.Provider>
   );
 };
 
-export const useAdminQuestions = () => useContext(AdminQuestionsContext);
+export const useQuestions = () => useContext(QuestionsContext);

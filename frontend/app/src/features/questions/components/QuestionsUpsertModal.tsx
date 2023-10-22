@@ -15,17 +15,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { QUESTION_KEY_LABEL_MAP } from "../constants/questionKeyLabelMap";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import { useQuestions } from "../providers/QuestionsProvider";
 import { useUpdateQuestion } from "../api/useUpdateQuestion";
 import { useCreateQuestion } from "../api/useCreateQuestion";
 
-const AdminQuestionsUpsertModal = () => {
+const QuestionsUpsertModal = () => {
   const {
     isUpsertModalOpen,
     onUpsertModalClose,
     currQuestion,
     setCurrQuestion,
-  } = useAdminQuestions();
+  } = useQuestions();
   const updateQuestion = useUpdateQuestion();
   const createQuestion = useCreateQuestion();
 
@@ -107,4 +107,4 @@ const AdminQuestionsUpsertModal = () => {
   );
 };
 
-export default AdminQuestionsUpsertModal;
+export default QuestionsUpsertModal;

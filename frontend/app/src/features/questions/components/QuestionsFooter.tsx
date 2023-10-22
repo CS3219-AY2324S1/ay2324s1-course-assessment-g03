@@ -17,9 +17,9 @@ import {
   PiCaretRightBold,
   PiCaretUpBold,
 } from "react-icons/pi";
-import { useAdminQuestions } from "../providers/AdminQuestionsProvider";
+import { useQuestions } from "../providers/QuestionsProvider";
 
-const AdminQuestionsFooter = () => {
+const QuestionsFooter = () => {
   const {
     data,
     refetch,
@@ -28,7 +28,7 @@ const AdminQuestionsFooter = () => {
     pageNum,
     setPageNum,
     setPageSize,
-  } = useAdminQuestions();
+  } = useQuestions();
 
   if (isLoading) {
     return (
@@ -143,4 +143,4 @@ const AdminQuestionsFooter = () => {
     </>
   );
 };
-export default AdminQuestionsFooter;
+export default QuestionsFooter;
