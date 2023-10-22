@@ -12,6 +12,14 @@ interface QuestionsQueryOptions {
   sorting: SortingState;
 }
 
+// TODO: Upgrade react router to support loader API
+// export const questionsLoader =
+//   (queryClient: QueryClient) =>
+//   async ({ params }: { params: QuestionsQueryOptions }) => {
+//     const query = questionsQuery(params);
+//     return queryClient.ensureQueryData(query);
+//   };
+
 export const useQuestionsQuery = ({
   pageNum,
   pageSize,

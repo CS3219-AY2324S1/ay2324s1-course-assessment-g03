@@ -2,8 +2,8 @@ import { ROUTE } from "@/constants/route";
 import { MAX_WIDTH, WINDOW_X_PADDING } from "@/constants/style";
 import { LoginWithGithubButton } from "@/features/auth";
 import { useAuth } from "@/hooks";
-import { Box, Container, HStack, Text, Link } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { Box, Container, HStack, Link } from "@chakra-ui/react";
+import { useLocation, useMatch } from "react-router-dom";
 import { AvatarMenu } from "./AvatarMenu";
 import { SessionBar } from "./SessionBar";
 
@@ -23,7 +23,11 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
       borderBottomColor="light"
     >
       <Container maxW={MAX_WIDTH} px={WINDOW_X_PADDING} py="1.25rem">
-        <HStack position="relative" justifyContent="space-between">
+        <HStack
+          position="relative"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <SessionBar />
           <HStack alignItems="center" spacing={8}>
             <Link href={user ? ROUTE.HOME : ROUTE.ROOT} variant="logo">

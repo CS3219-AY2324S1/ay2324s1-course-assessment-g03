@@ -17,7 +17,7 @@ import {
   PiCaretRightBold,
   PiCaretUpBold,
 } from "react-icons/pi";
-import { useQuestions } from "../providers/QuestionsProvider";
+import { useQuestions } from "./QuestionsOutlet";
 
 const QuestionsFooter = () => {
   const {
@@ -93,7 +93,6 @@ const QuestionsFooter = () => {
           <IconButton
             aria-label="First Page"
             icon={<PiCaretDoubleLeftBold />}
-            size="sm"
             variant="outline"
             onClick={async () => {
               await setPageNum(1);
@@ -105,7 +104,6 @@ const QuestionsFooter = () => {
           <IconButton
             aria-label="Previous Page"
             icon={<PiCaretLeftBold />}
-            size="sm"
             variant="outline"
             onClick={async () => {
               await setPageNum(pageNum - 1);
@@ -117,7 +115,6 @@ const QuestionsFooter = () => {
           <IconButton
             aria-label="Next Page"
             icon={<PiCaretRightBold />}
-            size="sm"
             variant="outline"
             onClick={async () => {
               await setPageNum(pageNum + 1);
@@ -129,7 +126,6 @@ const QuestionsFooter = () => {
           <IconButton
             aria-label="Last Page"
             icon={<PiCaretDoubleRightBold />}
-            size="sm"
             variant="outline"
             onClick={async () => {
               await setPageNum(pageCount);

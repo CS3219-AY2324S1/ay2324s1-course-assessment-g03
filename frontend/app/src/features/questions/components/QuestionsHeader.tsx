@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Skeleton, Text } from "@chakra-ui/react";
 import { PiPlusBold } from "react-icons/pi";
-import { useQuestions } from "../providers/QuestionsProvider";
+import { useQuestions } from "./QuestionsOutlet";
 
 const QuestionsHeader = () => {
   const { data, isLoading, setCurrQuestion, onUpsertModalOpen } =
@@ -30,7 +30,6 @@ const QuestionsHeader = () => {
           onUpsertModalOpen();
         }}
         variant="outline"
-        size="sm"
         leftIcon={<PiPlusBold />}
       >
         Create Question

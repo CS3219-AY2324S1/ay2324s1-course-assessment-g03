@@ -16,14 +16,18 @@ const outline = defineStyle({
   border: "1px",
   borderColor: "dark.800",
   color: "dark.100",
+  fontSize: "sm",
   fontWeight: "medium",
-  _hover: {
-    bg: "dark.800",
-  },
+  h: "8",
+  minW: "8",
+  px: "3",
+  shadow: "sm",
   _active: {
     bg: "dark.800",
   },
-  shadow: "sm",
+  _hover: {
+    bg: "dark.800",
+  },
 });
 
 const outlineWarning = defineStyle({

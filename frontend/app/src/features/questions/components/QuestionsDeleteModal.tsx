@@ -9,7 +9,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useDeleteQuestion } from "../api/useDeleteQuestion";
-import { useQuestions } from "../providers/QuestionsProvider";
+import { useQuestions } from "./QuestionsOutlet";
 
 const QuestionsDeleteModal = () => {
   const { isDeleteModalOpen, onDeleteModalClose, currQuestion } =
@@ -24,7 +24,7 @@ const QuestionsDeleteModal = () => {
         <ModalCloseButton />
         <ModalBody>Are you sure you want to delete this question?</ModalBody>
         <ModalFooter>
-          <Button size="sm" variant="outline" onClick={onDeleteModalClose}>
+          <Button variant="outline" onClick={onDeleteModalClose}>
             Cancel
           </Button>
           <Button

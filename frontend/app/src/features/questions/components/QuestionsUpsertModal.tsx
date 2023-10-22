@@ -15,7 +15,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { QUESTION_KEY_LABEL_MAP } from "../constants/questionKeyLabelMap";
-import { useQuestions } from "../providers/QuestionsProvider";
+import { useQuestions } from "./QuestionsOutlet";
 import { useUpdateQuestion } from "../api/useUpdateQuestion";
 import { useCreateQuestion } from "../api/useCreateQuestion";
 
@@ -94,11 +94,7 @@ const QuestionsUpsertModal = () => {
           >
             Cancel
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => handleSave(currQuestion)}
-            size="sm"
-          >
+          <Button variant="outline" onClick={() => handleSave(currQuestion)}>
             Save
           </Button>
         </ModalFooter>

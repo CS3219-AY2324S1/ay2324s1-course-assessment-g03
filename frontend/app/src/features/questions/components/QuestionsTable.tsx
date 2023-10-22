@@ -27,13 +27,16 @@ import {
   PiSortDescendingBold,
 } from "react-icons/pi";
 import QuestionsActionsMenu from "./QuestionsActionsMenu";
-import { useQuestions } from "../providers/QuestionsProvider";
+import { useQuestions } from "./QuestionsOutlet";
 import { DEFAULT_SORTING_STATE } from "../constants";
+import { useNavigate } from "react-router-dom";
 
 const columnHelper = createColumnHelper<Question>();
 
 const QuestionsTable = () => {
-  const { sorting, setSorting, data, refetch, isLoading } = useQuestions();
+  const { sorting, setSorting, data, refetch, isLoading, setCurrQuestion } =
+    useQuestions();
+  const navigate = useNavigate();
 
   const columns = useMemo(
     () => [
@@ -217,9 +220,23 @@ const QuestionsTable = () => {
                 borderTop="1px"
                 borderColor="dark.800"
                 borderRadius="md"
+                transitionDuration="normal"
+                transitionProperty="background-color"
+                _hover={{
+                  bg: "dark.900",
+                  cursor: "pointer",
+                }}
               >
                 {row.getVisibleCells().map(cell => (
-                  <Td key={cell.id}>
+                  <Td
+                    key={cell.id}
+                    onClick={() => {
+                      if (cell.column.id !== "actions") {
+                        setCurrQuestion(row.original);
+                        navigate(`${row.original.id}`);
+                      }
+                    }}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Td>
                 ))}

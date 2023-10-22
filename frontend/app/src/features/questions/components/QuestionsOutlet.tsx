@@ -1,13 +1,5 @@
 import { Question } from "@/types/question";
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useContext,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import {
   DEFAULT_PAGE_NUM,
   DEFAULT_PAGE_SIZE,
@@ -16,8 +8,9 @@ import {
 import { SortingState } from "@tanstack/react-table";
 import { useDisclosure } from "@chakra-ui/react";
 import { useQuestionsQuery } from "../api/useQuestionsQuery";
+import { Outlet, useOutletContext } from "react-router-dom";
 
-interface QuestionsContextDefaultValue {
+interface QuestionsContextType {
   pageNum: number;
   setPageNum: Dispatch<SetStateAction<number>>;
   pageSize: number;
@@ -33,45 +26,13 @@ interface QuestionsContextDefaultValue {
   isUpsertModalOpen: boolean;
   onUpsertModalOpen: () => void;
   onUpsertModalClose: () => void;
-  isDetailsDrawerOpen: boolean;
-  onDetailsDrawerOpen: () => void;
-  onDetailsDrawerClose: () => void;
   isDeleteModalOpen: boolean;
   onDeleteModalOpen: () => void;
   onDeleteModalClose: () => void;
   btnRef: React.RefObject<any>;
 }
 
-const QuestionsContext = createContext<QuestionsContextDefaultValue>({
-  pageNum: DEFAULT_PAGE_NUM,
-  setPageNum: () => {},
-  pageSize: DEFAULT_PAGE_SIZE,
-  setPageSize: () => {},
-  sorting: DEFAULT_SORTING_STATE,
-  setSorting: () => {},
-  data: undefined,
-  isLoading: false,
-  refetch: () => {},
-  isRefetching: false,
-  currQuestion: undefined,
-  setCurrQuestion: () => {},
-  isUpsertModalOpen: false,
-  onUpsertModalOpen: () => {},
-  onUpsertModalClose: () => {},
-  isDetailsDrawerOpen: false,
-  onDetailsDrawerOpen: () => {},
-  onDetailsDrawerClose: () => {},
-  isDeleteModalOpen: false,
-  onDeleteModalOpen: () => {},
-  onDeleteModalClose: () => {},
-  btnRef: { current: null },
-});
-
-interface QuestionsProviderProps {
-  children: ReactNode;
-}
-
-export const QuestionsProvider = ({ children }: QuestionsProviderProps) => {
+export const QuestionsOutlet = () => {
   const [pageNum, setPageNum] = useState(DEFAULT_PAGE_NUM);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING_STATE);
@@ -86,11 +47,6 @@ export const QuestionsProvider = ({ children }: QuestionsProviderProps) => {
     onOpen: onUpsertModalOpen,
     onClose: onUpsertModalClose,
   } = useDisclosure();
-  const {
-    isOpen: isDetailsDrawerOpen,
-    onOpen: onDetailsDrawerOpen,
-    onClose: onDetailsDrawerClose,
-  } = useDisclosure();
   const btnRef = useRef();
   const {
     isOpen: isDeleteModalOpen,
@@ -99,8 +55,8 @@ export const QuestionsProvider = ({ children }: QuestionsProviderProps) => {
   } = useDisclosure();
 
   return (
-    <QuestionsContext.Provider
-      value={{
+    <Outlet
+      context={{
         pageNum,
         setPageNum,
         pageSize,
@@ -116,18 +72,13 @@ export const QuestionsProvider = ({ children }: QuestionsProviderProps) => {
         isUpsertModalOpen,
         onUpsertModalOpen,
         onUpsertModalClose,
-        isDetailsDrawerOpen,
-        onDetailsDrawerOpen,
-        onDetailsDrawerClose,
         isDeleteModalOpen,
         onDeleteModalOpen,
         onDeleteModalClose,
         btnRef,
       }}
-    >
-      {children}
-    </QuestionsContext.Provider>
+    />
   );
 };
 
-export const useQuestions = () => useContext(QuestionsContext);
+export const useQuestions = () => useOutletContext<QuestionsContextType>();

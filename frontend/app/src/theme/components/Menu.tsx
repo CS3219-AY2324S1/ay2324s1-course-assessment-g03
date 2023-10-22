@@ -15,8 +15,9 @@ const outline = {
   },
   item: {
     bg: "transparent",
-    borderRadius: "sm",
+    borderRadius: "md",
     color: "dark.100",
+    fontSize: "sm",
     py: 2,
     _hover: { bg: "dark.800" },
   },
