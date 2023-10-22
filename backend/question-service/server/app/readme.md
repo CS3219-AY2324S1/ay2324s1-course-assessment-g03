@@ -104,7 +104,67 @@ docker run -p 8000:80 question-service
     }
     ```
 
-2. `GET /api/questions/all` Get All Questions
+2. `GET /api/questions/view` Retrieve Questions with Pagination, Filtering and Sorting
+
+    - **Description**: Retrieve questions with optional sorting and pagination. Used for question portal view.
+    - **Query Parameters**:
+        - `page`: Page number for pagination. Starts from 0. Default is 0.
+        - `limit`: Number of items to retrieve per page. Default is 10.
+        - `sort_by`: Field to sort by (e.g., `title`). Default is `id`.
+        - `order`: Order of sorting. Use 'asc' for ascending and 'desc' for descending. Default is `asc`.
+        - `difficulty` (list of strings, optional): Allows users to filter questions by their difficulty levels. Accepts a list of difficulty values.
+        - `topic` (list of strings, optional): Enables users to filter questions based on specific topics.
+        - `category` (list of strings, optional): Lets users filter questions by their categories.
+        - `paid_only` (boolean, optional): When set to `true`, only questions that are paid will be returned. When set to `false`, only free questions will be returned.
+        - `search` (string, optional): A search string that will be used to match questions. Questions with titles or descriptions that contain the search string will be returned.
+
+**Sample Request**:
+
+```http
+GET /api/questions/view?page=1&limit=5&sort_by=title&order=desc&difficulty=Easy&difficulty=Medium&topic=Array&search=Sum
+```
+
+**Sample Response**:
+
+```json
+{
+    "status": "success",
+    "data": {
+        "questions": [
+            {
+                "id": "1",
+                "title": "Two Sum",
+                ...
+            },
+            {
+                "id": "2",
+                "title": "Three Sum",
+                ...
+            }
+        ],
+    "pagination": {
+        "current_page":1,
+        "limit":5,
+        "sort_by":"title",
+        "order":"desc",
+        "total_questions":20,
+        "total_pages":4
+        },
+    "filters": {
+        "difficulty": [
+            "Easy",
+            "Medium"
+            ],
+        "topic":[
+            "Array"
+            ],
+        "search": "Sum"
+        }
+    }
+}
+```
+
+3. `GET /api/questions/all` Get All Questions
 
     - **Description**: Returns a list of all questions with all fields.
 
@@ -140,7 +200,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-3. `GET /api/questions/{question_id}` Get a Single Question
+4. `GET /api/questions/{question_id}` Get a Single Question
 
     - **Description**: Returns a single question matching the given id.
     - **Path Parameters**:
@@ -169,7 +229,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-4. `GET /api/questions/filters` Get Question Filters
+5. `GET /api/questions/filters` Get Question Filters
 
     - **Description**: Returns a list of all possible filters for questions: Difficulty and Topic.
 
@@ -227,52 +287,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-2. `GET /api/admin/questions` Retrieve Questions with Pagination and Sorting
-
-    - **Description**: Retrieve questions with optional sorting and pagination. Used for admin portal view.
-    - **Query Parameters**:
-        - `page`: Page number for pagination. Starts from 0. Default is 0.
-        - `limit`: Number of items to retrieve per page. Default is 10.
-        - `sort_by`: Field to sort by (e.g., `title`). Default is `id`.
-        - `order`: Order of sorting. Use 'asc' for ascending and 'desc' for descending. Default is `asc`.
-
-    **Sample Request**:
-
-    ```
-    GET /api/admin/questions?page=1&limit=5&sort_by=title&order=desc
-    ```
-
-    **Sample Response**:
-
-    ```json
-    {
-        "status": "success",
-        "data": {
-            "questions": [
-                {
-                    "id": "5",
-                    "title": "Z Reverse Array",
-                    ...
-                },
-                {
-                    "id": "4",
-                    "title": "Y Find Maximum in Array",
-                    ...
-                }
-            ],
-        "pagination" = {
-            "current_page": 0, # Page number starts from 0 (0-indexed)
-            "limit": 10,
-            "sort_by": "id",
-            "order": "asc",
-            "total_questions": 20,
-            "total_pages": 1, # Total number of pages (0-indexed)
-    }
-        }
-    }
-    ```
-
-3. `PUT /api/admin/questions/{question_id}` Update an Existing Question
+2. `PUT /api/admin/questions/{question_id}` Update an Existing Question
 
     - **Description**: Updates an existing question in the database.
     - **Path Parameters**:
@@ -303,7 +318,7 @@ docker run -p 8000:80 question-service
     }
     ```
 
-4. `DELETE /api/admin/questions/{question_id}` Delete a Question
+3. `DELETE /api/admin/questions/{question_id}` Delete a Question
 
     - **Description**: Deletes a question from the database.
     - **Path Parameters**:

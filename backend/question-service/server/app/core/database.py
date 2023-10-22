@@ -30,3 +30,7 @@ client = connect_to_mongo(MONGO_CONNECTION_STRING)
 print("Successfully connected to MongoDB!")
 db = client['questions_db']
 collection = db['problems']
+
+# Create a text index on the title and description fields
+collection.create_index([("title", "text"), ("description", "text")])
+
