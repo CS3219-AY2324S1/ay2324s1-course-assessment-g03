@@ -20,7 +20,7 @@ export const useQuestionsQuery = ({
   return useQuery({
     queryKey: [QUESTIONS_QUERY_KEY],
     queryFn: async () => {
-      const { data } = await backendApi.get(`${API_ENDPOINT.ADMIN_QUESTIONS}`, {
+      const { data } = await backendApi.get(`${API_ENDPOINT.QUESTIONS_VIEW}`, {
         params: {
           page: pageNum,
           limit: pageSize,

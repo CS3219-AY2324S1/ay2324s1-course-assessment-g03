@@ -27,6 +27,7 @@ export const API_ENDPOINT = {
   QUESTIONS: "/questions",
   QUESTIONS_GET_ALL: "/questions/all",
   QUESTIONS_GET_FILTERS: "/questions/filters",
+  QUESTIONS_VIEW: "/questions/view",
   ADMIN_QUESTIONS: "/admin/questions",
 } as const;
 
