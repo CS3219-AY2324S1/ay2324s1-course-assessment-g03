@@ -8,8 +8,8 @@ export type MatchingStatusType =
   (typeof MATCHING_EVENTS)[keyof typeof MATCHING_EVENTS];
 
 export const preferenceSchema = z.object({
-  difficulties: z.array(z.nativeEnum(DIFFICULTY)),
-  topics: z.array(z.nativeEnum(TOPIC_TAG)),
+  difficulty: z.array(z.nativeEnum(DIFFICULTY)),
+  topic: z.array(z.nativeEnum(TOPIC_TAG)),
 });
 
 export type Preferences = z.infer<typeof preferenceSchema>;

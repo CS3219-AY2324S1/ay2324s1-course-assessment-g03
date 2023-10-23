@@ -102,8 +102,8 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
 
   const onSubmit = handleSubmit(async values => {
     const parsedValues = {
-      difficulties: values.difficulties.map(difficulty => difficulty.value),
-      topics: values.topics.map(topic => topic.value),
+      difficulty: values.difficulties.map(difficulty => difficulty.value),
+      topic: values.topics.map(topic => topic.value),
     };
     joinCallback(parsedValues);
   });
