@@ -1,7 +1,7 @@
 import { API_ENDPOINT } from "@/constants/api";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { backendApi } from "@/lib/axios";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { z } from "zod";
 
 const GET_USER_INFO_KEY = "get-user-info"
@@ -25,10 +25,15 @@ const getUserInfo = async (id: string) => {
 
 export const useGetUserInfo = (id: string) => {
 
+    const queryClient = useQueryClient();
+
     return useQuery({
         queryKey: [GET_USER_INFO_KEY],
         queryFn: () => getUserInfo(id),
         enabled: !!id,
         retry: false,
+        onSuccess() {
+            setTimeout(() => { queryClient.invalidateQueries(GET_USER_INFO_KEY) }, 10000)
+        }
     })
 }
