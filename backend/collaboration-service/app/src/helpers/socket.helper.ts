@@ -71,7 +71,6 @@ export function handleQuestionChange(socket: Socket, roomId: string, questionId:
 }
 
 export function handleLanguageChange(socket: Socket, roomId: string, language: LanguageKeyType) {
-    console.log("IM HERE")
     const updateLanguage = updateOneRoomLanguage(roomId, language)
     if (updateLanguage.status !== JSEND_STATUS.SUCCESS) {
         console.log(updateLanguage.data)

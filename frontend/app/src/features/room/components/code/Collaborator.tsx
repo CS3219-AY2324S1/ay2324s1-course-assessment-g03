@@ -65,7 +65,7 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId, language }
         size="sm"
         title="Question"
         placeholder="Select Question"
-        value={activeQuestionId ?? undefined}
+        value={activeQuestionId}
         options={questionOptions}
         onChangeHandler={(e) => {
           setActiveQuestionId(Number(e?.value ?? 0))
@@ -76,7 +76,7 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId, language }
         size="sm"
         title="Language"
         placeholder="Select language"
-        value={currentLanguage ?? DEFAULT_LANGUAGE}
+        value={currentLanguage}
         options={Object.entries(LANGUAGES).map(
           ([languageName, languageSupport]) => ({
             label: languageName,

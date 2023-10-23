@@ -20,8 +20,6 @@ export const RoomUserInfo = ({ user }: RoomUserInfoProps) => {
 
     const { name, avatarUrl, email } = data.data.user
 
-
-
     return (
         <HStack gap="0.75rem">
             <Avatar name={name} src={avatarUrl} />

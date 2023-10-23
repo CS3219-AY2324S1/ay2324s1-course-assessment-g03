@@ -27,12 +27,12 @@ const getRoomInfo = async (roomId: string) => {
     return getRoomInfoResponseSchema.parse(data)
 }
 
-export const useGetRoomInfo = (roomId: string) => {
+export const useGetRoomInfo = (roomId: string | undefined) => {
 
     return useQuery({
         queryKey: [GET_ROOM_INFO_KEY],
-        queryFn: () => getRoomInfo(roomId),
-        enabled: !!roomId,
+        queryFn: roomId ? () => getRoomInfo(roomId) : undefined,
+        enabled: roomId !== undefined,
         retry: false,
     })
 }

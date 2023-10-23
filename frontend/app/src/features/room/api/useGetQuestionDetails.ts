@@ -17,11 +17,11 @@ const getQuestionDetails = async (questionId: number) => {
     return getQuestionDetailsResponseSchema.parse(data)
 }
 
-export const useGetQuestionDetails = (questionId: number) => {
+export const useGetQuestionDetails = (questionId: number | undefined) => {
     return useQuery({
         queryKey: [GET_QUESTION_DETAILS_KEY],
-        queryFn: () => getQuestionDetails(questionId),
-        enabled: !!questionId,
+        queryFn: questionId ? () => getQuestionDetails(questionId) : undefined,
+        enabled: questionId !== undefined,
         retry: false
     })
 }

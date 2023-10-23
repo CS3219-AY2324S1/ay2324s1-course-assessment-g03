@@ -2,7 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { useGetQuestionDetails } from "../../api/useGetQuestionDetails";
 
 interface QuestionDetailsProps {
-    questionId: number
+    questionId?: number
 }
 
 export const QuestionDetails = ({ questionId }: QuestionDetailsProps) => {
@@ -12,7 +12,7 @@ export const QuestionDetails = ({ questionId }: QuestionDetailsProps) => {
     if (isLoading) {
         return (
             <Box flex={1} padding={"0.75rem"} border="1px" borderColor={"ActiveBorder"} rounded="md" height="full">
-                <Text whiteSpace={"pre-wrap"}>{"Loading..."}</Text>
+                <Text>{"Loading..."}</Text>
             </Box>
         )
     }
@@ -20,7 +20,7 @@ export const QuestionDetails = ({ questionId }: QuestionDetailsProps) => {
     if (isError || !data) {
         return (
             <Box flex={1} padding={"0.75rem"} border="1px" borderColor={"ActiveBorder"} rounded="md" height="full">
-                <Text whiteSpace={"pre-wrap"}>{"Choose a Question"}</Text>
+                <Text>{"Choose a Question"}</Text>
             </Box>
         )
     }
