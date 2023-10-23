@@ -2,7 +2,8 @@ import { ChangeSet } from "@codemirror/state";
 import { Socket } from "socket.io"
 import { SOCKET_API } from "../constants/socket";
 import { JSEND_STATUS } from "../types/models.type";
-import { getOneRoomDoc, updateOneDoc, updateOneRoomQuestionId } from "../models/rooms.model";
+import { getOneRoomDoc, updateOneDoc, updateOneRoomLanguage, updateOneRoomQuestionId } from "../models/rooms.model";
+import { LanguageKeyType } from "../constants/language";
 
 export function handlePullUpdates(socket: Socket, version: number, roomId: string) {
     const pullUpdatesData = getOneRoomDoc(roomId)
@@ -67,4 +68,13 @@ export function handleQuestionChange(socket: Socket, roomId: string, questionId:
         console.log(updateQuestion.data)
     }
     socket.to(roomId).emit(SOCKET_API.CHANGE_QUESTION_RESPONSE, questionId)
+}
+
+export function handleLanguageChange(socket: Socket, roomId: string, language: LanguageKeyType) {
+    console.log("IM HERE")
+    const updateLanguage = updateOneRoomLanguage(roomId, language)
+    if (updateLanguage.status !== JSEND_STATUS.SUCCESS) {
+        console.log(updateLanguage.data)
+    }
+    socket.to(roomId).emit(SOCKET_API.CHANGE_LANGUAGE_RESPONSE, language)
 }

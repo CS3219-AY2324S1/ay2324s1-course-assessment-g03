@@ -11,7 +11,9 @@ export const SOCKET_API = {
     CONNECT_RESPONSE: "connectResponse",
     DISCONNECT_RESPONSE: "disconnectResponse",
     CHANGE_QUESTION: "changeQuestion",
-    CHANGE_QUESTION_RESPONSE: "changeQuestionResponse"
+    CHANGE_QUESTION_RESPONSE: "changeQuestionResponse",
+    CHANGE_LANGUAGE: "changeLanguage",
+    CHANGE_LANGUAGE_RESPONSE: "changeLanguageResponse"
 } as const;
 
 export const SOCKET_INVALID_ROOM_ID = "Invalid roomId provided"

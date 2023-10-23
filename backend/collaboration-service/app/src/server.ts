@@ -3,6 +3,7 @@ import app from "./app";
 import { Server } from "socket.io";
 import {
   handleGetDocument,
+  handleLanguageChange,
   handlePullUpdates,
   handlePushUpdates,
   handleQuestionChange,
@@ -10,6 +11,7 @@ import {
 import { SOCKET_API, SOCKET_INVALID_ROOM_ID, SOCKET_INVALID_USER_ID } from "./constants/socket";
 import { rooms } from "./db/rooms.db";
 import { joinOneRoom, leaveOneRoom } from "./models/rooms.model";
+import { LanguageKeyType } from "./constants/language";
 
 const port = process.env.PORT || 80;
 
@@ -68,6 +70,11 @@ io.on(SOCKET_API.CONNECT, (socket) => {
   socket.on(SOCKET_API.CHANGE_QUESTION, (questionId: number) => {
     console.log("QUESTION CHANGED")
     handleQuestionChange(socket, roomId, questionId)
+  })
+
+  socket.on(SOCKET_API.CHANGE_LANGUAGE, (language: string) => {
+    console.log("LANGUAGE CHANGED")
+    handleLanguageChange(socket, roomId, language as LanguageKeyType)
   })
 
   /* Socket API to disconnect from the server */

@@ -35,8 +35,6 @@ export type AnyApiResponse = z.infer<typeof anyApiResponseSchema>;
  * To validate that the API response shape adheres to the ApiResponse type
  */
 function responseHandler(response: AxiosResponse | undefined) {
-  console.log("HERE")
-  console.log(response)
   if (!response) {
     throw new Error(API_ERROR.NO_RESPONSE);
   }

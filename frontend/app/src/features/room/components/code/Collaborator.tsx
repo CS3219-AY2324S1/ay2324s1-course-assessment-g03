@@ -1,41 +1,28 @@
-import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
-import { Dropdown } from "@/components/Dropdown";
 import { useEffect, useState } from "react";
+import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
 import io, { Socket } from "socket.io-client";
-import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
-import { LANGUAGES, DEFAULT_LANGUAGE } from "@/constants/language";
-import { env } from "@/lib/env";
-import { API_ENDPOINT, API_RESPONSE_STATUS, WEBSOCKET_PATH } from "@/constants/api";
-import { DifficultyType, TopicTagType } from "@/constants/question";
 import { useAuth } from "@/hooks";
-import { makeSuccessResponseSchema } from "@/lib/api";
-import z from "zod";
-import { backendApi } from "@/lib/axios";
-import { SingleValue } from "chakra-react-select";
+import { env } from "@/lib/env";
+import { Dropdown } from "@/components/Dropdown";
+import { DifficultyType, TopicTagType } from "@/constants/question";
+import { SOCKET_API_ENDPOINT, WEBSOCKET_PATH } from "@/constants/api";
+import { LANGUAGES, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE_KEY, LanguageKeyType } from "@/constants/language";
+import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
+import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 
 interface CollaboratorProps {
   roomId: string;
   topic: TopicTagType[];
   difficulty: DifficultyType[];
   questionId?: number;
+  language: LanguageKeyType;
 }
 
-const getQuestionOptionsResponseSchema = makeSuccessResponseSchema(
-  z.object({
-    questions: z.array(z.object({
-      id: z.number(),
-      title: z.string()
-    }))
-  })
-)
-
-export const Collaborator = ({ roomId, topic, difficulty, questionId }: CollaboratorProps) => {
+export const Collaborator = ({ roomId, topic, difficulty, questionId, language }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE);
-  const [questionOptions, setQuestionOptions] = useState<{ label: string; value: string; }[]>([]);
+  const [currentLanguage, setCurrentLanguage] = useState(LANGUAGES[language] ?? DEFAULT_LANGUAGE);
   const [activeQuestionId, setActiveQuestionId] = useState(questionId ?? 0);
-  const [loading, setLoading] = useState(true)
 
   const id = useAuth().data?.user?.id
 
@@ -57,43 +44,23 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId }: Collabor
     };
   }, [roomId, id]);
 
-  useEffect(() => {
-    async function getQuestionOptions() {
-      try {
-        const difficultyParams = difficulty.map((d) => `difficulty=${d}`).join("&")
-        const topicParams = topic.map((t) => `topic=${t.replace(/\s/g, '%20')}`).join("&")
+  const { isLoading, isError, data } = useGetQuestionOptions(difficulty, topic)
 
-        const { data } = await backendApi.get(`${API_ENDPOINT.QUESTIONS}?${difficultyParams}&${topicParams}`)
+  if (isLoading || !socket) return (<Spinner />)
+  if (isError || !data) return (<Text>Errored</Text>)
 
-        if (data.status === API_RESPONSE_STATUS.SUCCESS) {
-          const response = getQuestionOptionsResponseSchema.parse(data)
-          const { questions } = response.data
-          setQuestionOptions(questions.map((q) => { return { label: q.title, value: String(q.id) } }))
-          setLoading(false)
-        }
-      } catch (error) {
-        console.log("error here")
-        console.log(error)
-      }
-    }
-    getQuestionOptions()
-  }, [topic, difficulty])
-
-  if (loading || !id || !socket) { return <Spinner /> }
-
-  socket?.on("changeQuestionResponse", (qId: number) => {
+  socket.on(SOCKET_API_ENDPOINT.CHANGE_QUESTION_RESPONSE, (qId: number) => {
     setActiveQuestionId(qId)
   })
 
-  function handleQuestionChange(newValue: SingleValue<{
-    label: string;
-    value: string;
-  }>) {
-    setActiveQuestionId(Number(newValue?.value ?? 0))
-    socket?.emit("changeQuestion", newValue?.value ?? 0)
-  }
+  socket.on(SOCKET_API_ENDPOINT.CHANGE_LANGUAGE_RESPONSE, (language: LanguageKeyType) => {
+    console.log("RECEIVED")
+    setCurrentLanguage(LANGUAGES[language])
+  })
 
-  const options = (
+  const questionOptions = data.data.questions.map(({ id, title }) => { return { value: id, label: title } })
+
+  const Options = (
     <HStack>
       <Dropdown
         size="sm"
@@ -101,28 +68,36 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId }: Collabor
         placeholder="Select Question"
         value={activeQuestionId ?? undefined}
         options={questionOptions}
-        onChangeHandler={handleQuestionChange}
+        onChangeHandler={(e) => {
+          setActiveQuestionId(Number(e?.value ?? 0))
+          socket.emit(SOCKET_API_ENDPOINT.CHANGE_QUESTION, e?.value ?? 0)
+        }}
       />
       <Dropdown
         size="sm"
         title="Language"
         placeholder="Select language"
+        value={currentLanguage ?? DEFAULT_LANGUAGE}
         options={Object.entries(LANGUAGES).map(
           ([languageName, languageSupport]) => ({
             label: languageName,
             value: languageSupport,
           }),
         )}
-        onChangeHandler={(e) => setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)}
+        onChangeHandler={(e) => {
+          setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)
+          console.log("CHANGE_LANGUAG")
+          socket.emit(SOCKET_API_ENDPOINT.CHANGE_LANGUAGE, e?.label ?? DEFAULT_LANGUAGE_KEY)
+        }}
       />
     </HStack>
   );
 
 
-  const visibleView = (
+  const VisibleView = (
     <HStack height="full" width="full">
       <VStack align="left" height="full" width="50%">
-        {options}
+        {Options}
         <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <VStack align="left" height="full" width="50%">
@@ -132,9 +107,9 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId }: Collabor
     </HStack>
   );
 
-  const hiddenView = (
+  const HiddenView = (
     <VStack align="left" height="full" width="full">
-      {options}
+      {Options}
       <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
     </VStack>
   );
@@ -142,7 +117,7 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId }: Collabor
   return (
     <VStack align="left" height="full" width="full">
       <Box height="full" width="full">
-        {renderQuestion ? visibleView : hiddenView}
+        {renderQuestion ? VisibleView : HiddenView}
       </Box>
       <Box>
         <Button

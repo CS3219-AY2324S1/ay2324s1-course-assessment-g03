@@ -4,7 +4,7 @@ import * as types from "../types/rooms/rooms.type"
 import { rooms } from "../db/rooms.db";
 import { HttpStatus } from "../utils/HTTP_Status_Codes"
 import { JSEND_STATUS } from "../types/models.type"
-import { DEFAULT_LANGUAGE } from "../constants/language";
+import { DEFAULT_LANGUAGE, LanguageKeyType } from "../constants/language";
 import { v4 } from "uuid";
 import { DifficultyType, TopicType } from "../constants/question";
 
@@ -225,11 +225,27 @@ export const updateOneRoomQuestionId = (roomId: string, questionId: number) => {
     }
 
     rooms[roomId].questionId = questionId
-    console.log(rooms[roomId].questionId + "HERE HERE HERE")
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
         data: { questionId }
+    }
+}
+
+export const updateOneRoomLanguage = (roomId: string, language: LanguageKeyType) => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    rooms[roomId].language = language
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: { language }
     }
 }

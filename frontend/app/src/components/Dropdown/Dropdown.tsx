@@ -44,7 +44,6 @@ export const Dropdown = ({
         }))}
         onChange={onChangeHandler ?? undefined}
         value={options.find((option) => {
-          console.log("OPTION VALUE", option.value, "VALUE", value)
           return option.value === value
         }) ?? undefined}
       />
