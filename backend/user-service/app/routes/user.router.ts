@@ -4,6 +4,8 @@ import { db } from "../services/db.service";
 
 export const userRouter = Router();
 
+userRouter.get("/", userController.get)
+
 /* Get user by ID */
 userRouter.get("/id/:userId", userController.getById);
 

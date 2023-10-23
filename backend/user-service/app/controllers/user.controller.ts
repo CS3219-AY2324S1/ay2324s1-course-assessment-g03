@@ -12,6 +12,9 @@ import {
 const ERROR_MESSAGE = "An error occurred";
 
 export const userController = {
+  get: async (_req: Request, res: Response) => {
+    return res.send(successApiResponse({ users: await userService.findAll() }))
+  },
   getById: async (req: Request, res: Response) => {
     const parsedReq = userGetByIdSchema.parse(req);
     try {

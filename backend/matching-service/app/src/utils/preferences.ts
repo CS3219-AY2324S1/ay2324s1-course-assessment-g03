@@ -6,11 +6,11 @@ export const comparePreferences = (
   p2: Preferences
 ): boolean => {
   // Check if difficulty matches
-  if (_.isEqual(p1.difficulties, p2.difficulties)) {
+  if (_.isEqual(p1.difficulty, p2.difficulty)) {
     // Check if object1's topics are a subset of or equal to object2's topics and vice versa
     if (
-      _.intersection(p1.topics, p2.topics).length === p1.topics.length ||
-      _.intersection(p1.topics, p2.topics).length === p2.topics.length
+      _.intersection(p1.topic, p2.topic).length === p1.topic.length ||
+      _.intersection(p1.topic, p2.topic).length === p2.topic.length
     ) {
       return true;
     }

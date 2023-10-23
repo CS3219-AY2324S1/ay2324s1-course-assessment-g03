@@ -51,7 +51,7 @@ export const singleSelectStyles: (
       fontSize,
       py: "0rem",
     }),
-    menu: provided => ({ ...provided, background: "dark" }),
+    menu: provided => ({ ...provided, background: "dark.500" }),
     menuList: provided => ({
       ...provided,
       background: "transparent",
@@ -108,7 +108,7 @@ export const multiSelectStyles: (
       },
       color: "light.100",
     }),
-    menu: provided => ({ ...provided, background: "dark" }),
+    menu: provided => ({ ...provided, background: "dark.500" }),
     menuList: provided => ({
       ...provided,
       background: "dark.500",

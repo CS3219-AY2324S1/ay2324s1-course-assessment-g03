@@ -16,6 +16,7 @@ export const userService = {
       select: userPersonalData,
     });
   },
+  findAll: () => db.user.findMany(),
   delete: (id: Prisma.UserDeleteArgs["where"]["id"]) =>
     db.user.delete({ where: { id } }),
   findById: (id: Prisma.UserFindUniqueArgs["where"]["id"]) =>

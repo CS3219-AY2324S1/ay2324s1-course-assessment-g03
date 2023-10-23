@@ -3,10 +3,15 @@ import app from "./app";
 import { Server } from "socket.io";
 import {
   handleGetDocument,
+  handleLanguageChange,
   handlePullUpdates,
   handlePushUpdates,
+  handleQuestionChange,
 } from "./helpers/socket.helper";
-import { SOCKET_API, SOCKET_INVALID_ROOM_ID } from "./constants/socket";
+import { SOCKET_API, SOCKET_INVALID_ROOM_ID, SOCKET_INVALID_USER_ID } from "./constants/socket";
+import { rooms } from "./db/rooms.db";
+import { joinOneRoom, leaveOneRoom } from "./models/rooms.model";
+import { LanguageKeyType } from "./constants/language";
 
 const port = process.env.PORT || 80;
 
@@ -17,20 +22,30 @@ const io = new Server(server, {
   path: "/api/collaboration/websocket",
   cors: {
     credentials: true,
-    origin: process.env.FRONTEND_ORIGIN,
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
   },
 });
 
 io.on(SOCKET_API.CONNECT, (socket) => {
   const roomId = socket.handshake.query.roomId;
+  const userId = socket.handshake.query.userId;
 
-  if (typeof roomId !== "string") {
+  if (typeof roomId !== "string" || !(roomId in rooms)) {
     socket.emit(SOCKET_API.ERROR, SOCKET_INVALID_ROOM_ID);
     socket.disconnect();
     return;
   }
+
+  if (typeof userId !== "string") {
+    socket.emit(SOCKET_API.ERROR, SOCKET_INVALID_USER_ID);
+    socket.disconnect();
+    return;
+  }
+
   socket.join(roomId);
+  joinOneRoom(roomId, userId)
+  socket.to(roomId).emit(SOCKET_API.CONNECT_RESPONSE, userId)
 
   /* Socket API to pull updates from the server */
   socket.on(SOCKET_API.PULL_UPDATES, (version: number) => {
@@ -50,9 +65,19 @@ io.on(SOCKET_API.CONNECT, (socket) => {
     handleGetDocument(socket, roomId);
   });
 
+  /* Socket API to change the question */
+  socket.on(SOCKET_API.CHANGE_QUESTION, (questionId: number) => {
+    handleQuestionChange(socket, roomId, questionId)
+  })
+
+  socket.on(SOCKET_API.CHANGE_LANGUAGE, (language: string) => {
+    handleLanguageChange(socket, roomId, language as LanguageKeyType)
+  })
+
   /* Socket API to disconnect from the server */
   socket.on(SOCKET_API.DISCONNECT, () => {
-    console.log("user disconnected");
+    leaveOneRoom(roomId, userId)
+    socket.to(roomId).emit(SOCKET_API.DISCONNECT_RESPONSE, userId)
   });
 });
 

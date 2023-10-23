@@ -13,6 +13,7 @@ interface DropdownProps {
   title: string;
   options: Option[];
   placeholder?: string;
+  value?: any;
   onChangeHandler?: ((newValue: SingleValue<{
     label: string;
     value: any;
@@ -27,6 +28,7 @@ export const Dropdown = ({
   title,
   options,
   placeholder,
+  value,
   onChangeHandler
 }: DropdownProps) => {
   return (
@@ -41,6 +43,9 @@ export const Dropdown = ({
           value,
         }))}
         onChange={onChangeHandler ?? undefined}
+        value={options.find((option) => {
+          return option.value === value
+        }) ?? undefined}
       />
     </VStack>
   );

@@ -1,15 +1,18 @@
 import moment from "moment";
 import { Text } from "@codemirror/state"
 import * as types from "../types/rooms/rooms.type"
-import { generateNewDocument } from "../helpers/rooms.helper";
 import { rooms } from "../db/rooms.db";
 import { HttpStatus } from "../utils/HTTP_Status_Codes"
 import { JSEND_STATUS } from "../types/models.type"
-import { DIFFICULTY, TOPIC_TAG } from "../constants/question";
+import { DEFAULT_LANGUAGE, LanguageKeyType } from "../constants/language";
+import { v4 } from "uuid";
+import { DifficultyType, TopicType } from "../constants/question";
 
-export const createRoom = (roomId: string,
-    difficulties: (keyof typeof DIFFICULTY)[],
-    topics: (keyof typeof TOPIC_TAG)[]): types.createRoomType => {
+export const createOneRoom = (difficulty: DifficultyType[],
+    topic: TopicType[]) => {
+
+    const roomId = v4()
+
     if (roomId in rooms) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -20,7 +23,21 @@ export const createRoom = (roomId: string,
         }
     }
 
-    rooms[roomId] = generateNewDocument(roomId, difficulties, topics)
+    const newRoom = {
+        created: moment(),
+        updated: moment(),
+        updates: [],
+        doc: Text.of([`Welcome to Room ${roomId}`]),
+        pending: [],
+        difficulty,
+        topic,
+        users: new Map<string, types.User>(),
+        userOrder: [],
+        open: true,
+        language: DEFAULT_LANGUAGE
+    }
+
+    rooms[roomId] = newRoom
 
     return {
         status: JSEND_STATUS.SUCCESS,
@@ -32,56 +49,58 @@ export const createRoom = (roomId: string,
     }
 }
 
-export const getRoomInfo = (roomId: string): types.getRoomType => {
+export const getOneRoomInfo = (roomId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: {
                 roomId: "Room not found"
             }
         }
     }
 
-    const { updates, doc, pending, updated, created } = rooms[roomId]
+    // Transform users into list
+    const { users, userOrder, ...roomData } = rooms[roomId]
+    const mappedUsers = userOrder.map(userId => users.get(userId))
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
         data: {
-            updates, doc, pending, updated, created
+            users: mappedUsers,
+            ...roomData
         }
     }
 }
 
-export const getPullUpdatesInfo = (roomId: string): types.getPullUpdatesType => {
+export const getOneRoomDoc = (roomId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: {
                 roomId: "Room not found"
             }
         }
     }
 
-    const { updates, pending } = rooms[roomId]
+    const { updates, pending, doc } = rooms[roomId]
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
         data: {
-            updates, pending
+            updates, pending, doc
         }
     }
-
 }
 
-export const getUpdateInfo = (roomId: string): types.getUpdateType => {
+export const getOneUpdateData = (roomId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: { roomId: "Room not found" }
         }
     }
@@ -97,11 +116,11 @@ export const getUpdateInfo = (roomId: string): types.getUpdateType => {
     }
 }
 
-export const updateDocInfo = (roomId: string, doc: Text): types.updateDocType => {
+export const updateOneDoc = (roomId: string, doc: Text) => {
     if (!(roomId in rooms)) {
         return {
             status: "fail",
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: { roomId: "Room not found" }
         }
     }
@@ -118,23 +137,115 @@ export const updateDocInfo = (roomId: string, doc: Text): types.updateDocType =>
     }
 }
 
-
-export const getDocumentInfo = (roomId: string): types.getDocumentType => {
+export const joinOneRoom = (roomId: string, userId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
-            code: HttpStatus.BAD_REQUEST,
+            code: HttpStatus.NOT_FOUND,
             data: { roomId: "Room not found" }
         }
     }
 
-    const { updates, doc } = rooms[roomId]
+    const users = rooms[roomId].users
+
+    if (!users.has(userId)) {
+        rooms[roomId].userOrder.push(userId)
+    }
+
+    users.set(userId, { id: userId, connected: true })
 
     return {
         status: JSEND_STATUS.SUCCESS,
         code: HttpStatus.OK,
         data: {
-            updates, doc
+            user: { id: userId, connected: true }
         }
+    }
+}
+
+export const leaveOneRoom = (roomId: string, userId: string) => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    const users = rooms[roomId].users
+
+    if (!users.has(userId)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { userId: "User not found" }
+        }
+    }
+
+    users.set(userId, { id: userId, connected: false })
+
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: {
+            user: { id: userId, connected: false }
+        }
+    }
+}
+
+export const findUserInRoom = (userId: string) => {
+    for (const roomId in rooms) {
+        const { users } = rooms[roomId]
+
+        if (users.get(userId)) {
+            return {
+                status: JSEND_STATUS.SUCCESS,
+                code: HttpStatus.OK,
+                data: {
+                    roomId, userId
+                }
+            }
+        }
+    }
+
+    return {
+        status: "success",
+        code: HttpStatus.OK,
+        data: { userId }
+    }
+}
+
+export const updateOneRoomQuestionId = (roomId: string, questionId: number) => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    rooms[roomId].questionId = questionId
+
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: { questionId }
+    }
+}
+
+export const updateOneRoomLanguage = (roomId: string, language: LanguageKeyType) => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    rooms[roomId].language = language
+    return {
+        status: JSEND_STATUS.SUCCESS,
+        code: HttpStatus.OK,
+        data: { language }
     }
 }

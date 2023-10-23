@@ -1,22 +1,30 @@
-import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
-import { Dropdown } from "@/components/Dropdown";
 import { useEffect, useState } from "react";
+import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
 import io, { Socket } from "socket.io-client";
-import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
-import { LANGUAGES, DEFAULT_LANGUAGE } from "@/constants/language";
-import { SingleValue } from "chakra-react-select";
-import { LanguageSupport } from "node_modules/@codemirror/language/dist";
+import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
-import { WEBSOCKET_PATH } from "@/constants/api";
+import { Dropdown } from "@/components/Dropdown";
+import { DifficultyType, TopicTagType } from "@/constants/question";
+import { SOCKET_API_ENDPOINT, WEBSOCKET_PATH } from "@/constants/api";
+import { LANGUAGES, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE_KEY, LanguageKeyType } from "@/constants/language";
+import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
+import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 
 interface CollaboratorProps {
   roomId: string;
+  topic: TopicTagType[];
+  difficulty: DifficultyType[];
+  questionId?: number;
+  language: LanguageKeyType;
 }
 
-export const Collaborator = ({ roomId }: CollaboratorProps) => {
+export const Collaborator = ({ roomId, topic, difficulty, questionId, language }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE);
+  const [currentLanguage, setCurrentLanguage] = useState(LANGUAGES[language] ?? DEFAULT_LANGUAGE);
+  const [activeQuestionId, setActiveQuestionId] = useState(questionId);
+
+  const id = useAuth().data?.user?.id
 
   useEffect(() => {
     const connectSocket = io(`${env.VITE_BACKEND_URL}`, {
@@ -24,6 +32,7 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
       withCredentials: true,
       query: {
         roomId: roomId,
+        userId: id
       },
     });
     setSocket(connectSocket);
@@ -33,71 +42,80 @@ export const Collaborator = ({ roomId }: CollaboratorProps) => {
         setSocket(null);
       }
     };
-  }, [roomId]);
+  }, [roomId, id]);
 
-  const handleLanguageChange = (
-    e: SingleValue<{
-      label: string;
-      value: LanguageSupport;
-    }>,
-  ) => {
-    setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE);
-  };
+  const { isLoading, isError, data } = useGetQuestionOptions(difficulty, topic)
 
-  //TODO: update options when in
-  const options = (
+  if (isLoading || !socket) return (<Spinner />)
+  if (isError || !data) return (<Text>Errored</Text>)
+
+  socket.on(SOCKET_API_ENDPOINT.CHANGE_QUESTION_RESPONSE, (qId: number) => {
+    setActiveQuestionId(qId)
+  })
+
+  socket.on(SOCKET_API_ENDPOINT.CHANGE_LANGUAGE_RESPONSE, (language: LanguageKeyType) => {
+    setCurrentLanguage(LANGUAGES[language])
+  })
+
+  const questionOptions = data.data.questions.map(({ id, title }) => { return { value: id, label: title } })
+
+  const Options = (
     <HStack>
       <Dropdown
         size="sm"
         title="Question"
-        placeholder="Select question"
-        options={[]}
+        placeholder="Select Question"
+        value={activeQuestionId}
+        options={questionOptions}
+        onChangeHandler={(e) => {
+          setActiveQuestionId(Number(e?.value ?? 0))
+          socket.emit(SOCKET_API_ENDPOINT.CHANGE_QUESTION, e?.value ?? 0)
+        }}
       />
       <Dropdown
         size="sm"
         title="Language"
         placeholder="Select language"
+        value={currentLanguage}
         options={Object.entries(LANGUAGES).map(
           ([languageName, languageSupport]) => ({
             label: languageName,
             value: languageSupport,
           }),
         )}
-        onChangeHandler={handleLanguageChange}
+        onChangeHandler={(e) => {
+          setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)
+          socket.emit(SOCKET_API_ENDPOINT.CHANGE_LANGUAGE, e?.label ?? DEFAULT_LANGUAGE_KEY)
+        }}
       />
     </HStack>
   );
 
-  const codeEditor = socket ? (
-    <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
-  ) : (
-    <Spinner />
-  );
 
-  const visibleView = (
+  const VisibleView = (
     <HStack height="full" width="full">
       <VStack align="left" height="full" width="50%">
-        {options}
-        <QuestionDetails details={"Question Details"} />
+        {Options}
+        <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <VStack align="left" height="full" width="50%">
         <Text textStyle="sm">Code</Text>
-        {codeEditor}
+        <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
       </VStack>
     </HStack>
   );
 
-  const hiddenView = (
+  const HiddenView = (
     <VStack align="left" height="full" width="full">
-      {options}
-      {codeEditor}
+      {Options}
+      <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
     </VStack>
   );
 
   return (
     <VStack align="left" height="full" width="full">
       <Box height="full" width="full">
-        {renderQuestion ? visibleView : hiddenView}
+        {renderQuestion ? VisibleView : HiddenView}
       </Box>
       <Box>
         <Button
