@@ -22,7 +22,7 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId, language }
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState(LANGUAGES[language] ?? DEFAULT_LANGUAGE);
-  const [activeQuestionId, setActiveQuestionId] = useState(questionId ?? 0);
+  const [activeQuestionId, setActiveQuestionId] = useState(questionId);
 
   const id = useAuth().data?.user?.id
 

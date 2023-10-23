@@ -10,7 +10,7 @@ function RoomPage() {
 
   const { roomId } = useParams();
 
-  const { isLoading, isError, data } = useGetRoomInfo(roomId ?? "")
+  const { isLoading, isError, data } = useGetRoomInfo(roomId)
 
   if (isLoading) return (<Spinner />)
 

@@ -32,7 +32,7 @@ export const RoomUserInfo = ({ user }: RoomUserInfoProps) => {
                             d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
                         />
                     </Icon>
-                    <Text textAlign={"center"}>{connected ? "Online" : "Offline"}</Text>
+                    <Text textAlign={"center"} color={connected ? "green.500" : "gray.500"}>{connected ? "Online" : "Offline"}</Text>
                 </HStack>
             </VStack>
         </HStack>
