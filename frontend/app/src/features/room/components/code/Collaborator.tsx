@@ -54,7 +54,6 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId, language }
   })
 
   socket.on(SOCKET_API_ENDPOINT.CHANGE_LANGUAGE_RESPONSE, (language: LanguageKeyType) => {
-    console.log("RECEIVED")
     setCurrentLanguage(LANGUAGES[language])
   })
 
@@ -86,7 +85,6 @@ export const Collaborator = ({ roomId, topic, difficulty, questionId, language }
         )}
         onChangeHandler={(e) => {
           setCurrentLanguage(e?.value ?? DEFAULT_LANGUAGE)
-          console.log("CHANGE_LANGUAG")
           socket.emit(SOCKET_API_ENDPOINT.CHANGE_LANGUAGE, e?.label ?? DEFAULT_LANGUAGE_KEY)
         }}
       />

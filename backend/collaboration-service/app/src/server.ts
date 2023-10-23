@@ -68,12 +68,10 @@ io.on(SOCKET_API.CONNECT, (socket) => {
 
   /* Socket API to change the question */
   socket.on(SOCKET_API.CHANGE_QUESTION, (questionId: number) => {
-    console.log("QUESTION CHANGED")
     handleQuestionChange(socket, roomId, questionId)
   })
 
   socket.on(SOCKET_API.CHANGE_LANGUAGE, (language: string) => {
-    console.log("LANGUAGE CHANGED")
     handleLanguageChange(socket, roomId, language as LanguageKeyType)
   })
 
