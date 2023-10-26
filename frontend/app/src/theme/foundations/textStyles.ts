@@ -29,6 +29,12 @@ export const textStyles = {
     lineHeight: "120%",
     letterSpacing: "0%",
   },
+  "heading-ml": {
+    fontWeight: 600,
+    fontSize: "1.5rem",
+    lineHeight: "120%",
+    letterSpacing: "0%",
+  },
   "heading-md": {
     fontWeight: 600,
     fontSize: "1.25rem",
