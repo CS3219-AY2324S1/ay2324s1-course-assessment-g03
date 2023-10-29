@@ -2,4 +2,4 @@
 
 npx prisma generate
 npx prisma db push
-npm run start
+npm run start 
