@@ -1,6 +1,15 @@
 import { Table, extendTheme } from "@chakra-ui/react";
 import { colors, textStyles, fonts } from "./foundations";
-import { Text, Spinner, Button, Menu, Tag, Modal, Link } from "./components";
+import {
+  Text,
+  Spinner,
+  Button,
+  Menu,
+  Tag,
+  Modal,
+  Link,
+  Input,
+} from "./components";
 
 export const theme = extendTheme({
   components: {
@@ -12,6 +21,7 @@ export const theme = extendTheme({
     Tag,
     Modal,
     Link,
+    Input,
   },
   colors,
   textStyles,
@@ -19,7 +29,7 @@ export const theme = extendTheme({
   styles: {
     global: {
       body: {
-        background: "dark.500",
+        background: "dark.950",
       },
     },
   },
