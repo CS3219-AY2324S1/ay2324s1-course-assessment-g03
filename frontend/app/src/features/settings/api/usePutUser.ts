@@ -1,5 +1,5 @@
 import { backendApi } from "@/lib/axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_AUTH_QUERY_KEY, useAuth } from "@/hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
