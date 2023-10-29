@@ -1,10 +1,15 @@
-import { Box, Button, HStack, Skeleton, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Icon, Skeleton, Text } from "@chakra-ui/react";
 import { PiPlusBold } from "react-icons/pi";
 import { useQuestions } from "./QuestionsOutlet";
+import QuestionsSearch from "./QuestionsSearch";
+import { useAuth } from "@/hooks";
+import { ROLE } from "@/types/user";
+import QuestionsFilters from "./QuestionsFilters";
 
 const QuestionsHeader = () => {
-  const { data, isLoading, setCurrQuestion, onUpsertModalOpen } =
+  const { data, isLoading, setCurrQuestion, onCreateModalOpen } =
     useQuestions();
+  const { data: authData } = useAuth();
 
   if (isLoading) {
     return (
@@ -18,23 +23,38 @@ const QuestionsHeader = () => {
   }
 
   return (
-    <HStack justifyContent="space-between" alignItems="end">
-      <Box border="1px" borderRadius="md" borderColor="dark.800" px={3} py={1}>
+    <>
+      <Box
+        border="1px"
+        borderRadius="md"
+        borderColor="dark.800"
+        px={3}
+        py={1}
+        placeSelf="start"
+      >
         <Text fontSize="sm" fontWeight="medium">
           Total Questions: {data?.data.pagination.total_questions}
         </Text>
       </Box>
-      <Button
-        onClick={() => {
-          setCurrQuestion(undefined);
-          onUpsertModalOpen();
-        }}
-        variant="outline"
-        leftIcon={<PiPlusBold />}
-      >
-        Create Question
-      </Button>
-    </HStack>
+      <HStack justifyContent="space-between" alignItems="end">
+        <HStack>
+          <QuestionsSearch />
+          <QuestionsFilters />
+        </HStack>
+        {authData?.user.role === ROLE.ADMIN && (
+          <Button
+            onClick={() => {
+              setCurrQuestion(undefined);
+              onCreateModalOpen();
+            }}
+            variant="outline"
+            leftIcon={<Icon as={PiPlusBold} />}
+          >
+            Create Question
+          </Button>
+        )}
+      </HStack>
+    </>
   );
 };
 
