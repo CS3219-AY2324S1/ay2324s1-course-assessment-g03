@@ -8,6 +8,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Skeleton,
+  Box,
 } from "@chakra-ui/react";
 import {
   PiCaretDoubleLeftBold,
@@ -48,92 +49,98 @@ const QuestionsFooter = () => {
 
   return (
     <>
-      <HStack spacing="4" alignSelf="end">
-        <HStack>
-          <Text fontWeight="medium" fontSize="sm">
-            Rows per page
-          </Text>
-          <NumberInput
-            onChange={async value => {
-              await setPageSize(parseInt(value));
-              refetch();
-            }}
-            defaultValue={10}
-            min={10}
-            max={30}
-            step={5}
-            size="sm"
-            focusBorderColor="dark.800"
-            w="16"
-          >
-            <NumberInputField
-              border="1px"
-              borderColor="dark.800"
-              color="dark.100"
-              borderRadius="md"
+      <HStack justifyContent="space-between">
+        <Text color="dark.100" fontSize="sm">
+          {data?.data.pagination.total_questions !== 0 &&
+            `${data?.data.pagination.total_questions}  total questions`}
+        </Text>
+        <HStack spacing={4}>
+          <HStack>
+            <Text fontWeight="medium" fontSize="sm">
+              Rows per page
+            </Text>
+            <NumberInput
+              onChange={async value => {
+                await setPageSize(parseInt(value));
+                refetch();
+              }}
+              defaultValue={10}
+              min={10}
+              max={30}
+              step={5}
+              size="sm"
+              focusBorderColor="dark.800"
+              w="16"
+            >
+              <NumberInputField
+                border="1px"
+                borderColor="dark.800"
+                color="dark.100"
+                borderRadius="md"
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper
+                  border="none"
+                  color="dark.100"
+                  children={<PiCaretUpBold />}
+                />
+                <NumberDecrementStepper
+                  border="none"
+                  color="dark.100"
+                  children={<PiCaretDownBold />}
+                />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+          <HStack>
+            <Text fontWeight="medium" fontSize="sm">
+              Page {currPage} of {pageCount}
+            </Text>
+            <IconButton
+              aria-label="First Page"
+              icon={<PiCaretDoubleLeftBold />}
+              variant="outline"
+              onClick={async () => {
+                await setPageNum(1);
+                refetch();
+              }}
+              isLoading={isRefetching}
+              isDisabled={currPage === 1}
             />
-            <NumberInputStepper>
-              <NumberIncrementStepper
-                border="none"
-                color="dark.100"
-                children={<PiCaretUpBold />}
-              />
-              <NumberDecrementStepper
-                border="none"
-                color="dark.100"
-                children={<PiCaretDownBold />}
-              />
-            </NumberInputStepper>
-          </NumberInput>
-        </HStack>
-        <HStack>
-          <Text fontWeight="medium" fontSize="sm">
-            Page {currPage} of {pageCount}
-          </Text>
-          <IconButton
-            aria-label="First Page"
-            icon={<PiCaretDoubleLeftBold />}
-            variant="outline"
-            onClick={async () => {
-              await setPageNum(1);
-              refetch();
-            }}
-            isLoading={isRefetching}
-            isDisabled={currPage === 1}
-          />
-          <IconButton
-            aria-label="Previous Page"
-            icon={<PiCaretLeftBold />}
-            variant="outline"
-            onClick={async () => {
-              await setPageNum(pageNum - 1);
-              refetch();
-            }}
-            isLoading={isRefetching}
-            isDisabled={currPage === 1}
-          />
-          <IconButton
-            aria-label="Next Page"
-            icon={<PiCaretRightBold />}
-            variant="outline"
-            onClick={async () => {
-              await setPageNum(pageNum + 1);
-              refetch();
-            }}
-            isLoading={isRefetching}
-            isDisabled={currPage === pageCount}
-          />
-          <IconButton
-            aria-label="Last Page"
-            icon={<PiCaretDoubleRightBold />}
-            variant="outline"
-            onClick={async () => {
-              await setPageNum(pageCount);
-              refetch();
-            }}
-            isLoading={isRefetching}
-            isDisabled={currPage === pageCount}
-          />
+            <IconButton
+              aria-label="Previous Page"
+              icon={<PiCaretLeftBold />}
+              variant="outline"
+              onClick={async () => {
+                await setPageNum(pageNum - 1);
+                refetch();
+              }}
+              isLoading={isRefetching}
+              isDisabled={currPage === 1}
+            />
+            <IconButton
+              aria-label="Next Page"
+              icon={<PiCaretRightBold />}
+              variant="outline"
+              onClick={async () => {
+                await setPageNum(pageNum + 1);
+                refetch();
+              }}
+              isLoading={isRefetching}
+              isDisabled={currPage === pageCount}
+            />
+            <IconButton
+              aria-label="Last Page"
+              icon={<PiCaretDoubleRightBold />}
+              variant="outline"
+              onClick={async () => {
+                await setPageNum(pageCount);
+                refetch();
+              }}
+              isLoading={isRefetching}
+              isDisabled={currPage === pageCount}
+            />
+          </HStack>
         </HStack>
       </HStack>
     </>

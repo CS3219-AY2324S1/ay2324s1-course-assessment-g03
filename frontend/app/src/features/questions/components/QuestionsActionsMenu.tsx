@@ -1,6 +1,6 @@
 import { Question } from "@/types/question";
 import {
-  Box,
+  Icon,
   IconButton,
   Menu,
   MenuButton,
@@ -15,13 +15,18 @@ import {
   PiTrashBold,
 } from "react-icons/pi";
 import { useQuestions } from "./QuestionsOutlet";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { ROLE } from "@/types/user";
 
 interface QuestionsActionsMenuProps {
   row: Row<Question>;
 }
 
 const QuestionsActionsMenu = ({ row }: QuestionsActionsMenuProps) => {
-  const { setCurrQuestion, onDeleteModalOpen } = useQuestions();
+  const { setCurrQn, onDeleteModalOpen, onUpsertModalOpen } = useQuestions();
+  const navigate = useNavigate();
+  const { data } = useAuth();
 
   return (
     <Menu variant="outline">
@@ -34,30 +39,36 @@ const QuestionsActionsMenu = ({ row }: QuestionsActionsMenuProps) => {
       />
       <MenuList>
         <MenuItem
-          icon={<PiListBold />}
+          icon={<Icon as={PiListBold} />}
           onClick={() => {
-            setCurrQuestion(row.original);
+            setCurrQn(row.original);
+            navigate(`${row.original.id}`);
           }}
         >
           Details
         </MenuItem>
-        <MenuItem
-          icon={<PiPencilBold />}
-          onClick={() => {
-            setCurrQuestion(row.original);
-          }}
-        >
-          Edit
-        </MenuItem>
-        <MenuItem
-          icon={<PiTrashBold />}
-          onClick={() => {
-            setCurrQuestion(row.original);
-            onDeleteModalOpen();
-          }}
-        >
-          Delete
-        </MenuItem>
+        {data?.user.role === ROLE.ADMIN && (
+          <MenuItem
+            icon={<Icon as={PiPencilBold} />}
+            onClick={() => {
+              setCurrQn(row.original);
+              onUpsertModalOpen();
+            }}
+          >
+            Edit
+          </MenuItem>
+        )}
+        {data?.user.role === ROLE.ADMIN && (
+          <MenuItem
+            icon={<Icon as={PiTrashBold} />}
+            onClick={() => {
+              setCurrQn(row.original);
+              onDeleteModalOpen();
+            }}
+          >
+            Delete
+          </MenuItem>
+        )}
       </MenuList>
     </Menu>
   );

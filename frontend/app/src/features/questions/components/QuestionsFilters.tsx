@@ -82,8 +82,12 @@ const QuestionsFilters = () => {
                   }
                   value={state[filter.key as keyof typeof state]}
                 >
-                  {filter.options.map(option => (
-                    <MenuItemOption closeOnSelect={false} value={option.value}>
+                  {filter.options.map((option, i) => (
+                    <MenuItemOption
+                      key={i}
+                      closeOnSelect={false}
+                      value={option.value}
+                    >
                       {option.label}
                     </MenuItemOption>
                   ))}

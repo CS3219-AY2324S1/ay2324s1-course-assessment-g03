@@ -11,9 +11,8 @@ import {
 import { useDeleteQuestion } from "../api/useDeleteQuestion";
 import { useQuestions } from "./QuestionsOutlet";
 
-const QuestionsDeleteModal = () => {
-  const { isDeleteModalOpen, onDeleteModalClose, currQuestion } =
-    useQuestions();
+const DeleteQuestionModal = () => {
+  const { isDeleteModalOpen, onDeleteModalClose, currQn } = useQuestions();
   const deleteQuestion = useDeleteQuestion();
 
   return (
@@ -28,14 +27,14 @@ const QuestionsDeleteModal = () => {
             Cancel
           </Button>
           <Button
-            disabled={!currQuestion?.id}
+            disabled={!currQn?.id}
             isLoading={deleteQuestion.isLoading}
-            size="sm"
             variant="outlineWarning"
             onClick={() => {
-              if (currQuestion?.id) {
-                deleteQuestion.mutate({ questionId: currQuestion.id });
+              if (currQn?.id) {
+                deleteQuestion.mutate({ questionId: currQn.id });
               }
+              onDeleteModalClose();
             }}
           >
             Delete
@@ -46,4 +45,4 @@ const QuestionsDeleteModal = () => {
   );
 };
 
-export default QuestionsDeleteModal;
+export default DeleteQuestionModal;
