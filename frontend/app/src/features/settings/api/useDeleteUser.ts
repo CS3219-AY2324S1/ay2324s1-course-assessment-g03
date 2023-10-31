@@ -1,5 +1,5 @@
 import { backendApi } from "@/lib/axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_AUTH_QUERY_KEY, useAuth } from "@/hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { API_ENDPOINT } from "@/constants/api";
 import { User } from "@/types/user";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "@/constants/route";
+import { safeParse } from "@/lib/safeParse";
 
 const deleteUserResponseSchema = makeSuccessResponseSchema(
   z.object({
@@ -23,12 +24,7 @@ const deleteUser = async (userId: User["id"] | undefined) => {
   const { data } = await backendApi.delete(
     `${API_ENDPOINT.USERS}/id/${userId}`,
   );
-  const parsed = deleteUserResponseSchema.safeParse(data);
-  if (!parsed.success) {
-    console.error("Unexpected response shape:", parsed.error);
-    return data;
-  }
-  return parsed.data;
+  return safeParse(deleteUserResponseSchema, data);
 };
 
 export const useDeleteUser = () => {
@@ -46,7 +42,7 @@ export const useDeleteUser = () => {
         title: "You have successfully deleted your profile",
         isClosable: true,
       });
-      queryClient.setQueryData(GET_AUTH_QUERY_KEY, undefined);
+      queryClient.setQueryData([GET_AUTH_QUERY_KEY], undefined);
       navigate(ROUTE.ROOT);
     },
   });

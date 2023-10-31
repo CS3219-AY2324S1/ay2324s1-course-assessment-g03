@@ -1,6 +1,6 @@
 import { backendApi } from "@/lib/axios";
 import { makeSuccessResponseSchema } from "@/lib/api";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { API_ENDPOINT } from "@/constants/api";
 

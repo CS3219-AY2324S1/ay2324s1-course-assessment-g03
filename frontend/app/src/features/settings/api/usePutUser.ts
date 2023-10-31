@@ -1,11 +1,12 @@
 import { backendApi } from "@/lib/axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_AUTH_QUERY_KEY, useAuth } from "@/hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { API_ENDPOINT } from "@/constants/api";
 import { User, userSchema } from "@/types/user";
+import { safeParse } from "@/lib/safeParse";
 
 const putUserRequestSchema = z.object({
   user: userSchema.partial().omit({ id: true, name: true, role: true }),
@@ -36,12 +37,7 @@ const putUser = async (
       },
     },
   );
-  const parsed = putUserResponseSchema.safeParse(data);
-  if (!parsed.success) {
-    console.error("Unexpected response shape:", parsed.error);
-    return data;
-  }
-  return parsed.data;
+  return safeParse(putUserResponseSchema, data);
 };
 
 export const usePutUser = () => {
@@ -58,7 +54,7 @@ export const usePutUser = () => {
         title: "You have successfully updated your profile",
         isClosable: true,
       });
-      queryClient.invalidateQueries(GET_AUTH_QUERY_KEY);
+      queryClient.invalidateQueries({ queryKey: [GET_AUTH_QUERY_KEY] });
     },
   });
 };

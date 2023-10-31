@@ -9,4 +9,6 @@ export const ROUTE = {
   PROFILE: "/profile",
   PROFILE_USERID: "/profile/:userId",
   SETTINGS: "/settings",
+  QUESTIONS: "/questions",
+  QUESTION_ID: ":questionId",
 } as const;

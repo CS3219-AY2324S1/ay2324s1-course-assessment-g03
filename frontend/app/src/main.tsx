@@ -8,7 +8,7 @@ import {
   MutationCache,
   Query,
   QueryKey,
-} from "react-query";
+} from "@tanstack/react-query";
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { globalToastOptions, theme } from "@/theme";
 import "@fontsource-variable/inter";

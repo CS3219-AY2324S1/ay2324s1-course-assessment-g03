@@ -17,16 +17,18 @@ export const API_ENDPOINT = {
   AUTH_GITHUB_LOGIN: "/auth/github/login",
 
   /**
+   * User service
+   */
+  USERS: "/users",
+
+  /**
    * Question service
    */
   QUESTIONS: "/questions",
   QUESTIONS_GET_ALL: "/questions/all",
   QUESTIONS_GET_FILTERS: "/questions/filters",
-
-  /**
-   * User service
-   */
-  USERS: "/users",
+  QUESTIONS_VIEW: "/questions/view",
+  ADMIN_QUESTIONS: "/admin/questions",
 
   /**
    * Collaboration service
@@ -43,14 +45,12 @@ export const WEBSOCKET_PATH = {
   COLLABORATION: "/api/collaboration/websocket",
 } as const;
 
-
 export const SOCKET_API_ENDPOINT = {
-  /** 
+  /**
    * Collaboration service
    */
   CHANGE_QUESTION: "changeQuestion",
   CHANGE_QUESTION_RESPONSE: "changeQuestionResponse",
   CHANGE_LANGUAGE: "changeLanguage",
-  CHANGE_LANGUAGE_RESPONSE: "changeLanguageResponse"
-
+  CHANGE_LANGUAGE_RESPONSE: "changeLanguageResponse",
 } as const;

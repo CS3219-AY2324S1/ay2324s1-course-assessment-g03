@@ -3,7 +3,7 @@ import { TABS } from "../constants/tabs";
 
 export const SettingsSidebar = () => {
   return (
-    <TabList height="100%" alignItems="start" borderColor="dark.500">
+    <TabList height="100%" alignItems="start" borderColor="dark.950">
       {TABS.map(({ label }) => {
         const isDelete = label === "Delete account";
 

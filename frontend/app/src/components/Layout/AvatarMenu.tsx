@@ -22,41 +22,29 @@ export const AvatarMenu = ({ user }: AvatarMenuProps) => {
   const navigate = useNavigate();
 
   return (
-    <Menu>
+    <Menu variant="outline">
       <MenuButton
-        cursor="pointer"
         as={Avatar}
+        cursor="pointer"
         name={user.name}
         src={user.avatarUrl}
+        size="sm"
       />
-      {/* TODO: Abstract into theme components (for some reason doesn't work) */}
-      <MenuList bg="dark.500">
+      <MenuList>
         <MenuItem
           icon={<Icon as={BiUser} />}
-          bg="dark.500"
-          _hover={{ bg: "dark.400" }}
-          color="light.100"
           onClick={() => navigate(`${ROUTE.PROFILE}/${user.id}`)}
         >
           Profile
         </MenuItem>
         <MenuItem
           icon={<Icon as={BiCog} />}
-          bg="dark.500"
-          _hover={{ bg: "dark.400" }}
-          color="light.100"
           onClick={() => navigate(`${ROUTE.SETTINGS}`)}
         >
           Settings
         </MenuItem>
         <MenuDivider />
-        <MenuItem
-          icon={<Icon as={BiLogOut} />}
-          bg="dark.500"
-          _hover={{ bg: "dark.400", color: "red.400" }}
-          color="light.100"
-          onClick={() => logout()}
-        >
+        <MenuItem icon={<Icon as={BiLogOut} />} onClick={() => logout()}>
           Logout
         </MenuItem>
       </MenuList>

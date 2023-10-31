@@ -2,6 +2,6 @@ import { defineStyleConfig } from "@chakra-ui/react";
 
 export const Text = defineStyleConfig({
   baseStyle: {
-    color: "light.100",
+    color: "dark.100",
   },
 });
