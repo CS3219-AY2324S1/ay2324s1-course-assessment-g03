@@ -8,6 +8,7 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  Icon,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { BiCog, BiLogOut, BiUser } from "react-icons/bi";
@@ -31,19 +32,19 @@ export const AvatarMenu = ({ user }: AvatarMenuProps) => {
       />
       <MenuList>
         <MenuItem
-          icon={<BiUser />}
+          icon={<Icon as={BiUser} />}
           onClick={() => navigate(`${ROUTE.PROFILE}/${user.id}`)}
         >
           Profile
         </MenuItem>
         <MenuItem
-          icon={<BiCog />}
+          icon={<Icon as={BiCog} />}
           onClick={() => navigate(`${ROUTE.SETTINGS}`)}
         >
           Settings
         </MenuItem>
         <MenuDivider />
-        <MenuItem icon={<BiLogOut />} onClick={() => logout()}>
+        <MenuItem icon={<Icon as={BiLogOut} />} onClick={() => logout()}>
           Logout
         </MenuItem>
       </MenuList>
