@@ -8,11 +8,14 @@ import {
   GetQuestionsResponse,
   deleteQuestionResponseSchema,
 } from "../types";
+import { useToast } from "@chakra-ui/react";
+import { Toast } from "@/components/Toast";
 
 const queryKey = [QUESTIONS_QUERY_KEY];
 
 export const useDeleteQuestion = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   return useMutation({
     mutationFn: async ({ questionId }: DeleteQuestionVariables) => {
@@ -43,11 +46,30 @@ export const useDeleteQuestion = () => {
 
       return { prevData };
     },
-    onError: (_err, _vars, context) => {
+    onError: (err: Error, _vars, context) => {
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="error"
+            message={`Error deleting question: ${err.message}`}
+            onClose={onClose}
+          />
+        ),
+      });
       queryClient.setQueryData(queryKey, context?.prevData);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
     },
+    onSuccess: () =>
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="success"
+            message="Question deleted successfully!"
+            onClose={onClose}
+          />
+        ),
+      }),
   });
 };
