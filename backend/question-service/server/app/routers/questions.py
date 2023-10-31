@@ -84,8 +84,8 @@ async def get_questions(
     cursor = collection.find(query, {"_id": False}).sort(sort_data).skip(skip_count).limit(limit)
     questions = list(cursor)
 
-    if not questions or len(questions) == 0:
-        raise HTTPException(status_code=404, detail="No questions found.")
+    # if not questions or len(questions) == 0:
+    #     raise HTTPException(status_code=404, detail="No questions found.")
 
     # Add pagination metadata
     total_questions = collection.count_documents(query)

@@ -34,7 +34,7 @@ import { useNavigate } from "react-router-dom";
 const columnHelper = createColumnHelper<Question>();
 
 const QuestionsTable = () => {
-  const { sorting, setSorting, data, refetch, isLoading, setCurrQuestion } =
+  const { sorting, setSorting, data, refetch, isLoading, setCurrQn } =
     useQuestions();
   const navigate = useNavigate();
 
@@ -70,7 +70,7 @@ const QuestionsTable = () => {
         ),
       }),
       columnHelper.accessor("paid_only", {
-        header: "Paid",
+        header: "Status",
         cell: info => (
           <Tag variant={info.getValue() ? "red" : "green"} borderRadius="full">
             {info.getValue() ? "Paid Only" : "Free"}
@@ -83,17 +83,16 @@ const QuestionsTable = () => {
           <HStack w={96}>
             {info
               .getValue()
-              .slice(0, 2)
-              .map(topic => (
-                <Tag key={topic}>{topic}</Tag>
-              ))}
-            {info.getValue().length > 3 && (
+              ?.slice(0, 2)
+              .map(topic => <Tag key={topic}>{topic}</Tag>) || null}
+            {info.getValue()?.length > 3 ? (
               <Text color="dark.300" fontSize="xs">
                 & {info.getValue().length - 2} more...
               </Text>
-            )}
+            ) : null}
           </HStack>
         ),
+        enableSorting: false,
       }),
       columnHelper.display({
         id: "actions",
@@ -214,16 +213,18 @@ const QuestionsTable = () => {
             ))}
           </Thead>
           <Tbody>
+            {table.getRowModel().rows.length === 0 && (
+              <Tr p={4} display="flex">
+                <Text fontSize="sm"> No questions found.</Text>
+              </Tr>
+            )}
             {table.getRowModel().rows.map(row => (
               <Tr
                 key={row.id}
                 borderTop="1px"
                 borderColor="dark.800"
                 borderRadius="md"
-                transitionDuration="normal"
-                transitionProperty="background-color"
                 _hover={{
-                  bg: "dark.900",
                   cursor: "pointer",
                 }}
               >
@@ -232,7 +233,7 @@ const QuestionsTable = () => {
                     key={cell.id}
                     onClick={() => {
                       if (cell.column.id !== "actions") {
-                        setCurrQuestion(row.original);
+                        setCurrQn(row.original);
                         navigate(`${row.original.id}`);
                       }
                     }}
