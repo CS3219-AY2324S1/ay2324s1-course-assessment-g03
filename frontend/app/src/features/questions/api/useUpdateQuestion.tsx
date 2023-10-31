@@ -8,11 +8,14 @@ import {
   putQuestionResponseSchema,
   UpdateQuestionVariables,
 } from "../types";
+import { Toast } from "@/components/Toast";
+import { useToast } from "@chakra-ui/react";
 
 const queryKey = [QUESTIONS_QUERY_KEY];
 
 export const useUpdateQuestion = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   return useMutation({
     mutationFn: async (updatedQuestion: UpdateQuestionVariables) => {
@@ -46,11 +49,30 @@ export const useUpdateQuestion = () => {
 
       return { prevData };
     },
-    onError: (_err, _vars, context) => {
+    onError: (err: Error, _vars, context) => {
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="error"
+            message={`Error updating question: ${err.message}`}
+            onClose={onClose}
+          />
+        ),
+      });
       queryClient.setQueryData(queryKey, context?.prevData);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
     },
+    onSuccess: () =>
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="success"
+            message="Question updated successfully!"
+            onClose={onClose}
+          />
+        ),
+      }),
   });
 };

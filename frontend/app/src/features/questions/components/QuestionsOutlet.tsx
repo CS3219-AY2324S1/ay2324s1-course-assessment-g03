@@ -27,14 +27,11 @@ interface QuestionsContextType {
   isLoading: boolean;
   refetch: () => void;
   isRefetching: boolean;
-  currQuestion: Partial<Question> | undefined;
-  setCurrQuestion: Dispatch<SetStateAction<Partial<Question> | undefined>>;
-  isCreateModalOpen: boolean;
-  onCreateModalOpen: () => void;
-  onCreateModalClose: () => void;
-  isUpdateModalOpen: boolean;
-  onUpdateModalOpen: () => void;
-  onUpdateModalClose: () => void;
+  currQn: Partial<Question> | undefined;
+  setCurrQn: Dispatch<SetStateAction<Partial<Question> | undefined>>;
+  isUpsertModalOpen: boolean;
+  onUpsertModalOpen: () => void;
+  onUpsertModalClose: () => void;
   isDeleteModalOpen: boolean;
   onDeleteModalOpen: () => void;
   onDeleteModalClose: () => void;
@@ -56,17 +53,12 @@ export const QuestionsOutlet = () => {
     search,
     filters,
   });
-  const [currQuestion, setCurrQuestion] = useState<Partial<Question>>();
-  const {
-    isOpen: isCreateModalOpen,
-    onOpen: onCreateModalOpen,
-    onClose: onCreateModalClose,
-  } = useDisclosure();
+  const [currQn, setCurrQn] = useState<Partial<Question>>();
   const btnRef = useRef();
   const {
-    isOpen: isUpdateModalOpen,
-    onOpen: onUpdateModalOpen,
-    onClose: onUpdateModalClose,
+    isOpen: isUpsertModalOpen,
+    onOpen: onUpsertModalOpen,
+    onClose: onUpsertModalClose,
   } = useDisclosure();
   const {
     isOpen: isDeleteModalOpen,
@@ -91,14 +83,11 @@ export const QuestionsOutlet = () => {
         isLoading,
         refetch,
         isRefetching,
-        currQuestion,
-        setCurrQuestion,
-        isCreateModalOpen,
-        onCreateModalOpen,
-        onCreateModalClose,
-        isUpdateModalOpen,
-        onUpdateModalOpen,
-        onUpdateModalClose,
+        currQn,
+        setCurrQn,
+        isUpsertModalOpen,
+        onUpsertModalOpen,
+        onUpsertModalClose,
         isDeleteModalOpen,
         onDeleteModalOpen,
         onDeleteModalClose,

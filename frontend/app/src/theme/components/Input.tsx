@@ -4,19 +4,36 @@ import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(inputAnatomy.keys);
 
-// Created custom variant because overrriding baseStyles didn't work for some reason
 const outline = definePartsStyle({
   field: {
-    color: "dark.100",
-    borderSize: "1px",
+    border: "1px",
     borderColor: "dark.800",
     borderRadius: "md",
+    color: "dark.100",
+    _focusVisible: {
+      zIndex: 1,
+      borderColor: "dark.700",
+      boxShadow: `0 0 0 1px dark.700`,
+    },
     _placeholder: {
       color: "dark.300",
     },
     _hover: {
       borderColor: "dark.700",
     },
+    _invalid: {
+      borderColor: "red.900",
+      boxShadow: `0 0 0 1px red.900`,
+    },
+    _readOnly: {
+      boxShadow: "none !important",
+      userSelect: "all",
+    },
+  },
+  addon: {
+    border: "1px solid",
+    borderColor: "dark.800",
+    bg: "transparent",
   },
 });
 

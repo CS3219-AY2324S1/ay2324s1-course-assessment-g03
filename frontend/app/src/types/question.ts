@@ -19,7 +19,7 @@ export const questionSchema = z.object({
   title: z.string(),
   topic_tags: z.array(z.string()),
   updated_at: z.number(),
-  url: z.string().url(),
+  url: z.string().url().or(z.literal("")),
 });
 
 export type Question = z.infer<typeof questionSchema>;

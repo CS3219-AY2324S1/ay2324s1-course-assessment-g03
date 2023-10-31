@@ -1,4 +1,4 @@
-import { Table, extendTheme } from "@chakra-ui/react";
+import { FormControl, Table, extendTheme } from "@chakra-ui/react";
 import { colors, textStyles, fonts } from "./foundations";
 import {
   Text,
@@ -9,6 +9,7 @@ import {
   Modal,
   Link,
   Input,
+  Textarea,
 } from "./components";
 
 export const theme = extendTheme({
@@ -22,6 +23,8 @@ export const theme = extendTheme({
     Modal,
     Link,
     Input,
+    Textarea,
+    FormControl,
   },
   colors,
   textStyles,

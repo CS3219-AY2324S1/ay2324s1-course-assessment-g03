@@ -13,6 +13,7 @@ export const CustomButton = ({ to, ...props }: CustomButtonProps) => {
         to={to}
         colorScheme="primary"
         borderRadius="0.75rem"
+        variant="solid"
         _hover={{
           backgroundColor: "primary.700",
         }}
@@ -28,6 +29,7 @@ export const CustomButton = ({ to, ...props }: CustomButtonProps) => {
       _hover={{
         backgroundColor: "primary.700",
       }}
+      variant="solid"
       {...props}
     ></Button>
   );

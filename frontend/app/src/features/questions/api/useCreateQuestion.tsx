@@ -1,19 +1,15 @@
 import { API_ENDPOINT } from "@/constants/api";
 import { backendApi } from "@/lib/axios";
 import { safeParse } from "@/lib/safeParse";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  CreateQuestionVariables,
-  GetQuestionsResponse,
-  PostQuestionResponse,
-  postQuestionResponseSchema,
-} from "../types";
-import { QUESTIONS_QUERY_KEY } from "../constants";
-
-const queryKey = [QUESTIONS_QUERY_KEY];
+import { useMutation } from "@tanstack/react-query";
+import { CreateQuestionVariables, postQuestionResponseSchema } from "../types";
+import { useToast } from "@chakra-ui/react";
+import { useQuestions } from "../components/QuestionsOutlet";
+import { Toast } from "@/components/Toast";
 
 export const useCreateQuestion = () => {
-  const queryClient = useQueryClient();
+  const { refetch } = useQuestions();
+  const toast = useToast();
 
   return useMutation({
     mutationFn: async (newQuestion: CreateQuestionVariables) => {
@@ -23,19 +19,28 @@ export const useCreateQuestion = () => {
       );
       return safeParse(postQuestionResponseSchema, data);
     },
-    onSuccess: (data: PostQuestionResponse) =>
-      queryClient.setQueryData(
-        queryKey,
-        (prevData: GetQuestionsResponse | undefined) =>
-          prevData
-            ? {
-                ...prevData,
-                data: {
-                  ...prevData.data,
-                  questions: [data.data.question, ...prevData.data.questions],
-                },
-              }
-            : prevData,
-      ),
+    onSuccess: () => {
+      refetch;
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="success"
+            message="Question created successfully!"
+            onClose={onClose}
+          />
+        ),
+      });
+    },
+    onError: (err: Error) => {
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="error"
+            message={`Error creating question: ${err.message}`}
+            onClose={onClose}
+          />
+        ),
+      });
+    },
   });
 };

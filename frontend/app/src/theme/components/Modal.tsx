@@ -30,5 +30,8 @@ const baseStyle = definePartsStyle({
 });
 
 export const Modal = defineMultiStyleConfig({
+  defaultProps: {
+    size: "sm",
+  },
   baseStyle,
 });

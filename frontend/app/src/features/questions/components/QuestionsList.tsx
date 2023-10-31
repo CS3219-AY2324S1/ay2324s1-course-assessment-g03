@@ -1,8 +1,8 @@
-import QuestionsDeleteModal from "@/features/questions/components/QuestionsDeleteModal";
+import DeleteQuestionModal from "@/features/questions/components/DeleteQuestionModal";
 import QuestionsFooter from "@/features/questions/components/QuestionsFooter";
 import QuestionsHeader from "@/features/questions/components/QuestionsHeader";
 import QuestionsTable from "@/features/questions/components/QuestionsTable";
-import QuestionsUpsertModal from "@/features/questions/components/QuestionsUpsertModal";
+import UpsertQuestionModal from "@/features/questions/components/UpsertQuestionModal";
 
 const QuestionsList = () => {
   return (
@@ -10,8 +10,8 @@ const QuestionsList = () => {
       <QuestionsHeader />
       <QuestionsTable />
       <QuestionsFooter />
-      <QuestionsUpsertModal />
-      <QuestionsDeleteModal />
+      <UpsertQuestionModal />
+      <DeleteQuestionModal />
     </>
   );
 };
