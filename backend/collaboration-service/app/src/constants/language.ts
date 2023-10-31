@@ -11,4 +11,5 @@ export const LANGUAGES = {
     Go: "Go"
 } as const;
 
+export type LanguageKeyType = keyof typeof LANGUAGES;
 export const DEFAULT_LANGUAGE = LANGUAGES.Python

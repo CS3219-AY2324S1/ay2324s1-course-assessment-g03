@@ -4,7 +4,7 @@ export const DIFFICULTY = {
     HARD: "Hard",
 } as const;
 
-export type DifficultyValue = typeof DIFFICULTY[keyof typeof DIFFICULTY];
+export type DifficultyType = typeof DIFFICULTY[keyof typeof DIFFICULTY];
 
 export const TOPIC_TAG = {
     HASH_TABLE: "Hash Table",
@@ -20,4 +20,4 @@ export const TOPIC_TAG = {
     DYNAMIC_PROGRAMMING: "Dynamic Programming",
 } as const;
 
-export type TopicValue = typeof TOPIC_TAG[keyof typeof TOPIC_TAG];
+export type TopicType = typeof TOPIC_TAG[keyof typeof TOPIC_TAG]

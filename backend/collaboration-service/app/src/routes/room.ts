@@ -1,11 +1,10 @@
 import express from "express";
 import type { Request, Response, NextFunction } from "express";
-import { v4 } from "uuid";
-import { createRoom, getRoomInfo } from "../models/rooms.model";
 import { HttpStatus } from "../utils/HTTP_Status_Codes";
 import { JSEND_STATUS } from "../types/models.type";
 import { METHOD_NOT_ALLOWED_ERROR } from "../constants/errors";
-import { DIFFICULTY, DifficultyValue, TOPIC_TAG, TopicValue } from "../constants/question";
+import { createOneRoom, findUserInRoom, getOneRoomInfo } from "../models/rooms.model";
+import * as roomSchemas from "../schemas/room.schemas";
 
 const roomRouter = express.Router();
 
@@ -14,40 +13,48 @@ roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
-roomRouter.post("/", async (req: Request<{}, {}, { difficulties: string[]; topics: string[]; }>, res: Response) => {
+roomRouter.post("/", async (req: Request, res: Response) => {
 
-  const roomId = v4();
+  try {
+    const { difficulty, topic } = roomSchemas.postRoomRequestSchema.parse(req).body;
+    const { code, data, status } = createOneRoom(difficulty, topic);
 
-  const { difficulties, topics } = req.body;
+    return res.status(code).json({ status, data });
+  } catch (e) {
+    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.FAILURE, data: e })
 
-  if (difficulties && !(difficulties.every((d: string) => Object.values(DIFFICULTY).includes(d as DifficultyValue)))) {
-    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid difficulty" } });
   }
-
-  if (topics && !(topics.every((t: string) => Object.values(TOPIC_TAG).includes(t as TopicValue)))) {
-    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.ERROR, data: { message: "Invalid topic" } });
-  }
-
-  const mappedDifficulties = difficulties.map((diff) => diff as keyof typeof DIFFICULTY)
-  const mappedTopics = topics.map((t) => t as keyof typeof TOPIC_TAG)
-
-  const { code, data, status } = createRoom(roomId, mappedDifficulties, mappedTopics);
-
-  return res.status(code).json({ status, data });
 }).all("/", async (_req: Request, res: Response) => {
   return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ status: JSEND_STATUS.ERROR, data: { message: METHOD_NOT_ALLOWED_ERROR } });
 });
 
+roomRouter.get("/user/:userId", (req: Request, res: Response) => {
+
+  try {
+    const { userId } = roomSchemas.getOneRoomByUserIdSchema.parse(req).params;
+    const { code, status, data } = findUserInRoom(userId)
+    return res.status(code).json({ status, data });
+  } catch (e) {
+    return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.FAILURE, data: e })
+  }
+
+})
+
 roomRouter.get(
   "/:roomId",
-  (req: Request<{ roomId: string }>, res: Response) => {
-    const { roomId } = req.params;
+  (req: Request, res: Response) => {
 
-    const roomInfo = getRoomInfo(roomId);
+    try {
+      const { roomId } = roomSchemas.getOneRoomByIdSchema.parse(req).params;
+      const { code, status, data } = getOneRoomInfo(roomId);
 
-    return res
-      .status(roomInfo.code)
-      .json({ status: roomInfo.status, data: roomInfo.data });
+      return res
+        .status(code)
+        .json({ status, data });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ status: JSEND_STATUS.FAILURE, data: e })
+
+    }
   }
 ).all("/:roomId", (_req: Request, res: Response) => {
   return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ status: JSEND_STATUS.ERROR, data: { message: METHOD_NOT_ALLOWED_ERROR } });
