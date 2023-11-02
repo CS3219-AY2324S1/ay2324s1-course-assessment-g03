@@ -1,11 +1,12 @@
 import { Card } from "@/components";
 import { ROUTE } from "@/constants/route";
 import { Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 
-export const JoinRoomCard = () => {
-  const navigate = useNavigate();
+interface JoinRoomCardProps {
+  joinCallback: (route: string) => void;
+}
 
+export const JoinRoomCard = ({ joinCallback }: JoinRoomCardProps) => {
   return (
     <Card
       backgroundImage="linear-gradient(#242325,#171619)"
@@ -24,7 +25,7 @@ export const JoinRoomCard = () => {
         transform:
           "translate3d(0px, 0px, 0px) scale3d(1.02, 1.02, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
       }}
-      onClick={() => navigate(ROUTE.HOME_JOIN)}
+      onClick={() => joinCallback(ROUTE.HOME_JOIN)}
     >
       <Text textStyle="heading-md">Join a room</Text>
       <Text textStyle="text-sm">Pair with a random peer</Text>
