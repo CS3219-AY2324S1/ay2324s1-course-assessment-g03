@@ -1,5 +1,4 @@
-import { Page } from "@/components";
-import { CustomModal } from "@/components/CustomModal/CustomModal";
+import { CustomModal, Page } from "@/components";
 import { JoinRoomCard, CreateRoomCard } from "@/features/matching";
 import { useAuth } from "@/hooks";
 import { HStack, useDisclosure } from "@chakra-ui/react";
