@@ -10,11 +10,13 @@ import { env } from "@/lib/env";
 import { Preferences, matchingSchema } from "@/types/matching";
 import { WEBSOCKET_PATH } from "@/constants/api";
 import { User } from "@/types/user";
+import { useToast } from "@chakra-ui/react";
 
 function JoinPage() {
   const { data } = useAuth();
   const user = data?.user;
   const navigate = useNavigate();
+  const toast = useToast();
   const [isWaitingForMatch, setIsWaitingForMatch] = useState(false);
   const [otherUser, setOtherUser] = useState<User | undefined>();
   const socketRef = useRef<Socket | null>(null);
@@ -40,6 +42,12 @@ function JoinPage() {
           navigate(`${ROUTE.ROOM}/${roomId}`);
         }, COUNTDOWN_TO_JOIN * 1000);
       });
+      socket.on(MATCHING_EVENTS.ERROR, error =>
+        toast({
+          status: "error",
+          title: error,
+        }),
+      );
     },
     [navigate, user],
   );

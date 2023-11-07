@@ -6,6 +6,7 @@ import {
 } from "./matching.interfaces";
 import { comparePreferences } from "../utils/preferences";
 import { TIMEOUT_DURATION } from "./matching.constants";
+import { createRoomSchema } from "./matching.schemas";
 
 export class MatchingGateway {
   private waiting: WaitingUser[] = [];
@@ -31,10 +32,13 @@ export class MatchingGateway {
       }
     );
     const dataJson = await res.json();
+    const safeParsedRoomData = createRoomSchema.safeParse(dataJson);
 
-    // TODO: Properly validate API response schema @Joel
-    if (dataJson.status !== "success" || !dataJson.data) {
-      // TODO: Properly handle error @Joel (instead of crashing the server, it should send an appropriate response to the client)
+    if (!safeParsedRoomData.success) {
+      throw new Error("Mismatch in expected createRoom schema");
+    }
+
+    if (safeParsedRoomData.data.status !== "success") {
       throw new Error("Failed to create room");
     }
 
