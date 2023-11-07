@@ -4,28 +4,18 @@ import { Prisma } from "@prisma/client";
 export const submissionService = {
   create: async (
     userId: string,
-    otherUserId: string,
+    otherUserId: string | undefined,
     data: Prisma.SubmissionCreateInput
   ) => {
     const submission = await db.submission.create({
       data: {
         ...data,
         userIds: {
-          set: [userId, otherUserId],
+          set: [userId, ...(otherUserId ? [otherUserId] : [])],
         },
       },
     });
     const updatedUser = await db.user.update({
-      where: {
-        id: otherUserId,
-      },
-      data: {
-        submissionIds: {
-          push: submission.id,
-        },
-      },
-    });
-    const updatedOtherUser = await db.user.update({
       where: {
         id: userId,
       },
@@ -35,6 +25,18 @@ export const submissionService = {
         },
       },
     });
+    if (otherUserId) {
+      const updatedOtherUser = await db.user.update({
+        where: {
+          id: otherUserId,
+        },
+        data: {
+          submissionIds: {
+            push: submission.id,
+          },
+        },
+      });
+    }
     return submission;
   },
   delete: (id: Prisma.SubmissionDeleteArgs["where"]["id"]) =>

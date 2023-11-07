@@ -20,6 +20,7 @@ export const API_ENDPOINT = {
    * User service
    */
   USERS: "/users",
+  USERS_ID: "/users/id",
 
   /**
    * Question service
