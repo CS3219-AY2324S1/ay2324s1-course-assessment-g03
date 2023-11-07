@@ -1,26 +1,46 @@
-import { Page } from "@/components";
+import { CustomModal, Page } from "@/components";
 import { JoinRoomCard, CreateRoomCard } from "@/features/matching";
 import { useCreateRoom } from "@/features/matching/api/useCreateRoom";
 import { useAuth } from "@/hooks";
-import { HStack } from "@chakra-ui/react";
+import { HStack, useDisclosure } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const { data } = useAuth();
   const user = data?.user;
-
+  const roomId = user?.roomId;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  
   const { mutate } = useCreateRoom();
 
   const handleCreateRoom = () => {
     mutate();
   };
 
+  const joinCallback = (route: string) => {
+    if (roomId) {
+      onOpen();
+      return;
+    }
+    navigate(route);
+  };
+
   return (
-    <Page display="grid" placeItems="center">
-      <HStack gap="2rem" w="xl">
-        <CreateRoomCard user={user} createRoomCallback={handleCreateRoom} />
-        <JoinRoomCard user={user} />
-      </HStack>
-    </Page>
+    <>
+      <CustomModal
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Session in Progress"
+        description="You have a session in progress. End it before starting a new one."
+      ></CustomModal>
+      <Page display="grid" placeItems="center">
+        <HStack gap="2rem" w="xl">
+          <CreateRoomCard user={user} createCallback={joinCallback} />
+          <JoinRoomCard user={user} joinCallback={joinCallback} />
+        </HStack>
+      </Page>
+    </>
   );
 }
 

@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { BsFillPersonFill } from "react-icons/bs";
 import { User } from "@/types/user";
 
-type Props = {
+interface JoinRoomCardProps {
   user: User | undefined;
-};
+  joinCallback: (route: string) => void;
+}
 
-export const JoinRoomCard = ({ user }: Props) => {
+export const JoinRoomCard = ({ user, joinCallback }: JoinRoomCardProps) => {
   const navigate = useNavigate();
 
   return (
@@ -30,7 +31,7 @@ export const JoinRoomCard = ({ user }: Props) => {
         transform:
           "translate3d(0px, 0px, 0px) scale3d(1.02, 1.02, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
       }}
-      onClick={() => navigate(ROUTE.HOME_JOIN)}
+      onClick={() => joinCallback(ROUTE.HOME_JOIN)}
     >
       <Box position="relative">
         <Avatar
