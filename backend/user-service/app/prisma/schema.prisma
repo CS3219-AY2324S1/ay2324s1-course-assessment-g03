@@ -8,16 +8,16 @@ datasource db {
 }
 
 model User {
-  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
-  avatarUrl          String?
-  email              String            @unique
-  name               String?
-  questionAttemptIds String[]          @db.ObjectId
-  questionAttempts   QuestionAttempt[] @relation(fields: [questionAttemptIds], references: [id])
-  role               Role              @default(USER)
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  avatarUrl     String?
+  email         String       @unique
+  name          String?
+  submissionIds String[]     @db.ObjectId
+  submissions   Submission[] @relation(fields: [submissionIds], references: [id])
+  role          Role         @default(USER)
 }
 
-model QuestionAttempt {
+model Submission {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   questionId String
   userIds    String[] @db.ObjectId

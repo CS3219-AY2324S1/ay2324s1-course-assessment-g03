@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { userController } from "../controllers/user.controller";
-import { db } from "../services/db.service";
+import { submissionRouter } from "./submission.router";
 
 export const userRouter = Router();
 
-userRouter.get("/", userController.get)
+userRouter.get("/", userController.get);
 
 /* Get user by ID */
 userRouter.get("/id/:userId", userController.getById);
@@ -20,3 +20,5 @@ userRouter.put("/id/:userId", userController.put);
 
 /* Delete user */
 userRouter.delete("/id/:userId", userController.delete);
+
+userRouter.use("/id/:userId/submissions", submissionRouter);
