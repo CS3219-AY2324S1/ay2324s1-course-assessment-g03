@@ -5,7 +5,6 @@ import LandingPage from "@/pages";
 import GitHubCallbackPage from "@/pages/github/callback";
 import HomePage from "@/pages/home";
 import JoinPage from "@/pages/home/join";
-import CreatePage from "@/pages/home/create";
 import RoomPage from "./pages/room/[roomId]";
 import ProfilePage from "./pages/profile/[userId]";
 import SettingsPage from "./pages/settings";
@@ -28,7 +27,6 @@ function App() {
         <Route element={<Layout requireAuthentication isNavbarBorderless />}>
           <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.HOME_JOIN} element={<JoinPage />} />
-          <Route path={ROUTE.HOME_CREATE} element={<CreatePage />} />
           <Route path={ROUTE.QUESTIONS} element={<QuestionsPage />}>
             <Route path={ROUTE.QUESTION_ID} element={<QuestionDetails />} />
             <Route index element={<QuestionsList />} />

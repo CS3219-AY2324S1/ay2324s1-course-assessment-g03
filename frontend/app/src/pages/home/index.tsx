@@ -11,10 +11,14 @@ function HomePage() {
   const roomId = user?.roomId;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
-  
+
   const { mutate } = useCreateRoom();
 
   const handleCreateRoom = () => {
+    if (roomId) {
+      onOpen();
+      return;
+    }
     mutate();
   };
 
@@ -36,7 +40,7 @@ function HomePage() {
       ></CustomModal>
       <Page display="grid" placeItems="center">
         <HStack gap="2rem" w="xl">
-          <CreateRoomCard user={user} createCallback={joinCallback} />
+          <CreateRoomCard user={user} createCallback={handleCreateRoom} />
           <JoinRoomCard user={user} joinCallback={joinCallback} />
         </HStack>
       </Page>
