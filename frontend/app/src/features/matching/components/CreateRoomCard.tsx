@@ -1,12 +1,11 @@
 import { Card } from "@/components";
-import { ROUTE } from "@/constants/route";
 import { User } from "@/types/user";
 import { Avatar, Box, Icon, Text } from "@chakra-ui/react";
 import { BsFillDoorOpenFill } from "react-icons/bs";
 
 interface CreateRoomCardProps {
   user: User | undefined;
-  createCallback: (route: string) => void;
+  createCallback: () => void;
 }
 
 export const CreateRoomCard = ({ user, createCallback }: CreateRoomCardProps) => {
@@ -28,7 +27,7 @@ export const CreateRoomCard = ({ user, createCallback }: CreateRoomCardProps) =>
         transform:
           "translate3d(0px, 0px, 0px) scale3d(1.02, 1.02, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
       }}
-      onClick={() => createCallback(ROUTE.HOME_CREATE)}
+      onClick={() => createCallback()}
     >
       <Box position="relative">
         <Icon
