@@ -11,8 +11,10 @@ export const createRoomSchema = z.union([
   }),
   z.object({
     status: z.literal(HTTP_STATUS.FAIL),
-    data: z.object({
-      message: z.string(),
-    }),
+    data: z
+      .object({
+        message: z.string(),
+      })
+      .optional(),
   }),
 ]);

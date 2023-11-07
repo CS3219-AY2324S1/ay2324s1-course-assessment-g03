@@ -35,6 +35,10 @@ export class MatchingGateway {
     const safeParsedRoomData = createRoomSchema.safeParse(dataJson);
 
     if (!safeParsedRoomData.success) {
+      throw new Error("Mismatch in expected createRoom schema");
+    }
+
+    if (safeParsedRoomData.data.status !== "success") {
       throw new Error("Failed to create room");
     }
 
