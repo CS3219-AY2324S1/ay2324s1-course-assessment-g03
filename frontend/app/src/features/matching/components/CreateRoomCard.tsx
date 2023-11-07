@@ -8,7 +8,10 @@ interface CreateRoomCardProps {
   createCallback: () => void;
 }
 
-export const CreateRoomCard = ({ user, createCallback }: CreateRoomCardProps) => {
+export const CreateRoomCard = ({
+  user,
+  createCallback,
+}: CreateRoomCardProps) => {
   return (
     <Card
       backgroundImage="linear-gradient(#242325,#171619)"
