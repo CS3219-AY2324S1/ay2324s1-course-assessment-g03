@@ -50,7 +50,7 @@ export const submissionPostSchema = z.object({
   }),
   body: z.object({
     submission: z.object({
-      otherUserId: z.string(),
+      otherUserId: z.string().optional(), // If other user has left
       questionId: z.string(),
       code: z.string(),
       lang: z.string(),

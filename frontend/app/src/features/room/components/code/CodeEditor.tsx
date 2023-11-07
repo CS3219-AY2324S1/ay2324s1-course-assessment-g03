@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import CodeMirror, { basicSetup } from "@uiw/react-codemirror";
 import { Socket } from "socket.io-client";
 import { LanguageSupport, indentUnit } from "@codemirror/language";
@@ -7,14 +7,21 @@ import { getDocument, peerExtension } from "@/lib/collab";
 import { Spinner } from "@chakra-ui/react";
 
 interface CodeEditorProps {
+  doc: string | null;
+  setDoc: Dispatch<SetStateAction<string | null>>;
   socket?: Socket | null;
   className?: string;
   roomId: string;
   language: LanguageSupport;
 }
 
-export const CodeEditor = ({ socket, roomId, language }: CodeEditorProps) => {
-  const [doc, setDoc] = useState<string | null>(null);
+export const CodeEditor = ({
+  doc,
+  setDoc,
+  socket,
+  roomId,
+  language,
+}: CodeEditorProps) => {
   const [version, setVersion] = useState<number | null>(null);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);

@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box, Text, Button, HStack, VStack, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Button,
+  HStack,
+  VStack,
+  Spinner,
+  useToast,
+} from "@chakra-ui/react";
 import io, { Socket } from "socket.io-client";
 import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
@@ -14,6 +22,7 @@ import {
 } from "@/constants/language";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
+import { usePostSubmission } from "../../api/usePostSubmission";
 
 interface CollaboratorProps {
   roomId: string;
@@ -21,6 +30,7 @@ interface CollaboratorProps {
   difficulty: DifficultyType[];
   questionId?: number;
   language: LanguageKeyType;
+  users: { id: string; connected: boolean }[];
 }
 
 export const Collaborator = ({
@@ -29,6 +39,7 @@ export const Collaborator = ({
   difficulty,
   questionId,
   language,
+  users,
 }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -36,6 +47,10 @@ export const Collaborator = ({
     LANGUAGES[language] ?? DEFAULT_LANGUAGE,
   );
   const [activeQuestionId, setActiveQuestionId] = useState(questionId);
+  // Lifted state from `CodeEditor` component
+  const [doc, setDoc] = useState<string | null>(null);
+  const toast = useToast();
+  const { mutate: markAsComplete } = usePostSubmission();
 
   const id = useAuth().data?.user?.id;
 
@@ -76,6 +91,40 @@ export const Collaborator = ({
   const questionOptions = data.data.questions.map(({ id, title }) => {
     return { value: id, label: title };
   });
+
+  const handleMarkAsComplete = () => {
+    if (!doc || !activeQuestionId) {
+      toast({
+        status: "error",
+        title: "Cannot submit empty code or question",
+      });
+      return;
+    }
+
+    const languageKey = Object.keys(LANGUAGES).find(
+      key => LANGUAGES[key] === currentLanguage,
+    );
+
+    if (!languageKey) {
+      toast({
+        status: "error",
+        title: "Cannot submit code with no selected language",
+      });
+      return;
+    }
+
+    // Get first user that is NOT the current user
+    const otherUserId = users.find(user => user.id !== id)?.id;
+
+    markAsComplete({
+      submission: {
+        code: doc,
+        questionId: activeQuestionId.toString(),
+        lang: languageKey,
+        ...(otherUserId ? { otherUserId } : {}),
+      },
+    });
+  };
 
   const Options = (
     <HStack>
@@ -121,6 +170,8 @@ export const Collaborator = ({
       <VStack align="left" height="full" width="50%">
         <Text textStyle="sm">Code</Text>
         <CodeEditor
+          doc={doc}
+          setDoc={setDoc}
           socket={socket}
           roomId={roomId}
           language={currentLanguage}
@@ -132,7 +183,13 @@ export const Collaborator = ({
   const HiddenView = (
     <VStack align="left" height="full" width="full">
       {Options}
-      <CodeEditor socket={socket} roomId={roomId} language={currentLanguage} />
+      <CodeEditor
+        doc={doc}
+        setDoc={setDoc}
+        socket={socket}
+        roomId={roomId}
+        language={currentLanguage}
+      />
     </VStack>
   );
 
@@ -149,7 +206,12 @@ export const Collaborator = ({
         >
           {renderQuestion ? "Hide" : "Show"} Question
         </Button>
-        <Button size="xs" colorScheme="primary" variant="solid">
+        <Button
+          size="xs"
+          colorScheme="primary"
+          variant="solid"
+          onClick={handleMarkAsComplete}
+        >
           Mark as complete
         </Button>
       </HStack>

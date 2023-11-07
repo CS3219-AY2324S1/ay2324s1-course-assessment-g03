@@ -50,6 +50,7 @@ function RoomPage() {
             topic={topic}
             questionId={questionId}
             language={language}
+            users={users}
           />
         ) : (
           <Navigate to={ROUTE.ROOT} />

@@ -6,11 +6,12 @@ import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { API_ENDPOINT } from "@/constants/api";
 import { User } from "@/types/user";
+import { submissionSchema } from "@/types/submission";
 
 const postSubmissionRequestSchema = z.object({
   submission: z.object({
-    otherUserId: z.string(),
-    questionId: z.string(),
+    otherUserId: z.string().optional(),
+    questionId: z.number(),
     code: z.string(),
     lang: z.string(),
   }),
@@ -19,7 +20,7 @@ type PostSubmissionRequestType = z.infer<typeof postSubmissionRequestSchema>;
 
 const postSubmissionResponseSchema = makeSuccessResponseSchema(
   z.object({
-    message: z.string(),
+    submission: submissionSchema,
   }),
 );
 
