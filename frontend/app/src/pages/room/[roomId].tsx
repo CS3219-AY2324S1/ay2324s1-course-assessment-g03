@@ -2,22 +2,30 @@ import { Page } from "@/components";
 import { ROUTE } from "@/constants/route";
 import { Collaborator, InfoBar } from "@/features/room";
 import { Spinner, VStack, Text } from "@chakra-ui/react";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useLocation } from "react-router-dom";
 import { useGetRoomInfo } from "@/features/room/api/useGetRoomInfo";
 import { API_RESPONSE_STATUS } from "@/constants/api";
 
 function RoomPage() {
+  const location = useLocation();
+  // Check if  user came from create room
+  const cameFromCreate = location.state?.fromCreate;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
 
   const { roomId } = useParams();
 
-  const { isLoading, isError, data } = useGetRoomInfo(roomId)
+  const { isLoading, isError, data } = useGetRoomInfo(roomId);
 
-  if (isLoading) return (<Spinner />)
+  if (isLoading) return <Spinner />;
 
   // TODO: Proper error response
-  if (isError || !data || data.status !== API_RESPONSE_STATUS.SUCCESS) return (<Text>Errored</Text>)
+  if (isError || !data || data.status !== API_RESPONSE_STATUS.SUCCESS)
+    return <Text>Errored</Text>;
 
-  const { difficulty, users, questionId, topic, language } = data.data
+  const { difficulty, users, questionId, topic, language } = data.data;
 
   return (
     <Page display="grid" placeItems="center">
@@ -28,9 +36,21 @@ function RoomPage() {
         height="full"
         width="full"
       >
-        <InfoBar difficulty={difficulty} topic={topic} users={users} />
+        <InfoBar
+          showCopyLink={cameFromCreate}
+          copyLinkCallback={copyToClipboard}
+          difficulty={difficulty}
+          topic={topic}
+          users={users}
+        />
         {roomId ? (
-          <Collaborator roomId={roomId} difficulty={difficulty} topic={topic} questionId={questionId} language={language} />
+          <Collaborator
+            roomId={roomId}
+            difficulty={difficulty}
+            topic={topic}
+            questionId={questionId}
+            language={language}
+          />
         ) : (
           <Navigate to={ROUTE.ROOT} />
         )}

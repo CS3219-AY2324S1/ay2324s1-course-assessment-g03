@@ -43,3 +43,23 @@ export const userDeleteSchema = z.object({
     userId: z.string(),
   }),
 });
+
+export const submissionPostSchema = z.object({
+  params: z.object({
+    userId: z.string(),
+  }),
+  body: z.object({
+    submission: z.object({
+      otherUserId: z.string(),
+      questionId: z.string(),
+      code: z.string(),
+      lang: z.string(),
+    }),
+  }),
+});
+
+export const submissionDeleteSchema = z.object({
+  params: z.object({
+    submissionId: z.string(),
+  }),
+});

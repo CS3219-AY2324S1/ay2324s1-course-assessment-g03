@@ -1,12 +1,18 @@
 import { Card } from "@/components";
 import { ROUTE } from "@/constants/route";
-import { Text } from "@chakra-ui/react";
+import { Avatar, Box, Circle, Icon, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { BsFillPersonFill } from "react-icons/bs";
+import { User } from "@/types/user";
 
 interface JoinRoomCardProps {
+  user: User | undefined;
   joinCallback: (route: string) => void;
 }
 
-export const JoinRoomCard = ({ joinCallback }: JoinRoomCardProps) => {
+export const JoinRoomCard = ({ user, joinCallback }: JoinRoomCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <Card
       backgroundImage="linear-gradient(#242325,#171619)"
@@ -14,10 +20,10 @@ export const JoinRoomCard = ({ joinCallback }: JoinRoomCardProps) => {
       cursor="pointer"
       display="flex"
       flexDirection="column"
-      gap="1.25rem"
+      justifyContent="center"
+      gap="1.5rem"
       transition="all 0.2s"
       w="full"
-      maxW="15rem"
       h="12rem"
       _hover={{
         boxShadow:
@@ -27,8 +33,28 @@ export const JoinRoomCard = ({ joinCallback }: JoinRoomCardProps) => {
       }}
       onClick={() => joinCallback(ROUTE.HOME_JOIN)}
     >
-      <Text textStyle="heading-md">Join a room</Text>
-      <Text textStyle="text-sm">Pair with a random peer</Text>
+      <Box position="relative">
+        <Avatar
+          name={user?.name}
+          src={user?.avatarUrl}
+          zIndex={1}
+          ring={3}
+          ringColor="white"
+          boxSize={12}
+        />
+        <Circle
+          position="absolute"
+          left="9"
+          top="0"
+          background="white"
+          ring={3}
+          ringColor="white"
+          opacity="0.9"
+        >
+          <Icon as={BsFillPersonFill} padding={3} boxSize={12} />
+        </Circle>
+      </Box>
+      <Text textStyle="heading-ml">Join a room</Text>
     </Card>
   );
 };

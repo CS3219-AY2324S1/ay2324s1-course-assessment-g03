@@ -1,12 +1,15 @@
 import { Card } from "@/components";
 import { ROUTE } from "@/constants/route";
-import { Text } from "@chakra-ui/react";
+import { User } from "@/types/user";
+import { Avatar, Box, Icon, Text } from "@chakra-ui/react";
+import { BsFillDoorOpenFill } from "react-icons/bs";
 
 interface CreateRoomCardProps {
+  user: User | undefined;
   createCallback: (route: string) => void;
 }
 
-export const CreateRoomCard = ({ createCallback }: CreateRoomCardProps) => {
+export const CreateRoomCard = ({ user, createCallback }: CreateRoomCardProps) => {
   return (
     <Card
       backgroundImage="linear-gradient(#242325,#171619)"
@@ -14,10 +17,10 @@ export const CreateRoomCard = ({ createCallback }: CreateRoomCardProps) => {
       cursor="pointer"
       display="flex"
       flexDirection="column"
-      gap="1.25rem"
+      justifyContent="center"
+      gap="1.5rem"
       transition="all 0.2s"
       w="full"
-      maxW="15rem"
       h="12rem"
       _hover={{
         boxShadow:
@@ -27,8 +30,27 @@ export const CreateRoomCard = ({ createCallback }: CreateRoomCardProps) => {
       }}
       onClick={() => createCallback(ROUTE.HOME_CREATE)}
     >
-      <Text textStyle="heading-md">Create a room</Text>
-      <Text textStyle="text-sm">Invite a peer with a link</Text>
+      <Box position="relative">
+        <Icon
+          as={BsFillDoorOpenFill}
+          color="white"
+          boxSize={12}
+          opacity="0.8"
+          zIndex={2}
+        />
+        <Avatar
+          name={user?.name}
+          src={user?.avatarUrl}
+          ring={3}
+          ringColor="white"
+          boxSize={6}
+          position="absolute"
+          left="12"
+          top="4"
+          zIndex={1}
+        />
+      </Box>
+      <Text textStyle="heading-ml">Create a room</Text>
     </Card>
   );
 };
