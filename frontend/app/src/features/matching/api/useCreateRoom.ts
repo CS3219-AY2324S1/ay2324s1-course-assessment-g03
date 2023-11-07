@@ -1,5 +1,5 @@
 import { backendApi } from "@/lib/axios";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { API_ENDPOINT } from "@/constants/api";
