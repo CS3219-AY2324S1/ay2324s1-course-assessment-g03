@@ -37,7 +37,7 @@ io.on(SOCKET_API.CONNECT, (socket) => {
     return;
   }
 
-  if (typeof userId !== "string") {
+  if (typeof userId !== "string" || userId === "undefined") {
     socket.emit(SOCKET_API.ERROR, SOCKET_INVALID_USER_ID);
     socket.disconnect();
     return;

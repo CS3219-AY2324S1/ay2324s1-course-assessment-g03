@@ -20,7 +20,7 @@ export const useGetUserInfo = (id: string) => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: [GET_USER_INFO_KEY],
+    queryKey: [GET_USER_INFO_KEY, id],
     queryFn: () => getUserInfo(id),
     enabled: !!id,
     retry: false,
