@@ -45,11 +45,11 @@ const QuestionsFooter = () => {
   }
 
   const currPage = data?.data.pagination.current_page;
-  const pageCount = data?.data.pagination.total_pages;
+  const pageCount = data?.data.pagination.total_pages || 1;
 
   return (
     <>
-      <HStack justifyContent="space-between">
+      <HStack justifyContent="space-between" marginBottom={6}>
         <Text color="dark.100" fontSize="sm">
           {data?.data.pagination.total_questions !== 0 &&
             `${data?.data.pagination.total_questions}  total questions`}
