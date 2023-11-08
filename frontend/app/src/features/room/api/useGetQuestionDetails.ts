@@ -23,7 +23,7 @@ const getQuestionDetails = async (questionId: number) => {
 
 export const useGetQuestionDetails = (questionId: number | undefined) => {
   return useQuery({
-    queryKey: [GET_QUESTION_DETAILS_KEY],
+    queryKey: [GET_QUESTION_DETAILS_KEY, questionId],
     queryFn: questionId ? () => getQuestionDetails(questionId) : undefined,
     enabled: questionId !== undefined,
     retry: false,
