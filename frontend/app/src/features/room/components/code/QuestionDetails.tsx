@@ -9,6 +9,14 @@ export const QuestionDetails = ({ questionId }: QuestionDetailsProps) => {
 
     const { isLoading, isError, data } = useGetQuestionDetails(questionId)
 
+    if (questionId === undefined) {
+        return (
+            <Box flex={1} padding={"0.75rem"} border="1px" borderColor={"ActiveBorder"} rounded="md" height="full">
+                <Text>{"Choose a Question to Start!"}</Text>
+            </Box>
+        )
+    }
+
     if (isLoading) {
         return (
             <Box flex={1} padding={"0.75rem"} border="1px" borderColor={"ActiveBorder"} rounded="md" height="full">

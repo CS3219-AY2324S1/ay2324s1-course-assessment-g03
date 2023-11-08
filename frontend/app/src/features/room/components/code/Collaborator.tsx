@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Text,
@@ -8,12 +8,10 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-import io, { Socket } from "socket.io-client";
-import { useAuth } from "@/hooks";
-import { env } from "@/lib/env";
+import { Socket } from "socket.io-client";
 import { Dropdown } from "@/components/Dropdown";
 import { DifficultyType, TopicTagType } from "@/constants/question";
-import { SOCKET_API_ENDPOINT, WEBSOCKET_PATH } from "@/constants/api";
+import { SOCKET_API_ENDPOINT } from "@/constants/api";
 import {
   LANGUAGES,
   DEFAULT_LANGUAGE,
@@ -23,6 +21,7 @@ import {
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 import { usePostSubmission } from "../../api/usePostSubmission";
+import { useAuth } from "@/hooks";
 
 interface CollaboratorProps {
   roomId: string;
@@ -31,6 +30,7 @@ interface CollaboratorProps {
   questionId?: number;
   language: LanguageKeyType;
   users: { id: string; connected: boolean }[];
+  socket: Socket;
 }
 
 export const Collaborator = ({
@@ -40,9 +40,9 @@ export const Collaborator = ({
   questionId,
   language,
   users,
+  socket
 }: CollaboratorProps) => {
   const [renderQuestion, setRenderQuestion] = useState(true);
-  const [socket, setSocket] = useState<Socket | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState(
     LANGUAGES[language] ?? DEFAULT_LANGUAGE,
   );
@@ -53,24 +53,6 @@ export const Collaborator = ({
   const { mutate: markAsComplete } = usePostSubmission();
 
   const id = useAuth().data?.user?.id;
-
-  useEffect(() => {
-    const connectSocket = io(`${env.VITE_BACKEND_URL}`, {
-      path: WEBSOCKET_PATH.COLLABORATION,
-      withCredentials: true,
-      query: {
-        roomId: roomId,
-        userId: id,
-      },
-    });
-    setSocket(connectSocket);
-    return () => {
-      if (connectSocket) {
-        connectSocket.disconnect();
-        setSocket(null);
-      }
-    };
-  }, [roomId, id]);
 
   const { isLoading, isError, data } = useGetQuestionOptions(difficulty, topic);
 
@@ -88,7 +70,7 @@ export const Collaborator = ({
     },
   );
 
-  const questionOptions = data.data.questions.map(({ id, title }) => {
+  const questionOptions = data.data.questions.map(({ id, title }: { id: number, title: string }) => {
     return { value: id, label: title };
   });
 

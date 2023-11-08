@@ -3,7 +3,7 @@ import { LANGUAGE_KEYS } from "@/constants/language";
 import { DIFFICULTY, TOPIC_TAG } from "@/constants/question";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { backendApi } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import z from "zod";
 
 const GET_ROOM_INFO_KEY = "get-room-info";
@@ -31,10 +31,17 @@ const getRoomInfo = async (roomId: string) => {
 };
 
 export const useGetRoomInfo = (roomId: string | undefined) => {
+  const queryClient = useQueryClient();
+
   return useQuery({
-    queryKey: [GET_ROOM_INFO_KEY],
+    queryKey: [GET_ROOM_INFO_KEY, roomId],
     queryFn: roomId ? () => getRoomInfo(roomId) : undefined,
     enabled: roomId !== undefined,
     retry: false,
+    onSuccess() {
+      setTimeout(() => {
+        queryClient.invalidateQueries([GET_ROOM_INFO_KEY, roomId]);
+      }, 5000)
+    },
   });
 };

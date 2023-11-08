@@ -54,4 +54,5 @@ export const SOCKET_API_ENDPOINT = {
   CHANGE_QUESTION_RESPONSE: "changeQuestionResponse",
   CHANGE_LANGUAGE: "changeLanguage",
   CHANGE_LANGUAGE_RESPONSE: "changeLanguageResponse",
+  CONNECT_RESPONSE: "connectResponse",
 } as const;
