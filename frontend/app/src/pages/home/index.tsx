@@ -2,7 +2,14 @@ import { CustomModal, Page } from "@/components";
 import { JoinRoomCard, CreateRoomCard } from "@/features/matching";
 import { useCreateRoom } from "@/features/matching/api/useCreateRoom";
 import { useAuth } from "@/hooks";
-import { HStack, useDisclosure } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  HStack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 function HomePage() {
@@ -36,10 +43,25 @@ function HomePage() {
         isOpen={isOpen}
         onClose={onClose}
         title="Session in Progress"
-        description="You have a session in progress. End it before starting a new one."
+        description="Please end your current session before starting a new one."
       ></CustomModal>
-      <Page display="grid" placeItems="center">
-        <HStack gap="2rem" w="xl">
+      <Page
+        display="flex"
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        gap={8}
+      >
+        {roomId && (
+          <Alert borderRadius={32} w="2xl" colorScheme="light">
+            <AlertIcon />
+            <AlertTitle>You have an existing session!</AlertTitle>
+            <AlertDescription>
+              Room creation is disabled until session is ended.
+            </AlertDescription>
+          </Alert>
+        )}
+        <HStack gap={8} w="xl">
           <CreateRoomCard user={user} createCallback={handleCreateRoom} />
           <JoinRoomCard user={user} joinCallback={joinCallback} />
         </HStack>

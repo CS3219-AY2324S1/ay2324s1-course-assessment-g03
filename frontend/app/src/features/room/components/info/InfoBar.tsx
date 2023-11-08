@@ -31,12 +31,7 @@ export const InfoBar = ({
   };
 
   return (
-    <HStack justifyContent={"space-between"}>
-      <HStack>
-        {users.map(user => (
-          <RoomUserInfo key={user.id} user={user} />
-        ))}
-      </HStack>
+    <HStack justifyContent="space-between" gap={4}>
       <HStack>
         {difficulty.map(d => (
           <DifficultyBadge key={d} difficulty={d} />
@@ -45,17 +40,22 @@ export const InfoBar = ({
           <TopicBadge key={t} topic={t} />
         ))}
       </HStack>
-      {showCopyLink && (
-        <CustomButton
-          isDisabled={copied}
-          onClick={() => {
-            copyLinkCallback();
-            showCopied();
-          }}
-        >
-          {copied ? "Copied!" : "Copy Link"}
-        </CustomButton>
-      )}
+      <HStack>
+        {users.map(user => (
+          <RoomUserInfo key={user.id} user={user} />
+        ))}
+        {showCopyLink && (
+          <CustomButton
+            isDisabled={copied}
+            onClick={() => {
+              copyLinkCallback();
+              showCopied();
+            }}
+          >
+            {copied ? "Copied!" : "Copy Link"}
+          </CustomButton>
+        )}
+      </HStack>
     </HStack>
   );
 };

@@ -35,7 +35,7 @@ export const CustomModal = ({
           </ModalBody>
 
           <ModalFooter>
-            <CustomButton colorScheme="blue" mr={3} onClick={onClose}>
+            <CustomButton colorScheme="primary" mr={3} onClick={onClose}>
               Close
             </CustomButton>
           </ModalFooter>
