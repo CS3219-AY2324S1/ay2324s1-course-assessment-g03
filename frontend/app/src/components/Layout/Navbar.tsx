@@ -1,9 +1,10 @@
+import { useRef, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { Box, Container, HStack, Link } from "@chakra-ui/react";
 import { ROUTE } from "@/constants/route";
 import { MAX_WIDTH, WINDOW_X_PADDING } from "@/constants/style";
 import { LoginWithGithubButton } from "@/features/auth";
 import { useAuth } from "@/hooks";
-import { Box, Container, HStack, Link } from "@chakra-ui/react";
-import { useLocation, useMatch } from "react-router-dom";
 import { AvatarMenu } from "./AvatarMenu";
 import { SessionBar } from "./SessionBar";
 
@@ -11,11 +12,17 @@ type NavbarProps = {
   isBorderless?: boolean;
 };
 
+const NAVBAR_TABS = [
+  { name: "Home", href: ROUTE.HOME },
+  { name: "Questions", href: ROUTE.QUESTIONS },
+];
+
 export const Navbar = ({ isBorderless }: NavbarProps) => {
   const { data } = useAuth();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const user = data?.user;
-  const location = useLocation();
 
   return (
     <Box
@@ -29,27 +36,38 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
           alignItems="center"
         >
           <SessionBar />
-          <HStack alignItems="center" spacing={8}>
-            <Link href={user ? ROUTE.HOME : ROUTE.ROOT} variant="logo">
-              PeerPrep
-            </Link>
-            <Link
-              href={ROUTE.HOME}
-              color={location.pathname === ROUTE.HOME ? "dark.100" : "dark.300"}
-              variant="nav"
+          <Link href={user ? ROUTE.HOME : ROUTE.ROOT} variant="logo">
+            PeerPrep
+          </Link>
+          {user && (
+            <HStack
+              alignItems="center"
+              background="light.500"
+              borderRadius={32}
+              paddingX={3}
+              paddingY={1.5}
+              border="1px solid rgba(255,255,255,.08)"
             >
-              Home
-            </Link>
-            <Link
-              href={ROUTE.QUESTIONS}
-              color={
-                location.pathname === ROUTE.QUESTIONS ? "dark.100" : "dark.300"
-              }
-              variant="nav"
-            >
-              Questions
-            </Link>
-          </HStack>
+              {NAVBAR_TABS.map((tab, index) => (
+                <Link
+                  ref={el => (linksRef.current[index] = el)}
+                  key={tab.name}
+                  as={RouterLink}
+                  to={tab.href}
+                  onClick={() => setActiveIndex(index)}
+                  color={index === activeIndex ? "dark.100" : "dark.300"}
+                  backgroundColor={index === activeIndex ? "dark.950" : ""}
+                  paddingX={4}
+                  paddingY={2}
+                  borderRadius={32}
+                  variant="nav"
+                  fontWeight="semibold"
+                >
+                  {tab.name}
+                </Link>
+              ))}
+            </HStack>
+          )}
           {user ? (
             <AvatarMenu user={user} />
           ) : (
