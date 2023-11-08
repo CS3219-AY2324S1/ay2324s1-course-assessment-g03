@@ -1,0 +1,22 @@
+config:
+  api-gateway-infra:acmEcsCertificateArn:
+    secure: AAABADfhdRHPazyTJ72bNZtsj7WS8m1o9VmPi2VqKymQpdu5TCfe3zS0mGkZgLyoXEgW0YLtumuVl7CA8+DK1/aWJT9O195mFireu9+3hlxwrBUuIQ6n9sOuuq1ZN2CNpucmDtja9QWc2G4w+CFKzaODQlI4dxXB
+  api-gateway-infra:apiGatewayAuthSecret:
+    secure: AAABAP3W0Hm3jEQuY4V2YAQ3XNWec/RcvsJlBuog9zuTiQb0qEEwyV1zHVnRTJS/SHdd3zdM/bGDwaO+uOoWYqqcsO2SQKXrJa7xPu98318epiQ/9izxJfZHNt+kF7gFTssHC0O5ms18dZqbNr24IpliwJQzB87Mo4JOZ6m+dCFplZtwQ+Nb+U4eS0EPMdu5kwej67i48gdUurNn8Tc6A8DddmMNqvi11xMHTuWMtq+kDAsD/5Co10/DGTYbS7qJ
+  api-gateway-infra:containerPort: "80"
+  api-gateway-infra:cpu: "256"
+  api-gateway-infra:githubCallbackPath: /github/callback
+  api-gateway-infra:githubClientId:
+    secure: AAABAEwAVbHigtiT+5o7BAD+Tr6fFQ4/Cl/kF3RtzPXXFIPhE6WANKeMHvrCMxUalEXKuA==
+  api-gateway-infra:githubClientSecret:
+    secure: AAABAM53eoylfCgeNnH9oSS9h8GG41eCmHw/lACynTeRxohbavjNHNjnd1x0txHZ/MAG3IJcdPCUAEJRhkySAF0477yt9qQ5
+  api-gateway-infra:hostedZoneId:
+    secure: AAABAKtMl+KQyperplEWRF1X3deK7K9hbw7f7XEeXKBq7ZSDTcbQOsVh47zop1mtwZ/+1g==
+  api-gateway-infra:jwtCookieName: peerprep-token
+  api-gateway-infra:jwtSecret:
+    secure: AAABAAe7LjS1F4qQFRbncGpO+UPS/AyOuR7mFPFh+KrSp+69v/iUHVo5GAY/tM/rjaQS7wkYSmL7cW12LFYTLDqyAN1wxocfvlgqi/5gROaMgf5QrHmvMvVxYpervLXK
+  api-gateway-infra:memory: "128"
+  api-gateway-infra:path: ../app
+  api-gateway-infra:rootDomain: peerprep.net
+  api-gateway-infra:subdomain: api.staging.
+  aws:region: ap-southeast-1

@@ -1,0 +1,24 @@
+config:
+  aws:region: ap-southeast-1
+  question-service-infra:MONGO_ATLAS_DB_NAME: "questions_db"
+  question-service-infra:MONGO_ATLAS_PASSWORD:
+    secure: AAABALIssvhPWrYaJaczgurLtzCMWs3iAa2eB7zPkyC/xR+X1FpO5Q==
+  question-service-infra:MONGO_ATLAS_USERNAME:
+    secure: AAABAA3rhpwWQzE5+UvCInNP832nUVtoxHzzV4yz+x6v90JYMw==
+  question-service-infra:MONGODB_ATLAS_ORG_ID:
+    secure: AAABAPfcFwF432gMO6EvcOXUjKIGPKZ70P5TQmmzrTUzNkV5ZMqQT+sa/I0D46Ieykx8JLnaWxQ=
+  question-service-infra:MONGODB_ATLAS_PRIVATE_KEY:
+    secure: AAABAND3sHpA1YIdi9eFcXOwkWBhcJ9Lo58ZpO/Vptzsz8+4dIHPEN9RgewgpxOiZoBaBSF4eTUdvs1MAYUfvXrU6vI=
+  question-service-infra:MONGODB_ATLAS_PUBLIC_KEY:
+    secure: AAABAGwKo/qbWQhfy0JMpBMTd4ls95k4hLkG1ZAsOIEilSub1Fwe3Q==
+  question-service-infra:acmEcsCertificateArn:
+    secure: AAABAL3u5v31yQUyf5uyt3JXgX/p/WPHDHc1bGg5h4Uts4wSKDYFYj21z/H4Chqam/ru9zzAizQTEzX6D6/N2HSj3UTOtKkCr0sU50OLOvDYOs0QLq7ddVuIJBbbzp7Mh6upprFOseeoWrFHK5926wa41rxTImGY
+  question-service-infra:apiGatewayAuthSecret:
+    secure: AAABANPRJHeVvmshnh7DNdRY8H+kDpTNE30ncPbGACPhMfefbpLAKZixVRk9LEgJwZjuzbwmNB32lJtM976o0N+q4qnIm8lfj6MF6u/VPF8SIRC0iTI+Gf5x7Lsj/FcUFkAVRUiC71RyVnHZRnY+Xgq4eX1uee8GGwAR/1bE9PJ49ROjTUSgC/ji36IYeLe/ehrGQYcesfTdWpXhrFDHu9mV5iJjrZjnuxr9VKHGXEAA2a8Pv+xcDUVaq1w+wnNu
+  question-service-infra:containerPort: "80"
+  question-service-infra:cpu: "512"
+  question-service-infra:hostedZoneId:
+    secure: AAABAMJRo8I7u45mjDQoh/ZCIKYHCszeT4OAKLxLK5QjOtmSx6hyGlXlaAbSfTJAMJjGBA==
+  question-service-infra:memory: "128"
+  question-service-infra:domainName: peerprep.net
+  question-service-infra:subdomain: questions.staging.

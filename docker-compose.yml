@@ -1,0 +1,130 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8000:5173"
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./backend/api-gateway/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/api-gateway/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8001:80"
+
+  user-service:
+    container_name: user-service
+    build:
+      context: ./backend/user-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/user-service/app:/app:delegated
+      - /app/node_modules
+    depends_on:
+      user-service-db:
+        condition: service_healthy
+    ports:
+      - "8002:80"
+
+  question-service:
+    container_name: question-service
+    build:
+      context: ./backend/question-service/server/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/question-service/server/app:/app:delegated
+    depends_on:
+      question-service-db:
+        condition: service_healthy
+    ports:
+      - "8003:80"
+
+  matching-service:
+    container_name: matching-service
+    build:
+      context: ./backend/matching-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/matching-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8004:80"
+
+  collaboration-service:
+    container_name: collaboration-service
+    build:
+      context: ./backend/collaboration-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/collaboration-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8005:80"
+
+  user-service-db:
+    container_name: user-service-db
+    build:
+      context: ./backend/user-service/db
+      dockerfile: Dockerfile.dev
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: prisma
+      MONGO_REPLICA_HOST: 127.0.0.1
+      MONGO_REPLICA_PORT: 27018
+    ports:
+      - 27018:27018
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongo",
+          "admin",
+          "--port",
+          "27018",
+          "--eval",
+          "db.adminCommand('ping')",
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+  question-service-db:
+    container_name: question-service-db
+    image: mongo:latest
+    volumes:
+      - question-service-db-data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep mongod"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    command: mongod --quiet --logpath /dev/null
+
+  # template-service:
+  #   container_name: template-service
+  #   build:
+  #     context: ./backend/template-service/app/
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - ./backend/template-service/app:/app:delegated
+  #     - /app/node_modules
+  #   ports:
+  #     - "8009:80"
+
+volumes:
+  question-service-db-data:

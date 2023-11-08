@@ -1,0 +1,15 @@
+# Use NodeJS server for the app
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install dependencies first, as they change less often than code.
+COPY package.json package-lock.json* ./
+RUN npm install
+RUN npm install -g dotenv-cli
+COPY . .
+RUN chmod +rwx migrate-and-start-dev.sh
+
+EXPOSE 80
+
+CMD ["./migrate-and-start-dev.sh"]

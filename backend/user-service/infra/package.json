@@ -1,0 +1,13 @@
+{
+  "name": "user-service-infra",
+  "devDependencies": {
+    "@types/node": "^16"
+  },
+  "dependencies": {
+    "@pulumi/aws": "^5.10.0",
+    "@pulumi/awsx": "^1.0.0",
+    "@pulumi/mongodbatlas": "^3.11.0",
+    "@pulumi/pulumi": "^3.0.0",
+    "typescript": "^4.0.0"
+  }
+}

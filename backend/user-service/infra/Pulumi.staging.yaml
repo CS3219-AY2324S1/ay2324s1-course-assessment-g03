@@ -1,0 +1,27 @@
+config:
+  aws:region: ap-southeast-1
+  user-service-infra:MONGO_ATLAS_DB_NAME: users_db
+  user-service-infra:MONGO_ATLAS_PASSWORD:
+    secure: AAABALpkoYLawK1kV+T6pWLNBcIz9jeoHU6pfNsDUGZly0pkP74xcg==
+  user-service-infra:MONGO_ATLAS_USERNAME:
+    secure: AAABAAVQWfyD3M+Zbm2Vl7Icy1rD+sUz08qEZvXj+om+7SwTxA==
+  user-service-infra:MONGODB_ATLAS_ORG_ID:
+    secure: AAABAIizxKqP6LFx9UO+QKOEfuis0EBQwU+2mOMcHLQS69tgXEX3JPnRB2IWc7h/67la4ZTzTug=
+  user-service-infra:MONGODB_ATLAS_PRIVATE_KEY:
+    secure: AAABAGd+PhASS4lQIfCBybxba6fjK0wmoQ67jgy6ikdUlPcK510sZw9czm85Cu+a909rZwt4Yq6a1WcII1VXZhIABnY=
+  user-service-infra:MONGODB_ATLAS_PUBLIC_KEY:
+    secure: AAABAHP4DvwDMceZK07AN0/pJJmzg0R71+j9U45shUEGhkjyRSL9Nw==
+  user-service-infra:acmEcsCertificateArn:
+    secure: AAABAPuSUWU9ZyaFoQZHpmlc3BESP2fEU3wQOVBi9aHxCLbBk34DqNNK7mfHkCNl+wpRWL7sTMjDHsS/rqyeRKigkE8/2BW6ahzCid3aYB5T8xcI4q5pfABWihit1LY4VhQwDx8p0u0VxMgglwLIngDxZPqaDBf5
+  user-service-infra:apiGatewayAuthSecret:
+    secure: AAABANqbL76dCQrBgE7D0Caw8KWlhMB+p2W+ijB3NzqYRUSSIMK6f11Wp8954sj4sqtXOCoSp5qpMcV6vvMgLMxM1nW8k41PsBMJD7XiWzZ4xZ9q9iS0tbzyqp2oH0AQaNIUKOCyKqxxs0M+JobA+ro2DZC4faSzc4PEyLR94sk6rrwVf6zhqzxJBlcR8924oj1DNW7VWXZV9o52qSjFV8/gtHbm6e9MWO03vf/x+eT2G5Q6ryk/fiI9xYClYvyM
+  user-service-infra:containerPort: "80"
+  user-service-infra:cpu: "256"
+  user-service-infra:hostedZoneID:
+    secure: AAABAOfvxX8bl4PM4up88F/GUIYlzQnFkQFolvnO8xSPp80mX5PZpG047h1JJi64YKBCrQ==
+  user-service-infra:hostedZoneId:
+    secure: AAABAJf5YdRLRRgemC1dJZYUGmcJciVVhyE68JQthMtjJFTeFk3lnh7uNAr8X1+DIMacuQ==
+  user-service-infra:memory: "128"
+  user-service-infra:path: ../app
+  user-service-infra:rootDomain: peerprep.net
+  user-service-infra:subdomain: users.staging.
