@@ -2,7 +2,7 @@
 
 ## Instructions to run
 
-- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the API gateway service
+- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the API gateway service.
 
 ## Making requests to the API gateway for inter-service communicatio
 
