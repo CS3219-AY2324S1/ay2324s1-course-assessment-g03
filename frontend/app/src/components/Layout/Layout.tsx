@@ -7,11 +7,13 @@ import { ROUTE } from "@/constants/route";
 
 type LayoutProps = {
   isNavbarBorderless?: boolean;
+  isNavbarHidden?: boolean;
   requireAuthentication?: boolean;
 };
 
 export const Layout = ({
   isNavbarBorderless,
+  isNavbarHidden,
   requireAuthentication,
 }: LayoutProps) => {
   useAuth({
@@ -25,15 +27,15 @@ export const Layout = ({
       display="flex"
       flexDirection="column"
       minH="100vh"
-      background="dark.950"
+      background="dark.900"
       boxSizing="border-box"
     >
-      <Navbar isBorderless={isNavbarBorderless} />
+      {!isNavbarHidden && <Navbar isBorderless={isNavbarBorderless} />}
       <Container
         display="flex"
         flexDirection="column"
         flexGrow={1}
-        maxW={MAX_WIDTH}
+        maxW={isNavbarHidden ? "" : MAX_WIDTH}
         px={WINDOW_X_PADDING}
       >
         <Outlet />

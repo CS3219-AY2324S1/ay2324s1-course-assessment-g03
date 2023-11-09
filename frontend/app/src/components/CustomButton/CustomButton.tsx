@@ -25,7 +25,7 @@ export const CustomButton = ({ to, ...props }: CustomButtonProps) => {
   return (
     <Button
       colorScheme="primary"
-      borderRadius="0.75rem"
+      borderRadius={6}
       _hover={{
         backgroundColor: "primary.700",
       }}

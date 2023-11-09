@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import CodeMirror, { basicSetup } from "@uiw/react-codemirror";
+import CodeMirror, { EditorView, basicSetup } from "@uiw/react-codemirror";
 import { Socket } from "socket.io-client";
 import { LanguageSupport, indentUnit } from "@codemirror/language";
-import { Box, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { getDocument, peerExtension } from "@/lib/collab";
 import { Spinner } from "@chakra-ui/react";
 
@@ -63,21 +63,20 @@ export const CodeEditor = ({
     );
   } else {
     return (
-      <Box>
-        <CodeMirror
-          height="100%"
-          basicSetup={false}
-          id="codeEditor"
-          theme="dark"
-          extensions={[
-            indentUnit.of("\t"),
-            basicSetup(),
-            language,
-            peerExtension(socket, version),
-          ]}
-          value={doc}
-        />
-      </Box>
+      <CodeMirror
+        height="80vh"
+        basicSetup={false}
+        id="codeEditor"
+        theme="dark"
+        extensions={[
+          indentUnit.of("\t"),
+          basicSetup(),
+          language,
+          peerExtension(socket, version),
+          EditorView.lineWrapping,
+        ]}
+        value={doc}
+      />
     );
   }
 };

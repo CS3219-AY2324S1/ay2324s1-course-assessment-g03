@@ -33,7 +33,7 @@ export const Dropdown = ({
 }: DropdownProps) => {
   return (
     <VStack align="left">
-      <Text textStyle="text-sm">{title}</Text>
+      <Text textStyle="text-sm" fontWeight="bold">{title}</Text>
       <Select
         // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
         chakraStyles={singleSelectStyles(size)}
