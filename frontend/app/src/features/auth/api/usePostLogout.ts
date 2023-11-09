@@ -31,7 +31,7 @@ export const usePostLogout = () => {
         title: "You have been logged out",
         isClosable: true,
       });
-      queryClient.setQueryData([GET_AUTH_QUERY_KEY], undefined);
+      queryClient.removeQueries([GET_AUTH_QUERY_KEY]);
       navigate(ROUTE.ROOT);
     },
   });

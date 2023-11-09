@@ -32,7 +32,7 @@ export const useGetGithubLogin = (params: URLSearchParams) => {
     enabled: !!params,
     retry: false,
     onSuccess() {
-      queryClient.invalidateQueries(GET_AUTH_QUERY_KEY);
+      queryClient.invalidateQueries([GET_AUTH_QUERY_KEY]);
       navigate(ROUTE.HOME);
     },
   });
