@@ -1,4 +1,4 @@
-import { Button, HStack, Icon, Skeleton, Text } from "@chakra-ui/react";
+import { Button, HStack, Icon, Skeleton } from "@chakra-ui/react";
 import { PiPlusBold } from "react-icons/pi";
 import { useQuestions } from "./QuestionsOutlet";
 import QuestionsSearch from "./QuestionsSearch";

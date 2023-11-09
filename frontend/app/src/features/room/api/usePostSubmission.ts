@@ -11,7 +11,7 @@ import { submissionSchema } from "@/types/submission";
 const postSubmissionRequestSchema = z.object({
   submission: z.object({
     otherUserId: z.string().optional(),
-    questionId: z.number(),
+    questionId: z.string(),
     code: z.string(),
     lang: z.string(),
   }),

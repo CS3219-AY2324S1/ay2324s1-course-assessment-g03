@@ -86,40 +86,22 @@ const project = new mongodbatlas.Project(
   { provider: provider }
 );
 
-const mongoClusterName = "user-service-cluster";
-
-// Check if the cluster already exists
-const mongoClusterCheck = project.id.apply((id) =>
-  mongodbatlas.getCluster(
-    { projectId: id, name: mongoClusterName },
-    { async: false, provider: provider }
-  )
-);
 // Create a MongoDB Atlas Cluster
-const mongoCluster = mongoClusterCheck.apply((foundCluster) => {
-  if (!foundCluster) {
-    return project.id.apply(
-      (id) =>
-        new mongodbatlas.Cluster(
-          mongoClusterName,
-          {
-            projectId: id,
-            name: mongoClusterName,
-            clusterType: "REPLICASET",
-            mongoDbMajorVersion: "6.0",
-            providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
-            backingProviderName: "AWS", // Set cloud provider to AWS
-            providerInstanceSizeName: "M0",
-            providerRegionName: "AP_SOUTHEAST_1",
-            backupEnabled: false, // Disable backups
-          },
-          { provider: provider }
-        )
-    );
-  }
-
-  return null;
-});
+const mongoCluster = new mongodbatlas.Cluster(
+  "Cluster",
+  {
+    projectId: project.id,
+    name: "Cluster",
+    clusterType: "REPLICASET",
+    mongoDbMajorVersion: "6.0",
+    providerName: "TENANT", // Set cloud provider to TENANT for M0 Sandbox
+    backingProviderName: "AWS", // Set cloud provider to AWS
+    providerInstanceSizeName: "M0",
+    providerRegionName: "AP_SOUTHEAST_1",
+    backupEnabled: false, // Disable backups
+  },
+  { provider: provider }
+);
 
 // Create a MongoDB Atlas Database User
 const mongoUser = new mongodbatlas.DatabaseUser(
@@ -139,25 +121,11 @@ const mongoUser = new mongodbatlas.DatabaseUser(
   { provider: provider }
 );
 
-mongoClusterCheck.apply((foundCluster) => foundCluster.connectionStrings);
-mongoCluster.apply((cluster) => cluster?.connectionStrings);
-
 // The connection string for the MongoDB Atlas cluster
-// const clusterUri = pulumi
-//   .all([mongoCluster, mongoClusterCheck])
-//   .apply(([clust, checkClust]) =>
-//     clust ? clust.connectionStrings.get() : checkClust.connectionStrings
-//   )
-//   .apply((str) => str[0].standardSrv)
-//   .apply((str) => str.split("mongodb+srv://")[1]);
-// const connectionString = pulumi.interpolate`mongodb+srv://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}`;
-const connectionString = pulumi
-  .all([mongoCluster, mongoClusterCheck])
-  .apply(([clust, checkClust]) =>
-    clust
-      ? clust.connectionStrings.apply((x) => x[0].standardSrv)
-      : checkClust.connectionStrings[0].standardSrv
-  );
+const clusterUri = mongoCluster.connectionStrings
+  .apply((str) => str[0].standardSrv)
+  .apply((str) => str.split("mongodb+srv://")[1]);
+const connectionString = pulumi.interpolate`mongodb+srv://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}?retryWrites=true&w=majority`;
 
 /**
  * Provision ECS resources

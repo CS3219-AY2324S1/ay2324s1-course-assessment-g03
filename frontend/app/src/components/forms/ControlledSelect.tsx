@@ -56,14 +56,15 @@ const ControlledSelect = <
     <FormControl label={label} isInvalid={!!error} id={name}>
       {label && <FormLabel fontSize="sm">{label}</FormLabel>}
       <Select<Option, IsMulti, Group>
+        // @ts-expect-error //TODO: Fix
         useBasicStyles
         chakraStyles={
           {
-            placeholder: (provided, _state) => ({
+            placeholder: provided => ({
               ...provided,
               color: "dark.300",
             }),
-            indicatorsContainer: (provided, _state) => ({
+            indicatorsContainer: provided => ({
               ...provided,
               color: "dark.300",
             }),

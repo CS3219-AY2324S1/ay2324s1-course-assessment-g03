@@ -8,7 +8,6 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Skeleton,
-  Box,
 } from "@chakra-ui/react";
 import {
   PiCaretDoubleLeftBold,
