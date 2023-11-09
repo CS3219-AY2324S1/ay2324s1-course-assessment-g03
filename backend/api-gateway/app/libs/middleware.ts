@@ -42,11 +42,23 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
   next();
 };
 
+/**
+ * Auth middleware has to be called before this
+ */
 export const adminMiddleware: RequestHandler = async (req, res, next) => {
-  authMiddleware(req, res, next);
-
   try {
-    const primaryEmail = userSchema.parse(res.locals.user).email;
+    const safeParsedUser = userSchema.safeParse(res.locals.user);
+    if (!safeParsedUser.success) {
+      return res.status(500).send(
+        failApiResponse({
+          error: `Failed to parse user data from auth middleware\n\Reason:\n${JSON.stringify(
+            safeParsedUser.error
+          )}`,
+        })
+      );
+    }
+
+    const primaryEmail = safeParsedUser.data.email;
 
     const getUserResponse = await fetch(
       `${process.env.USERS_SERVICE_URL}/api/users/email/${primaryEmail}`

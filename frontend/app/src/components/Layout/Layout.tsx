@@ -1,5 +1,5 @@
 import { MAX_WIDTH, WINDOW_X_PADDING } from "@/constants/style";
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Text } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { useAuth } from "@/hooks";

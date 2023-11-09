@@ -31,6 +31,7 @@ apiRouter.use(
 
 apiRouter.use(
   "/admin/questions",
+  authMiddleware,
   adminMiddleware,
   createProxyMiddleware({
     target: process.env.QUESTIONS_SERVICE_URL,

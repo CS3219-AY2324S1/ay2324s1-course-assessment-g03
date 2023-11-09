@@ -71,21 +71,28 @@ const UpsertQuestionModal = () => {
     defaultValues: DEFAULT_VALUES,
     values: currQn
       ? {
-          title: currQn.title,
-          category: {
-            label: currQn.category,
-            value: currQn.category,
-          },
-          difficulty: {
-            label: currQn.difficulty,
-            value: currQn.difficulty,
-          },
-          topic_tags: currQn.topic_tags?.map(topic => ({
-            label: topic,
-            value: topic,
-          })),
-          description: currQn.description,
-          url: currQn.url || "",
+          title: currQn.title ?? "",
+          category: currQn.category
+            ? {
+                label: currQn.category,
+                value: currQn.category,
+              }
+            : null,
+          difficulty: currQn.difficulty
+            ? {
+                label: currQn.difficulty,
+                value: currQn.difficulty,
+              }
+            : null,
+          topic_tags:
+            currQn.topic_tags && Array.isArray(currQn.topic_tags)
+              ? currQn.topic_tags.map(topic => ({
+                  label: topic,
+                  value: topic,
+                }))
+              : null,
+          description: currQn.description ?? "",
+          url: currQn.url ?? "",
         }
       : DEFAULT_VALUES,
   });

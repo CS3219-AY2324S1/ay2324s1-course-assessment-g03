@@ -81,10 +81,12 @@ const QuestionsTable = () => {
         header: "Topics",
         cell: info => (
           <HStack w={96}>
-            {info
-              .getValue()
-              ?.slice(0, 2)
-              .map(topic => <Tag key={topic}>{topic}</Tag>) || null}
+            {Array.isArray(info.getValue())
+              ? info
+                  .getValue()
+                  ?.slice(0, 2)
+                  .map(topic => <Tag key={topic}>{topic}</Tag>)
+              : null}
             {info.getValue()?.length > 3 ? (
               <Text color="dark.300" fontSize="xs">
                 & {info.getValue().length - 2} more...
