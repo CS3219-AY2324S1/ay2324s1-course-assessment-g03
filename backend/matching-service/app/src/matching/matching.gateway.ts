@@ -34,6 +34,8 @@ export class MatchingGateway {
     const dataJson = await res.json();
     const safeParsedRoomData = createRoomSchema.safeParse(dataJson);
 
+    console.log(safeParsedRoomData);
+
     if (!safeParsedRoomData.success) {
       throw new Error("Mismatch in expected createRoom schema");
     }
@@ -43,6 +45,26 @@ export class MatchingGateway {
     }
 
     const roomId = dataJson?.data?.roomId;
+
+    console.log("roomId", roomId);
+    // Create room in communication service
+    // TODO: Clean up string literals @Joel
+    const communicationRes = await fetch(
+      `${process.env.API_GATEWAY_URL}/api/communication/room`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(process.env.API_GATEWAY_AUTH_SECRET
+            ? {
+                ["api-gateway-auth-secret"]:
+                  process.env.API_GATEWAY_AUTH_SECRET,
+              }
+            : {}),
+        },
+        body: JSON.stringify({ roomId }),
+      }
+    );
 
     const newWaiting: WaitingUser = {
       user: roomParams.user,

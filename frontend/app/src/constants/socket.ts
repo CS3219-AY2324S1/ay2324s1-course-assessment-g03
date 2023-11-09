@@ -9,3 +9,15 @@ export const COLLABORATION_SOCKET_API = {
     PULL_UPDATES_RESPONSE: "pullUpdateResponse",
     GET_DOCUMENT_RESPONSE: "getDocumentResponse"
 } as const;
+
+export const COMMUNICATION_SOCKET_API = {
+  CONNECT: "connection",
+  ERROR: "error",
+  DISCONNECT: "disconnect",
+  CONNECT_RESPONSE: "connectResponse",
+  DISCONNECT_RESPONSE: "disconnectResponse",
+  CHAT_MESSAGE: "chatMessage",
+  CHAT_MESSAGE_RESPONSE: "chatMessageResponse",
+  GET_MESSAGES: "getMessages",
+  GET_MESSAGES_RESPONSE: "getMessagesResponse",
+} as const;

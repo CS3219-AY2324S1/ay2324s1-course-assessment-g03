@@ -18,6 +18,7 @@ import { InfoBar } from "@/features/room";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 import { usePostSubmission } from "../../api/usePostSubmission";
+import { ChatBox } from "../chat/Chatbox";
 
 interface CollaboratorProps {
   roomId: string;

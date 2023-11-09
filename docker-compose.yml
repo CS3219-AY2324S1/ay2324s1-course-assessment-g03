@@ -71,6 +71,17 @@ services:
       - /app/node_modules
     ports:
       - "8005:80"
+  
+  communication-service:
+    container_name: communication-service
+    build:
+      context: ./backend/communication-service/app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend/communication-service/app:/app:delegated
+      - /app/node_modules
+    ports:
+      - "8006:80"
 
   user-service-db:
     container_name: user-service-db
