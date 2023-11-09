@@ -1,7 +1,7 @@
 name: API Gateway Pulumi Update
 on:
   push:
-    branches: ["staging", "master"]
+    branches: ["master"]
     paths: ["backend/api-gateway/**"]
 env:
   WORKING_DIRECTORY_INFRA: ./backend/api-gateway/infra

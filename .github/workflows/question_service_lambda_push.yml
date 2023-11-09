@@ -1,11 +1,11 @@
-name: Frontend Pulumi Update
+name: Question Service Lambda Pulumi Update
 on:
   push:
-    branches: ["staging", "master"]
-    paths: ["frontend/**"]
+    branches: ["master"]
+    paths: ["backend/question-service/lambda/**"]
 env:
-  WORKING_DIRECTORY_INFRA: ./frontend/infra
-  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/frontend-infra/prod' || 'cs3219/frontend-infra/staging'}}
+  WORKING_DIRECTORY_INFRA: ./backend/question-service/lambda/infra
+  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/question-service-lambda/prod' || 'cs3219/question-service-lambda/staging'}}
 jobs:
   update:
     name: Update

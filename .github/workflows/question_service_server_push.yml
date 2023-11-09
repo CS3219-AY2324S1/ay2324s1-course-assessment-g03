@@ -1,7 +1,7 @@
 name: Question Service Server Pulumi Update
 on:
   push:
-    branches: ["staging", "master"]
+    branches: ["master"]
     paths: ["backend/question-service/server/**"]
 env:
   WORKING_DIRECTORY_INFRA: ./backend/question-service/server/infra
