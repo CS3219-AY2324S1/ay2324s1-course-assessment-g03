@@ -83,7 +83,11 @@ export const peerExtension = (socket: Socket, startVersion: number) => {
             while (!this.done) {
                 const version = getSyncedVersion(this.view.state)
                 const updates = await pullUpdates(socket, version)
-                this.view.dispatch(receiveUpdates(this.view.state, updates))
+                try {
+                    this.view.dispatch(receiveUpdates(this.view.state, updates))
+                } catch (e) {
+                    console.error(e)
+                }
             }
         }
 

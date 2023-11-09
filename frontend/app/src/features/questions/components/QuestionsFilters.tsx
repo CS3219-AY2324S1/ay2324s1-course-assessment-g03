@@ -15,7 +15,7 @@ import {
 } from "react-icons/pi";
 import { QUESTIONS_FILTERS } from "../constants/questionsFilters";
 import { useReducer } from "react";
-import { INIT_QUESTIONS_FILTERS } from "../constants";
+import { DEFAULT_PAGE_NUM, INIT_QUESTIONS_FILTERS } from "../constants";
 import { useQuestions } from "./QuestionsOutlet";
 
 export interface QuestionsFilters {
@@ -55,7 +55,7 @@ const QuestionsFilters = () => {
     questionsFiltersReducer,
     INIT_QUESTIONS_FILTERS,
   );
-  const { setFilters, refetch } = useQuestions();
+  const { setPageNum, setFilters, refetch } = useQuestions();
 
   return (
     <Menu>
@@ -113,6 +113,7 @@ const QuestionsFilters = () => {
               <Button
                 onClick={async () => {
                   await setFilters(state);
+                  await setPageNum(DEFAULT_PAGE_NUM);
                   refetch();
                 }}
               >

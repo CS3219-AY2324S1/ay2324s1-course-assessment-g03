@@ -15,6 +15,8 @@ import { QuestionsFilters } from "./QuestionsFilters";
 interface QuestionsContextType {
   pageNum: number;
   setPageNum: Dispatch<SetStateAction<number>>;
+  prevPageNum: number;
+  setPrevPageNum: Dispatch<SetStateAction<number>>;
   pageSize: number;
   setPageSize: Dispatch<SetStateAction<number>>;
   sorting: SortingState;
@@ -40,6 +42,7 @@ interface QuestionsContextType {
 
 export const QuestionsOutlet = () => {
   const [pageNum, setPageNum] = useState(DEFAULT_PAGE_NUM);
+  const [prevPageNum, setPrevPageNum] = useState(DEFAULT_PAGE_NUM);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING_STATE);
   const [filters, setFilters] = useState<QuestionsFilters>(
@@ -71,6 +74,8 @@ export const QuestionsOutlet = () => {
       context={{
         pageNum,
         setPageNum,
+        prevPageNum,
+        setPrevPageNum,
         pageSize,
         setPageSize,
         sorting,
