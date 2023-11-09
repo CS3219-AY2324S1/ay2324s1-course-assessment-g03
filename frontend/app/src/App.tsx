@@ -22,6 +22,8 @@ function App() {
             path={ROUTE.GITHUB_CALLBACK}
             element={<GitHubCallbackPage />}
           />
+        </Route>
+        <Route element={<Layout isNavbarHidden />}>
           <Route path={ROUTE.ROOM_ROOMID} element={<RoomPage />} />
         </Route>
         <Route element={<Layout requireAuthentication isNavbarBorderless />}>
