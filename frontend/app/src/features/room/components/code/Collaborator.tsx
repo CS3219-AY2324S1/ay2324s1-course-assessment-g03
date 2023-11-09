@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, MouseEvent } from "react";
 import { useLocation } from "react-router-dom";
 import { Box, Text, HStack, VStack, Spinner, useToast } from "@chakra-ui/react";
 import io, { Socket } from "socket.io-client";
@@ -74,20 +74,18 @@ export const Collaborator = ({
   const { isLoading, isError, data } = useGetQuestionOptions(difficulty, topic);
 
   const [width, setWidth] = useState(window.innerWidth / 2);
-  const [isDragging, setIsDragging] = useState(false);
 
   const startResizing = useCallback(
-    mouseDownEvent => {
+    (mouseDownEvent: MouseEvent) => {
       const minWidth = 400;
       const maxWidth = window.innerWidth - 400;
 
-      setIsDragging(true);
       document.body.style.userSelect = "none";
 
       const startWidth = width;
       const startPositionX = mouseDownEvent.clientX;
 
-      const onMouseMove = mouseMoveEvent => {
+      const onMouseMove = (mouseMoveEvent: MouseEvent) => {
         let currentWidth = startWidth + mouseMoveEvent.clientX - startPositionX;
 
         // Enforce min and max constraints
@@ -214,7 +212,13 @@ export const Collaborator = ({
 
   const VisibleView = (
     <HStack height="100%" width="full">
-      <VStack align="left" height="100%" w={`${width}px`} pr={2} overflow="auto">
+      <VStack
+        align="left"
+        height="100%"
+        w={`${width}px`}
+        pr={2}
+        overflow="auto"
+      >
         <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <Box
@@ -228,11 +232,7 @@ export const Collaborator = ({
         transition="background 0.2s"
         onMouseDown={startResizing}
       />
-      <VStack
-        align="left"
-        flexGrow={1}
-        maxW={`${window.innerWidth - width}`}
-      >
+      <VStack align="left" flexGrow={1} maxW={`${window.innerWidth - width}`}>
         <CodeEditor
           doc={doc}
           setDoc={setDoc}
@@ -268,16 +268,29 @@ export const Collaborator = ({
         w="full"
         background="light.500"
         p={4}
+        boxShadow="0 0 12px rgba(0,0,0,.4)"
       >
         <CustomButton
-          colorScheme="light"
+          bg="dark.600"
+          _hover={{ bgColor: "dark.700" }}
           onClick={() => setRenderQuestion(!renderQuestion)}
         >
           {renderQuestion ? "Hide" : "Show"} Question
         </CustomButton>
-        <CustomButton onClick={handleMarkAsComplete}>
-          Mark as complete
-        </CustomButton>
+        <HStack gap={3}>
+          <CustomButton onClick={handleMarkAsComplete}>
+            Mark as complete
+          </CustomButton>
+          <CustomButton
+            onClick={() => {
+              // TODO: call leave room route
+            }}
+            colorScheme="red"
+            _hover={{ bgColor: "red.800" }}
+          >
+            Leave Room
+          </CustomButton>
+        </HStack>
       </HStack>
     </VStack>
   );

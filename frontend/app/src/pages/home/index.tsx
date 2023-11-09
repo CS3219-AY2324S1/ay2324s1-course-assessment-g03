@@ -57,7 +57,7 @@ function HomePage() {
             <AlertIcon />
             <AlertTitle>You have an existing session!</AlertTitle>
             <AlertDescription>
-              Room creation is disabled until session is ended.
+              End the previous session before creating a new one.
             </AlertDescription>
           </Alert>
         )}

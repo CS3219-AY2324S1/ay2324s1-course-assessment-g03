@@ -27,7 +27,7 @@ export const Layout = ({
       display="flex"
       flexDirection="column"
       minH="100vh"
-      background="dark.950"
+      background="dark.900"
       boxSizing="border-box"
     >
       {!isNavbarHidden && <Navbar isBorderless={isNavbarBorderless} />}
