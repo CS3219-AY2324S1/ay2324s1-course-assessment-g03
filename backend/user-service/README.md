@@ -2,7 +2,7 @@
 
 ## Instructions to run
 
-- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the User service
+- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the User service.
 
 ## New environment variables
 

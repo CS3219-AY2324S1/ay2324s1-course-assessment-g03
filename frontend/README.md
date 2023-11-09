@@ -2,7 +2,7 @@
 
 ## Instructions to run
 
-- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the frontend service
+- Please refer to the [README.md](../README.md) in the root of the project for instructions to run the frontend service.
 
 ## New environment variables
 
