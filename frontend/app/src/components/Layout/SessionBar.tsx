@@ -3,7 +3,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 interface SessionBarProps {
-  roomId: string | null;
+  roomId: string | undefined;
 }
 
 export const SessionBar = ({ roomId }: SessionBarProps) => {

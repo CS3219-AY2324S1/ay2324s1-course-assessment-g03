@@ -100,10 +100,12 @@ export const Collaborator = ({
 
       const onMouseUp = () => {
         document.body.style.userSelect = "auto";
+        // @ts-expect-error // TODO: Fix
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
       };
 
+      // @ts-expect-error // TODO: Fix
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
     },

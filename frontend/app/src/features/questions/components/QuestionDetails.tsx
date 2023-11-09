@@ -1,6 +1,5 @@
 import {
   Text,
-  Box,
   Button,
   Tag,
   Link,

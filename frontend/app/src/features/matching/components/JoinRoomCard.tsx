@@ -1,7 +1,6 @@
 import { Card } from "@/components";
 import { ROUTE } from "@/constants/route";
 import { Avatar, Box, Circle, Icon, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import { BsFillPersonFill } from "react-icons/bs";
 import { User } from "@/types/user";
 
@@ -11,8 +10,6 @@ interface JoinRoomCardProps {
 }
 
 export const JoinRoomCard = ({ user, joinCallback }: JoinRoomCardProps) => {
-  const navigate = useNavigate();
-
   return (
     <Card
       backgroundImage="linear-gradient(#242325,#171619)"
