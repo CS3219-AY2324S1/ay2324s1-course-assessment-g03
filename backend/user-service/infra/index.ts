@@ -125,7 +125,7 @@ const mongoUser = new mongodbatlas.DatabaseUser(
 const clusterUri = mongoCluster.connectionStrings
   .apply((str) => str[0].standardSrv)
   .apply((str) => str.split("mongodb+srv://")[1]);
-const connectionString = pulumi.interpolate`mongodb://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}?retryWrites=true&w=majority&authSource=admin&directConnection=true`;
+const connectionString = pulumi.interpolate`mongodb://${mongoUser.username}:${mongoUser.password}@${clusterUri}/${MONGO_ATLAS_DB_NAME}`;
 
 /**
  * Provision ECS resources
