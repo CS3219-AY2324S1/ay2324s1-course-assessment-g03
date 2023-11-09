@@ -7,4 +7,3 @@ config:
   frontend:indexDocument: index.html
   frontend:path: ../app/dist
   frontend:rootDomain: peerprep.net
-  frontend:subdomain: ""
