@@ -1,14 +1,19 @@
-import { Badge } from "@chakra-ui/react"
+import { Tag } from "@chakra-ui/react";
 
 interface TopicBadgeProps {
-    topic: string;
+  topic: string;
 }
 
 export const TopicBadge = ({ topic }: TopicBadgeProps) => {
-    return (
-        <Badge colorScheme="gray" variant="outline" textTransform={"capitalize"} fontWeight={"normal"}>
-            {topic}
-        </Badge>
-    )
-
-}
+  return (
+    <Tag
+      fontWeight="bold"
+      borderRadius="full"
+      px={3}
+      py={1}
+      textTransform="capitalize"
+    >
+      {topic}
+    </Tag>
+  );
+};
