@@ -28,7 +28,7 @@ const io: Server = new Server(server, {
 io.on(SOCKET_API.CONNECT, (socket) => {
   console.log("A user connected");
   const roomId = socket.handshake.query.roomId;
-  const user: User = socket.handshake.query as User;
+  const user: User = socket.handshake.query as unknown as User;
   const userId = user.id;
 
   if (typeof roomId !== "string" || !(roomId in rooms)) {
@@ -44,14 +44,13 @@ io.on(SOCKET_API.CONNECT, (socket) => {
   }
 
   socket.join(roomId);
-  joinOneRoom(roomId, user);
-  socket.to(roomId).emit(SOCKET_API.CONNECT_RESPONSE, userId);
+  joinOneRoom(socket, roomId, user);
 
   /* Socket API to handle chat messages sent by users to the server */
   socket.on(
     SOCKET_API.CHAT_MESSAGE,
     ({ userId, message }: { userId: string; message: string }) => {
-      handleChatMessage(socket, io, roomId, userId, message);
+      handleChatMessage(io, roomId, userId, message);
     }
   );
 
@@ -63,7 +62,6 @@ io.on(SOCKET_API.CONNECT, (socket) => {
   /* Socket API to disconnect from the server */
   socket.on(SOCKET_API.DISCONNECT, () => {
     leaveOneRoom(roomId, userId);
-    socket.to(roomId).emit(SOCKET_API.DISCONNECT_RESPONSE, userId);
   });
 });
 

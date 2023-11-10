@@ -5,8 +5,10 @@ import { useShallow } from "zustand/react/shallow";
 import { SystemMessage } from "./SystemMessage";
 import { UserMessage } from "./UserMessage";
 import { User } from "@/types/user";
+import { Flex } from "@chakra-ui/react";
+import AlwaysScrollToBottom from "@/components/common/AlwaysScrollToBottom";
 
-export const MessageContainer = (): JSX.Element => {
+export const Messages = (): JSX.Element => {
   const { messages, deleteMessages } = useChatStore(
     useShallow(state => ({
       messages: state.messages,
@@ -27,18 +29,30 @@ export const MessageContainer = (): JSX.Element => {
   );
 
   return (
-    <div>
-      {messages.map(({ message, sender }) =>
+    <Flex
+      flex={1}
+      justify="start"
+      overflowY="scroll"
+      flexDirection="column"
+      w="100%"
+      maxHeight="50vh"
+      gap={2}
+    >
+      {messages.map(({ message, sender }, index) =>
         sender === System ? (
-          <SystemMessage message={message} />
+          <SystemMessage message={message} key={index} />
         ) : (
-          <UserMessage
-            message={message}
-            sender={sender}
-            isUser={sender.id === user.id}
-          />
+          <>
+            <UserMessage
+              message={message}
+              sender={sender}
+              isUser={sender.id === user.id}
+              key={index}
+            />
+          </>
         ),
       )}
-    </div>
+      <AlwaysScrollToBottom dependency={messages} />
+    </Flex>
   );
 };

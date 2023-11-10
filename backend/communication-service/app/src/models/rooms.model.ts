@@ -2,7 +2,9 @@ import moment from "moment";
 import { rooms } from "../db/rooms.db";
 import { HttpStatus } from "../utils/HTTP_Status_Codes";
 import { JSEND_STATUS } from "../types/models.type";
-import { Room, User } from "../types/rooms/rooms.type";
+import { Message, Room, System, User } from "../types/rooms/rooms.type";
+import { Socket } from "socket.io";
+import { SOCKET_API } from "../constants/socket";
 
 export const createOneRoom = (roomId: string) => {
   if (roomId in rooms) {
@@ -61,7 +63,7 @@ export const getOneRoomInfo = (roomId: string) => {
   };
 };
 
-export const joinOneRoom = (roomId: string, user: User) => {
+export const joinOneRoom = (socket: Socket, roomId: string, user: User) => {
   if (!(roomId in rooms)) {
     return {
       status: JSEND_STATUS.FAILURE,
@@ -78,10 +80,15 @@ export const joinOneRoom = (roomId: string, user: User) => {
 
   if (!users.has(userId)) {
     users.set(userId, user);
-    room.messages.push({
-      sender: "System",
+
+    const systemMessage: Message = {
+      sender: System,
       message: `${user.name ?? user.email} has joined the room`,
-    });
+    };
+
+    room.messages.push(systemMessage);
+
+    socket.to(roomId).emit(SOCKET_API.CHAT_MESSAGE_RESPONSE, systemMessage);
   }
 
   console.log("joined Room: ", rooms);
@@ -106,7 +113,6 @@ export const leaveOneRoom = (roomId: string, userId: string) => {
 
   console.log("leave room", rooms);
 
-  const room = rooms[roomId];
   const users = rooms[roomId].users;
 
   if (!users.has(userId)) {
@@ -117,13 +123,10 @@ export const leaveOneRoom = (roomId: string, userId: string) => {
     };
   }
 
+  const room = rooms[roomId];
   const user = users.get(userId)!;
 
   users.set(userId, { ...user, connected: false });
-  room.messages.push({
-    sender: "System",
-    message: `${user.name ?? user.email} has left the room`,
-  });
 
   return {
     status: JSEND_STATUS.SUCCESS,
@@ -191,7 +194,7 @@ export const sendMessageInRoom = (
     status: JSEND_STATUS.SUCCESS,
     code: HttpStatus.OK,
     data: {
-      userId,
+      sender,
       message,
     },
   };

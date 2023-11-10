@@ -18,7 +18,7 @@ import { InfoBar } from "@/features/room";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 import { usePostSubmission } from "../../api/usePostSubmission";
-import { ChatBox } from "../chat/Chatbox";
+import ChatBubble from "../chat/ChatBubble";
 
 interface CollaboratorProps {
   roomId: string;
@@ -235,7 +235,12 @@ export const Collaborator = ({
         transition="background 0.2s"
         onMouseDown={startResizing}
       />
-      <VStack align="left" flexGrow={1} maxW={`${window.innerWidth - width}`}>
+      <VStack
+        position="relative"
+        align="left"
+        flexGrow={1}
+        maxW={`${window.innerWidth - width}`}
+      >
         <CodeEditor
           doc={doc}
           setDoc={setDoc}
@@ -243,12 +248,13 @@ export const Collaborator = ({
           roomId={roomId}
           language={currentLanguage}
         />
+        <ChatBubble roomId={roomId} />
       </VStack>
     </HStack>
   );
 
   const HiddenView = (
-    <VStack align="left" height="100%">
+    <VStack position="relative" align="left" height="100%">
       <CodeEditor
         doc={doc}
         setDoc={setDoc}
@@ -256,6 +262,7 @@ export const Collaborator = ({
         roomId={roomId}
         language={currentLanguage}
       />
+      <ChatBubble roomId={roomId} />
     </VStack>
   );
 

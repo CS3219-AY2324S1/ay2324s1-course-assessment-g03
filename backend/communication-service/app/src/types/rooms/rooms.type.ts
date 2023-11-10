@@ -7,8 +7,10 @@ export type User = {
   avatarUrl?: string | undefined;
 };
 
+export const System = "System" as const;
+
 export type Message = {
-  sender: User | "System";
+  sender: User | typeof System;
   message: string;
 };
 

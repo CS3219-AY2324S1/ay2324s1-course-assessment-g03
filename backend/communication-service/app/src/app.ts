@@ -10,12 +10,12 @@ dotenv.config({ path: `.env.development` });
 const app: Express = express();
 
 // Middleware
-// app.use(
-//   cors({
-//     origin: process.env.FRONTEND_ORIGIN,
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/communication", apiRouter);
