@@ -34,8 +34,6 @@ export class MatchingGateway {
     const dataJson = await res.json();
     const safeParsedRoomData = createRoomSchema.safeParse(dataJson);
 
-    console.log(safeParsedRoomData);
-
     if (!safeParsedRoomData.success) {
       throw new Error("Mismatch in expected createRoom schema");
     }
@@ -46,7 +44,6 @@ export class MatchingGateway {
 
     const roomId = dataJson?.data?.roomId;
 
-    console.log("roomId", roomId);
     // Create room in communication service
     // TODO: Clean up string literals @Joel
     const communicationRes = await fetch(

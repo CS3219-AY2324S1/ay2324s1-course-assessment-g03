@@ -13,7 +13,6 @@ import * as roomSchemas from "../schemas/room.schemas";
 const roomRouter = express.Router();
 
 roomRouter.use((_req: Request, _res: Response, next: NextFunction) => {
-  console.log("Room Request received");
   next();
 });
 

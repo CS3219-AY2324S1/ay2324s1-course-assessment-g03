@@ -8,7 +8,6 @@ import { METHOD_NOT_ALLOWED_ERROR } from "../constants/errors";
 const apiRouter = express.Router();
 
 apiRouter.use((_req: Request, _res: Response, next: NextFunction) => {
-  console.log("API Request received");
   next();
 });
 

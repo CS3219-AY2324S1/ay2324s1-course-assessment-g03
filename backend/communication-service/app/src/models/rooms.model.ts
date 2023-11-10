@@ -47,8 +47,6 @@ export const getOneRoomInfo = (roomId: string) => {
     };
   }
 
-  console.log("get Room: ", rooms);
-
   // Transform users into list
   const { users, ...roomData } = rooms[roomId];
   const userList = Array.from(users.values());
@@ -91,8 +89,6 @@ export const joinOneRoom = (socket: Socket, roomId: string, user: User) => {
     socket.to(roomId).emit(SOCKET_API.CHAT_MESSAGE_RESPONSE, systemMessage);
   }
 
-  console.log("joined Room: ", rooms);
-
   return {
     status: JSEND_STATUS.SUCCESS,
     code: HttpStatus.OK,
@@ -110,8 +106,6 @@ export const leaveOneRoom = (roomId: string, userId: string) => {
       data: { roomId: "Room not found" },
     };
   }
-
-  console.log("leave room", rooms);
 
   const users = rooms[roomId].users;
 
@@ -172,8 +166,6 @@ export const sendMessageInRoom = (
       data: { roomId: "Room not found" },
     };
   }
-
-  console.log("send MessageL: ", rooms);
 
   const room = rooms[roomId];
   const users = room.users;
