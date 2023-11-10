@@ -27,27 +27,25 @@ const ChatInput = ({ socket }: ChatInputProps) => {
   return (
     <form onSubmit={handleSendMessage}>
       <FormControl mt={2}>
-        <Flex w="100%">
+        <Flex w="100%" gap={2}>
           <Input
             ref={inputRef}
             placeholder="Type Something..."
             border="none"
-            borderRadius="none"
-            _focus={{ border: "1px solid black" }}
+            borderRadius="md"
+            _focus={{ border: "1px solid dark.300" }}
             value={inputMessage}
             onChange={e => setInputMessage(e.target.value)}
           />
           <Button
             type="submit"
             bg="black"
-            color="white"
-            borderRadius="none"
+            borderRadius="md"
             _hover={{
-              bg: "white",
-              color: "black",
-              border: "1px solid black",
+              bg: "primary.600",
             }}
             disabled={!inputMessage.trim()}
+            fontWeight="semibold"
           >
             Send
           </Button>
