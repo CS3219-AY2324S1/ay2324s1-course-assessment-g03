@@ -23,6 +23,7 @@ const MONGODB_ATLAS_PRIVATE_KEY = config.requireSecret(
 const MONGO_ATLAS_USERNAME = config.requireSecret("MONGO_ATLAS_USERNAME");
 const MONGO_ATLAS_PASSWORD = config.requireSecret("MONGO_ATLAS_PASSWORD");
 const MONGO_ATLAS_DB_NAME = config.get("MONGO_ATLAS_DB_NAME") || "users_db";
+const DATABASE_URL = config.get("DATABASE_URL");
 
 // For custom domain
 const subdomain = config.get("subdomain") || "users.staging.";
@@ -205,7 +206,7 @@ const service = new awsx.ecs.FargateService("service", {
         { name: "FRONTEND_ORIGIN", value: frontendWebsiteUrl },
         { name: "API_GATEWAY_URL", value: apiGatewayUrl },
         { name: "API_GATEWAY_AUTH_SECRET", value: apiGatewayAuthSecret },
-        { name: "DATABASE_URL", value: connectionString },
+        { name: "DATABASE_URL", value: DATABASE_URL },
       ],
     },
   },

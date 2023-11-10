@@ -1,5 +1,7 @@
 config:
   aws:region: ap-southeast-1
+  user-service-infra:DATABASE_URL:
+    secure: AAABAAMQzHum2PBfTf2rYb1HBnbPSG3ncF2KG7mP7s371BQST5Ke7gCzPTovEsj2mwC5FWON27U8CGaNN8OEzRo/qifNku1+EJuX2wpvJ62kECGa8rFUq5Pq000VaCGaZIGUTkhOkJ0nuFbYPZjZoMCNXv7K7osptqXMj9FA5xPLDDYLi2RFjwOD0HAOYGzCi863LyUyu0zl0HTshjSw4Q==
   user-service-infra:MONGO_ATLAS_DB_NAME: users_db
   user-service-infra:MONGO_ATLAS_PASSWORD:
     secure: AAABALpkoYLawK1kV+T6pWLNBcIz9jeoHU6pfNsDUGZly0pkP74xcg==
