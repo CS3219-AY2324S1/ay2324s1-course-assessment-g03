@@ -36,6 +36,7 @@ export const Messages = (): JSX.Element => {
       flexDirection="column"
       w="100%"
       maxHeight="50vh"
+      minHeight="300"
       gap={2}
     >
       {messages.map(({ message, sender }, index) =>
