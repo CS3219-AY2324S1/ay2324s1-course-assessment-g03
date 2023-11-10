@@ -6,7 +6,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const baseStyle = definePartsStyle({
   content: {
-    bg: "dark.950",
+    bg: "dark.900",
     border: "1px",
     borderColor: "dark.800",
     _focus: { boxShadow: "none" },

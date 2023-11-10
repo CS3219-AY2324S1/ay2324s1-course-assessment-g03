@@ -39,8 +39,9 @@ const ChatInput = ({ socket }: ChatInputProps) => {
           />
           <Button
             type="submit"
-            bg="black"
+            bg="dark.900"
             borderRadius="md"
+            py={1}
             _hover={{
               bg: "primary.600",
             }}
