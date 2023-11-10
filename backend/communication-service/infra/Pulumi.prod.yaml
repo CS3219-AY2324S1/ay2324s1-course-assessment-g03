@@ -1,0 +1,13 @@
+config:
+  communication-service-infra:acmEcsCertificateArn:
+    secure: AAABAEruYMvjT/aPZ1CNUO1L/5y2NfBew+397Rt7gsr3MNZm3RwuCa4rkXWBWIVVZHeQIThot4Oda3Oe/qLcdBKZQjl4OrKbpf+Jw/NlylpYM3JLOyoSOKltoPtdtmnvLW6E9Zt+/FBqOKps9LTwiPkXH5cO4esz
+  communication-service-infra:apiGatewayAuthSecret:
+    secure: AAABANtMOY8MbnB+bbv+OHuY/iDz8I1fhIKVrM5dQnwJIt56xiEaq0jpwcMEqgFRVBh7wlv/syQYTIgHYLJsF/tqB0xaQxs31PAK26MzlXQh+qJAU45xyVlXtDRRaUD7R2DHPZvXwxTzTBg9n3c9xSgQ/GLONvFdFJ2CsSxDBKuBlxIuwxY1lZNeaQ9b8oHHDk14It2wnUGarcfJ8oXb8NH3ne2AoU1QKyzayQF6KPBqD/A//h0+b5pUBx2DB2ko
+  communication-service-infra:hostedZoneId:
+    secure: AAABAALxDMRifhy8bU6ipQxgwkv9YhTj5uAm5NbYdeQGM+rvm4t6SjoONQvtLKq7Vx/e4A==
+  communication-service-infra:containerPort: "80"
+  communication-service-infra:cpu: "256"
+  communication-service-infra:memory: "128"
+  communication-service-infra:path: ../app
+  communication-service-infra:rootDomain: peerprep.net
+  communication-service-infra:subdomain: communication.
