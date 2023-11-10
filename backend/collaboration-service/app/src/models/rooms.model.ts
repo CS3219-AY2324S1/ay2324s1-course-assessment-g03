@@ -6,10 +6,10 @@ import { HttpStatus } from "../utils/HTTP_Status_Codes"
 import { JSEND_STATUS } from "../types/models.type"
 import { DEFAULT_LANGUAGE, LanguageKeyType } from "../constants/language";
 import { v4 } from "uuid";
-import { DifficultyType, TopicType } from "../constants/question";
+import { DifficultyType } from "../constants/question";
 
 export const createOneRoom = (difficulty: DifficultyType[],
-    topic: TopicType[]) => {
+    topic: string[]) => {
 
     const roomId = v4()
 

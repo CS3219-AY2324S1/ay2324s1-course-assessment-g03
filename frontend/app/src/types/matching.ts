@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { MATCHING_EVENTS } from "@/constants/matching";
-import { DIFFICULTY, TOPIC_TAG } from "@/constants/question";
+import { DIFFICULTY } from "@/constants/question";
 import { userSchema } from "./user";
 
 export type MatchingStatusType =
@@ -9,7 +9,7 @@ export type MatchingStatusType =
 
 export const preferenceSchema = z.object({
   difficulty: z.array(z.nativeEnum(DIFFICULTY)),
-  topic: z.array(z.nativeEnum(TOPIC_TAG)),
+  topic: z.array(z.string()),
 });
 
 export type Preferences = z.infer<typeof preferenceSchema>;
