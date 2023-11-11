@@ -125,7 +125,6 @@ const service = new awsx.ecs.FargateService("service", {
         },
       ],
       environment: [
-        // Feel free to remove or add more environment variables as needed
         {
           name: "NODE_ENV",
           value: isProd ? "production" : currentEnv,

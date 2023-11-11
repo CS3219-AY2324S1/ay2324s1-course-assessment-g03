@@ -8,10 +8,10 @@ config:
     secure: AAABALE+SH/FwVzVxxXP1gABIp5/fNUktl+UvZyXsrVrmyD5H1qtwcFvWZPk2korFz4QBUDdm64lS/V09dpm5nQJpXzJ/UGitf+rXTAq8z5v/vsTH1HYUkzMDaWrvPECjaoQR9jRZUn9lsH1bH8Gr1YnEQKiLPNq2jX7DDnIzOxOS/c8L6Eo+65o9tsANboS4/LiPuM6jRJf2CSUy8ccSVWdSmrYI6BwJ9J6Wo4leSsJjotJymL+/kE7qbH/nMjR
   user-service-infra:containerPort: "80"
   user-service-infra:cpu: "256"
-  user-service-infra:hostedZoneID:
-    secure: AAABAHSwRJHb5rGPJk6+3XTvT5pBJcbaTs/2tUBTlL4+JsPts/ZYJdw1yueSp/ccPjKRTA==
   user-service-infra:hostedZoneId:
-    secure: AAABAPo+L6MruYRAe+3DrUVHDytqg9h7GMUj0ofzzxPBoBc6P1/FCfs4kS6qE7K6EqJ0lA==
+    secure: AAABAHSwRJHb5rGPJk6+3XTvT5pBJcbaTs/2tUBTlL4+JsPts/ZYJdw1yueSp/ccPjKRTA==
+  # user-service-infra:hostedZoneId:
+  #   secure: AAABAPo+L6MruYRAe+3DrUVHDytqg9h7GMUj0ofzzxPBoBc6P1/FCfs4kS6qE7K6EqJ0lA==
   user-service-infra:memory: "128"
   user-service-infra:path: ../app
   user-service-infra:rootDomain: peerprep.net
