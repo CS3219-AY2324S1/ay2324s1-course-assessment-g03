@@ -11,17 +11,18 @@ type NavbarProps = {
   isBorderless?: boolean;
 };
 
-const NAVBAR_TABS: { name: string; href: string }[] = [
-  { name: "Home", href: ROUTE.HOME },
-  { name: "Questions", href: ROUTE.QUESTIONS },
-];
-
 export const Navbar = ({ isBorderless }: NavbarProps) => {
   const { data } = useAuth();
 
   const user = data?.user;
   const roomId = user?.roomId;
   const { pathname } = useLocation();
+
+  const NAVBAR_TABS: { name: string; href: string }[] = [
+    { name: "Home", href: ROUTE.HOME },
+    { name: "Profile", href: `${ROUTE.PROFILE}/${user?.id}` },
+    { name: "Questions", href: ROUTE.QUESTIONS },
+  ];
 
   return (
     <Box
@@ -48,11 +49,11 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
             >
               <HStack
                 alignItems="center"
-                background="light.500"
-                borderRadius={32}
-                px={3}
-                py={1.5}
-                border="1px solid rgba(255,255,255,.08)"
+                background="dark.800"
+                border="1px"
+                borderColor="dark.700"
+                borderRadius="full"
+                p={1}
               >
                 {NAVBAR_TABS.map(tab => (
                   <Link
@@ -60,12 +61,12 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
                     as={RouterLink}
                     to={tab.href}
                     color={tab.href === pathname ? "dark.100" : "dark.300"}
-                    backgroundColor={tab.href === pathname ? "dark.950" : ""}
+                    backgroundColor={tab.href === pathname ? "dark.900" : ""}
                     px={4}
-                    py={2}
-                    borderRadius={32}
+                    py={1.5}
+                    borderRadius="full"
                     variant="nav"
-                    fontWeight="semibold"
+                    fontWeight="medium"
                   >
                     {tab.name}
                   </Link>

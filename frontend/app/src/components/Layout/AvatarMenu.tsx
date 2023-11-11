@@ -32,12 +32,6 @@ export const AvatarMenu = ({ user }: AvatarMenuProps) => {
       />
       <MenuList>
         <MenuItem
-          icon={<Icon as={BiUser} />}
-          onClick={() => navigate(`${ROUTE.PROFILE}/${user.id}`)}
-        >
-          Profile
-        </MenuItem>
-        <MenuItem
           icon={<Icon as={BiCog} />}
           onClick={() => navigate(`${ROUTE.SETTINGS}`)}
         >
