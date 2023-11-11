@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
+    "@codemirror/collab": "^6.1.1",
     "@codemirror/language": "^6.9.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
