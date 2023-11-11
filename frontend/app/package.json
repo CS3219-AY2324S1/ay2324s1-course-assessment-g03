@@ -12,6 +12,7 @@
     "gen:theme-typings": "chakra-cli tokens ./src/theme/index.ts"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.1",
     "@codemirror/collab": "^6.1.1",
     "@codemirror/language": "^6.9.1",

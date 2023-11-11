@@ -63,7 +63,7 @@ export class MatchingGateway {
       const waitingUser = this.waiting[i];
       if (comparePreferences(waitingUser.preferences, roomParams.preferences)) {
         const { roomId } = waitingUser;
-        this.waiting.filter((waitingUser) => waitingUser.roomId != roomId);
+        this.waiting = this.waiting.filter((waitingUser) => waitingUser.roomId != roomId);
         return {
           user1: waitingUser.user,
           user2: roomParams.user,
