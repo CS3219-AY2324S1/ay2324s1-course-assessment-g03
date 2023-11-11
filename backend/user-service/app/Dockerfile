@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install
 COPY . .
-RUN npx prisma generate
+RUN npx prisma db push
 RUN npm run build
 
 FROM node:18-alpine as server

@@ -15,7 +15,7 @@ export const envSchema = z.object({
     .string()
     .url()
     .default(
-      "mongodb://root:prisma@user-service-db:27018/users_db?authSource=admin&directConnection=true"
+      "mysql://k145f63zxaiuxztap2ch:pscale_pw_8loz6XgHYF3iCmW4BeIUgdQYk4zGOsAKf1P7P5QTUkm@aws.connect.psdb.cloud/user?sslaccept=strict"
     ),
   /**
    * For CORS

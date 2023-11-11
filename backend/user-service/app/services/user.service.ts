@@ -23,6 +23,8 @@ export const userService = {
     db.user.findUnique({ where: { id } }),
   findByEmail: (email: Prisma.UserFindUniqueArgs["where"]["email"]) =>
     db.user.findUnique({ where: { email } }),
-  update: (id: string, data: Prisma.UserUpdateInput) =>
-    db.user.update({ where: { id }, data }),
+  update: (
+    id: Prisma.UserUpdateArgs["where"]["id"],
+    data: Prisma.UserUpdateInput
+  ) => db.user.update({ where: { id }, data }),
 };
