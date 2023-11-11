@@ -14,8 +14,8 @@ const QuestionsHeader = () => {
     return (
       <Skeleton
         h="32px"
-        startColor="dark.950"
-        endColor="dark.800"
+        startColor="dark.900"
+        endColor="dark.700"
         borderRadius="md"
       />
     );

@@ -19,21 +19,21 @@ export const SessionBar = ({ roomId }: SessionBarProps) => {
       m="auto"
       h="fit-content"
       w="fit-content"
-      px={4}
-      py={3}
-      borderWidth="2px"
+      px={5}
+      py={2.5}
+      borderWidth="1px"
       borderRadius="full"
       borderColor="primary.500"
-      background="light.700"
+      background="dark.900"
       onClick={() => navigate(`${ROUTE.ROOM}/${roomId}`)}
       cursor="pointer"
       _hover={{
         borderColor: "primary.300",
-        background: "light.500",
+        background: "dark.700",
       }}
       transition="all 0.2s"
     >
-      <Text textStyle="text-sm" fontWeight="semibold">
+      <Text textStyle="text-sm" fontWeight="medium">
         Session in progress
       </Text>
     </Box>

@@ -129,8 +129,8 @@ const QuestionsTable = () => {
       <Skeleton
         h="628px"
         w="full"
-        startColor="dark.950"
-        endColor="dark.800"
+        startColor="dark.900"
+        endColor="dark.700"
         borderRadius="md"
       />
     );
@@ -138,7 +138,7 @@ const QuestionsTable = () => {
 
   return (
     <>
-      <TableContainer border="1px" borderColor="dark.800" borderRadius="md">
+      <TableContainer border="1px" borderColor="dark.700" borderRadius="md">
         <Table variant="unstyled" size="sm">
           <Thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -224,7 +224,7 @@ const QuestionsTable = () => {
               <Tr
                 key={row.id}
                 borderTop="1px"
-                borderColor="dark.800"
+                borderColor="dark.700"
                 borderRadius="md"
                 _hover={{
                   cursor: "pointer",

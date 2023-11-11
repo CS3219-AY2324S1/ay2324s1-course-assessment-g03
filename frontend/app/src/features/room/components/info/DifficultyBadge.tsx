@@ -8,21 +8,10 @@ interface DifficultyBadgeProps {
 export const DifficultyBadge = ({ difficulty }: DifficultyBadgeProps) => {
   const colorSchemes: Record<DifficultyType, string> = {
     // TODO: Figure out why prettier is not working
-    [DIFFICULTY.EASY]: "green.600",
+    [DIFFICULTY.EASY]: "green",
     [DIFFICULTY.MEDIUM]: "yellow",
     [DIFFICULTY.HARD]: "red",
   };
 
-  return (
-    <Tag
-      bg={colorSchemes[difficulty]}
-      border="none"
-      fontWeight="bold"
-      borderRadius="full"
-      px={3}
-      py={1}
-    >
-      {difficulty}
-    </Tag>
-  );
+  return <Tag variant={colorSchemes[difficulty]}>{difficulty}</Tag>;
 };

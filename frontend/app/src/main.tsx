@@ -12,6 +12,7 @@ import {
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { globalToastOptions, theme } from "@/theme";
 import "@fontsource-variable/inter";
+import { Toast } from "./components/Toast/Toast.tsx";
 
 // To show toasts outside of react components (e.g. in react-query's global onError)
 const { ToastContainer, toast } = createStandaloneToast({ theme });
@@ -30,13 +31,18 @@ const errorHandler = ({
   }
   console.error(`Failed ${type}:`, error);
   toast({
+    render: ({ onClose }) => (
+      <Toast
+        status="error"
+        message={
+          error instanceof Error
+            ? error.message
+            : "An unexpected error has occurred"
+        }
+        onClose={onClose}
+      />
+    ),
     ...globalToastOptions.defaultOptions,
-    description:
-      error instanceof Error
-        ? error.message
-        : "An unexpected error has occurred",
-    status: "error",
-    isClosable: true,
   });
 };
 

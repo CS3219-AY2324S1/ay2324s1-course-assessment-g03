@@ -9,7 +9,7 @@ interface ToastProps {
 
 export const Toast = ({ status, message, onClose }: ToastProps) => (
   <HStack
-    bg="dark.950"
+    bg="dark.900"
     border="1px"
     borderRadius="md"
     borderColor={`${status === "success" ? "green" : "red"}.900`}

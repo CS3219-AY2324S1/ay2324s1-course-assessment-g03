@@ -7,7 +7,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const outline = definePartsStyle({
   field: {
     border: "1px",
-    borderColor: "dark.800",
+    borderColor: "dark.700",
     borderRadius: "md",
     color: "dark.100",
     _focusVisible: {
@@ -32,7 +32,7 @@ const outline = definePartsStyle({
   },
   addon: {
     border: "1px solid",
-    borderColor: "dark.800",
+    borderColor: "dark.700",
     bg: "transparent",
   },
 });

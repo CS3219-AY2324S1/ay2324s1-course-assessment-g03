@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useState, MouseEvent } from "react";
 import { useLocation } from "react-router-dom";
-import { Box, Text, HStack, VStack, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  HStack,
+  VStack,
+  Spinner,
+  useToast,
+  Button,
+} from "@chakra-ui/react";
 import io, { Socket } from "socket.io-client";
 import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
@@ -25,7 +33,7 @@ interface CollaboratorProps {
   difficulty: DifficultyType[];
   questionId?: number;
   language: LanguageKeyType;
-  users: { id: string; connected: boolean }[];
+  users: { id: number; connected: boolean }[];
 }
 
 export const Collaborator = ({
@@ -181,6 +189,7 @@ export const Collaborator = ({
             setActiveQuestionId(Number(e?.value ?? 0));
             socket.emit(SOCKET_API_ENDPOINT.CHANGE_QUESTION, e?.value ?? 0);
           }}
+          width={72}
         />
         <Dropdown
           size="sm"
@@ -224,12 +233,12 @@ export const Collaborator = ({
         <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <Box
-        w={2}
+        w={1}
         height="100%"
-        bg="light.500"
+        bg="dark.800"
         cursor="col-resize"
         _hover={{
-          bg: "light.400",
+          bg: "dark.700",
         }}
         transition="background 0.2s"
         onMouseDown={startResizing}
@@ -268,30 +277,26 @@ export const Collaborator = ({
         bottom={0}
         left={0}
         w="full"
-        background="light.500"
-        p={4}
+        background="dark.900"
+        px={8}
+        py={4}
         boxShadow="0 0 12px rgba(0,0,0,.4)"
       >
-        <CustomButton
-          bg="dark.600"
-          _hover={{ bgColor: "dark.700" }}
-          onClick={() => setRenderQuestion(!renderQuestion)}
-        >
+        <Button onClick={() => setRenderQuestion(!renderQuestion)}>
           {renderQuestion ? "Hide" : "Show"} Question
-        </CustomButton>
-        <HStack gap={3}>
+        </Button>
+        <HStack gap={4}>
           <CustomButton onClick={handleMarkAsComplete}>
             Mark as complete
           </CustomButton>
-          <CustomButton
+          <Button
+            variant="outlineWarning"
             onClick={() => {
               // TODO: call leave room route
             }}
-            colorScheme="red"
-            _hover={{ bgColor: "red.800" }}
           >
             Leave Room
-          </CustomButton>
+          </Button>
         </HStack>
       </HStack>
     </VStack>

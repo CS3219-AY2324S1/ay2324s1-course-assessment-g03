@@ -17,28 +17,27 @@ export const DeleteAccountPanel = () => {
 
   return (
     <TabPanel height="full">
-      <VStack alignItems="start" gap="1rem">
-        <Text textStyle="heading-lg">Delete account</Text>
-        <Text textStyle="text-md">
+      <VStack alignItems="start" gap={4}>
+        <Text textStyle="heading-md">Delete account</Text>
+        <Text textStyle="text-sm">
           Deleting your accout will remove all of your information from our
           database. This cannot be undone.
         </Text>
-        <Text
-          textStyle="text-md"
-          color="light.200"
-        >{`To confirm, type "${CONFIRM_MESSAGE}" in the box below.`}</Text>
+        <Text textStyle="text-sm">{`To confirm, type "${CONFIRM_MESSAGE}" in the box below.`}</Text>
         <HStack>
           <Input
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
-            color="light.100"
+            color="dark.100
+"
+            w={72}
           />
           <Button
             onClick={() => mutate()}
-            colorScheme="red"
             isDisabled={inputValue !== CONFIRM_MESSAGE}
             isLoading={isLoading}
             flexShrink={0}
+            variant="outlineWarning"
           >
             Delete account
           </Button>

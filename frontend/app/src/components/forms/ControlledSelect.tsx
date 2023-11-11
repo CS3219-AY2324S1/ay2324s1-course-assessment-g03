@@ -83,7 +83,7 @@ const ControlledSelect = <
           ),
         }}
         options={options}
-        selectedOptionColorScheme="dark.800"
+        selectedOptionColorScheme="dark.700"
         {...selectProps}
         {...field}
       />

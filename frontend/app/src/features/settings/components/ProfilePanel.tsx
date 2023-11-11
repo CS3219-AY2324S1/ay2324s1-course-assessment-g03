@@ -55,10 +55,19 @@ export const ProfilePanel = () => {
         <Box as="form" onSubmit={onSubmit} height="full">
           <VStack height="full">
             <FormControl isInvalid={!!errors.name}>
-              <FormLabel color="light.100" htmlFor="name">
+              <FormLabel
+                color="dark.100
+"
+                htmlFor="name"
+              >
                 Name
               </FormLabel>
-              <Input color="light.100" {...register("name")} />
+              <Input
+                color="dark.100
+"
+                {...register("name")}
+                w={96}
+              />
               <FormErrorMessage>
                 {errors.name && errors.name.message}
               </FormErrorMessage>
