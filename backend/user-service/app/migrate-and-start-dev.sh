@@ -1,4 +1,4 @@
 #!/bin/sh
 
-dotenv -e .env.development -- npx prisma db push
+dotenv -e .env.development -- npx prisma generate
 npm run dev
