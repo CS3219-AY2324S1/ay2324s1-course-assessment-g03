@@ -11,12 +11,8 @@ export const envSchema = z.object({
     .enum(["development", "staging", "production"])
     .default("development"),
   PORT: z.string().default("80"),
-  DATABASE_URL: z
-    .string()
-    .url()
-    .default(
-      "mysql://k145f63zxaiuxztap2ch:pscale_pw_8loz6XgHYF3iCmW4BeIUgdQYk4zGOsAKf1P7P5QTUkm@aws.connect.psdb.cloud/user?sslaccept=strict"
-    ),
+  DATABASE_URL: z.string().url(),
+
   /**
    * For CORS
    */
