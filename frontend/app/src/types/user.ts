@@ -7,7 +7,7 @@ export const ROLE = {
 export type RoleType = (typeof ROLE)[keyof typeof ROLE];
 
 export const userSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   email: z.string().email(),
   /**
    * Coerces any null values to undefined.

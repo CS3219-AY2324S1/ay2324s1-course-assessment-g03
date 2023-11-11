@@ -11,12 +11,12 @@ const getUserInfoSchema = makeSuccessResponseSchema(
   z.object({ user: userSchema }),
 );
 
-const getUserInfo = async (id: string) => {
+const getUserInfo = async (id: number) => {
   const { data } = await backendApi.get(`${API_ENDPOINT.USERS}/id/${id}`);
   return getUserInfoSchema.parse(data);
 };
 
-export const useGetUserInfo = (id: string) => {
+export const useGetUserInfo = (id: number) => {
   const queryClient = useQueryClient();
 
   return useQuery({
