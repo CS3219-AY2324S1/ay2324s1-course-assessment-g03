@@ -28,6 +28,12 @@ async def create_question(question: dict):
     if collection.find_one({"id": question["id"]}):
         raise HTTPException(
             status_code=400, detail="Question with the same id already exists.")
+
+    # Check if question with the same title already exists
+    if collection.find_one({"title": question["title"]}):
+        raise HTTPException(
+            status_code=400, detail="Question with the same title already exists.")
+    
     result = collection.insert_one(question)
 
     question["_id"] = str(question["_id"])
@@ -41,6 +47,11 @@ async def update_question(question_id: int, updated_data: dict):
     # Check if updated_data is empty
     if not updated_data:
         raise HTTPException(status_code=400, detail="Updated data not provided.")
+    
+    # Check if question with the same title already exists
+    if collection.find_one({"title": updated_data["title"]}):
+        raise HTTPException(
+            status_code=400, detail="Question with the same title already exists.")
 
     result = collection.update_one({"id": question_id}, {"$set": updated_data})
 
