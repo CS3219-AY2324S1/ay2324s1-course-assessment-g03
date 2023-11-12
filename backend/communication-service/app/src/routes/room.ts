@@ -7,6 +7,7 @@ import {
   createOneRoom,
   findUserInRoom,
   getOneRoomInfo,
+  leaveOneRoom,
 } from "../models/rooms.model";
 import * as roomSchemas from "../schemas/room.schemas";
 
@@ -67,5 +68,18 @@ roomRouter
       data: { message: METHOD_NOT_ALLOWED_ERROR },
     });
   });
+
+roomRouter.delete("/:roomId/user/:userId", (req: Request, res: Response) => {
+  try {
+    const { roomId, userId } =
+      roomSchemas.deleteOneRoomByUserIdSchema.parse(req).params;
+    const { code, status, data } = leaveOneRoom(roomId, userId);
+    return res.status(code).json({ status, data });
+  } catch (e) {
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ status: JSEND_STATUS.FAILURE, data: e });
+  }
+});
 
 export default roomRouter;

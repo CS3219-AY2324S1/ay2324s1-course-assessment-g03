@@ -17,3 +17,10 @@ export const getOneRoomByIdSchema = z.object({
     roomId: z.string(),
   }),
 });
+
+export const deleteOneRoomByUserIdSchema = z.object({
+  params: z.object({
+    roomId: z.string(),
+    userId: z.string(),
+  }),
+});
