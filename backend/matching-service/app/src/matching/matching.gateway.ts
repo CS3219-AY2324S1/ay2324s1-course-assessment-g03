@@ -44,6 +44,25 @@ export class MatchingGateway {
 
     const roomId = dataJson?.data?.roomId;
 
+    // Create room in communication service
+    // TODO: Clean up string literals @Joel
+    const communicationRes = await fetch(
+      `${process.env.API_GATEWAY_URL}/api/communication/room`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(process.env.API_GATEWAY_AUTH_SECRET
+            ? {
+                ["api-gateway-auth-secret"]:
+                  process.env.API_GATEWAY_AUTH_SECRET,
+              }
+            : {}),
+        },
+        body: JSON.stringify({ roomId }),
+      }
+    );
+
     const newWaiting: WaitingUser = {
       user: roomParams.user,
       roomId,

@@ -37,6 +37,11 @@
 1. In the `/backend/collaboration-service/app` directory, copy the `.env.example` file and rename it to `.env.development`
    - For any missing env vars, check with the team to retrieve the secrets from the vault
 
+### 1.7. Communication service (`/backend/communication-service`)
+
+1. In the `/backend/communication-service/app` directory, copy the `.env.example` file and rename it to `.env.development`
+   - For any missing env vars, check with the team to retrieve the secrets from the vault
+
 ## 2. Instructions to run services locally
 
 ### Pre-requisites
@@ -54,6 +59,7 @@
    - Questions service: http://localhost:8003
    - Matching service: http://localhost:8004
    - Collaboration service: http://localhost:8005
+   - Communication service: http://localhost:8006
 
 ### Known issues
 

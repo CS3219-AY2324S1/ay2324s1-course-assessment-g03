@@ -36,6 +36,12 @@ export const API_ENDPOINT = {
    */
   COLLABORATION: "/collaboration",
   COLLABORATION_ROOM: "/collaboration/room",
+
+  /**
+   * Communication service
+   */
+  COMMUNICATION: "/communication",
+  COMMUNICATION_ROOM: "/communication/room",
 } as const;
 
 /**
@@ -44,6 +50,7 @@ export const API_ENDPOINT = {
 export const WEBSOCKET_PATH = {
   MATCHING: "/api/matching/websocket",
   COLLABORATION: "/api/collaboration/websocket",
+  COMMUNICATION: "/api/communication/websocket",
 } as const;
 
 export const SOCKET_API_ENDPOINT = {

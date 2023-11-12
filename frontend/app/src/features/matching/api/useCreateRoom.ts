@@ -13,6 +13,13 @@ const createRoomResponseSchema = makeSuccessResponseSchema(
   }),
 );
 
+const createChatRoomResponseSchema = makeSuccessResponseSchema(
+  z.object({
+    created: z.string(),
+    roomId: z.string(),
+  }),
+);
+
 const createRoom = async () => {
   const { data } = await backendApi.post(`${API_ENDPOINT.COLLABORATION_ROOM}`, {
     difficulty: [],
@@ -23,6 +30,20 @@ const createRoom = async () => {
     console.error("Unexpected response shape:", parsed.error);
     return data;
   }
+
+  // Create communication room
+  const { data: chatData } = await backendApi.post(
+    `${API_ENDPOINT.COMMUNICATION_ROOM}`,
+    {
+      roomId: parsed.data.data.roomId,
+    },
+  );
+  const chatParsed = createChatRoomResponseSchema.safeParse(chatData);
+  if (!chatParsed.success) {
+    console.error("Unexpected response shape:", chatParsed.error);
+    return data;
+  }
+
   return parsed.data;
 };
 
