@@ -1,13 +1,13 @@
 import { HStack } from "@chakra-ui/react";
 import { DifficultyBadge, TopicBadge } from "@/features/room";
-import { DifficultyType, TopicTagType } from "@/constants/question";
+import { DifficultyType } from "@/constants/question";
 import { RoomUserInfo } from "./RoomUserInfo";
 import { CustomButton } from "@/components";
 import { useState } from "react";
 
 interface InfoBarProps {
   difficulty: DifficultyType[];
-  topic: TopicTagType[];
+  topic: string[];
   users: { id: string; connected: boolean }[];
   showCopyLink: boolean;
   copyLinkCallback: () => void;
@@ -31,7 +31,7 @@ export const InfoBar = ({
   };
 
   return (
-    <HStack justifyContent="space-between" gap={4}>
+    <HStack justifyContent="space-between" gap={8}>
       <HStack>
         {difficulty.map(d => (
           <DifficultyBadge key={d} difficulty={d} />
@@ -40,7 +40,7 @@ export const InfoBar = ({
           <TopicBadge key={t} topic={t} />
         ))}
       </HStack>
-      <HStack>
+      <HStack gap={6}>
         {users.map(user => (
           <RoomUserInfo key={user.id} user={user} />
         ))}

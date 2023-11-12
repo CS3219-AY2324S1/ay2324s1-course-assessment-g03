@@ -1,11 +1,19 @@
-import { useCallback, useEffect, useState, MouseEvent } from "react";
+import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
 import { useLocation } from "react-router-dom";
-import { Box, Text, HStack, VStack, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  HStack,
+  VStack,
+  Spinner,
+  useToast,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { DragHandleIcon } from "@chakra-ui/icons";
 import io, { Socket } from "socket.io-client";
 import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
-import { CustomButton } from "@/components";
+import { CustomAlert, CustomButton } from "@/components";
 import { Dropdown } from "@/components/Dropdown";
 import { DifficultyType } from "@/constants/question";
 import { SOCKET_API_ENDPOINT, WEBSOCKET_PATH } from "@/constants/api";
@@ -20,6 +28,7 @@ import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 import { usePostSubmission } from "../../api/usePostSubmission";
 import ChatBubble from "../chat/ChatBubble";
+import { usePostLeaveRoom } from "../../api/usePostLeaveRoom";
 
 interface CollaboratorProps {
   roomId: string;
@@ -48,6 +57,9 @@ export const Collaborator = ({
   const [doc, setDoc] = useState<string | null>(null);
   const toast = useToast();
   const { mutate: markAsComplete } = usePostSubmission();
+  const { mutate: leaveRoom } = usePostLeaveRoom();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const id = useAuth().data?.user?.id;
 
@@ -273,41 +285,50 @@ export const Collaborator = ({
   );
 
   return (
-    <VStack align="left" height="80vh" width="full" mt={5} gap={4}>
-      {Options}
-      {renderQuestion ? VisibleView : HiddenView}
-      <HStack
-        justifyContent="space-between"
-        position="fixed"
-        bottom={0}
-        left={0}
-        w="full"
-        background="light.500"
-        p={4}
-        boxShadow="0 0 12px rgba(0,0,0,.4)"
-      >
-        <CustomButton
-          bg="dark.600"
-          _hover={{ bgColor: "dark.700" }}
-          onClick={() => setRenderQuestion(!renderQuestion)}
+    <>
+      <CustomAlert
+        title="Leave Room"
+        description="Are you sure? You can rejoin via the same link"
+        confirmButtonText="Leave"
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        onConfirm={leaveRoom}
+      />
+      <VStack align="left" height="80vh" width="full" mt={5} gap={4}>
+        {Options}
+        {renderQuestion ? VisibleView : HiddenView}
+        <HStack
+          justifyContent="space-between"
+          position="fixed"
+          bottom={0}
+          left={0}
+          w="full"
+          background="light.500"
+          p={4}
+          boxShadow="0 0 12px rgba(0,0,0,.4)"
         >
-          {renderQuestion ? "Hide" : "Show"} Question
-        </CustomButton>
-        <HStack gap={3}>
-          <CustomButton onClick={handleMarkAsComplete}>
-            Mark as complete
-          </CustomButton>
           <CustomButton
-            onClick={() => {
-              // TODO: call leave room route
-            }}
-            colorScheme="red"
-            _hover={{ bgColor: "red.800" }}
+            bg="dark.600"
+            _hover={{ bgColor: "dark.700" }}
+            onClick={() => setRenderQuestion(!renderQuestion)}
           >
-            Leave Room
+            {renderQuestion ? "Hide" : "Show"} Question
           </CustomButton>
+          <HStack gap={3}>
+            <CustomButton onClick={handleMarkAsComplete}>
+              Mark as complete
+            </CustomButton>
+            <CustomButton
+              onClick={() => onOpen()}
+              colorScheme="red"
+              _hover={{ bgColor: "red.800" }}
+            >
+              Leave Room
+            </CustomButton>
+          </HStack>
         </HStack>
-      </HStack>
-    </VStack>
+      </VStack>
+    </>
   );
 };
