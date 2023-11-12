@@ -13,21 +13,4 @@ apiRouter.use((_req: Request, _res: Response, next: NextFunction) => {
 
 apiRouter.use("/room", roomRouter);
 
-apiRouter
-  .get("/", (_req: Request, res: Response) => {
-    return res
-      .status(HttpStatus.OK)
-      .send(
-        "Welcome to PeerPrep (Communication service) - A project for NUS CS3219 - Group 3"
-      );
-  })
-  .all("/", (_req: Request, res: Response) => {
-    return res
-      .status(HttpStatus.METHOD_NOT_ALLOWED)
-      .json({
-        status: JSEND_STATUS.ERROR,
-        data: { message: METHOD_NOT_ALLOWED_ERROR },
-      });
-  });
-
 export default apiRouter;

@@ -98,7 +98,7 @@ export const joinOneRoom = (socket: Socket, roomId: string, user: User) => {
   };
 };
 
-export const leaveOneRoom = (roomId: string, userId: string) => {
+export const disconnectOneUserFromRoom = (roomId: string, userId: string) => {
   if (!(roomId in rooms)) {
     return {
       status: JSEND_STATUS.FAILURE,
@@ -189,5 +189,33 @@ export const sendMessageInRoom = (
       sender,
       message,
     },
+  };
+};
+
+export const leaveOneRoom = (roomId: string, userId: string) => {
+  if (!(roomId in rooms)) {
+    return {
+      status: JSEND_STATUS.FAILURE,
+      code: HttpStatus.NOT_FOUND,
+      data: { roomId: "Room not found" },
+    };
+  }
+
+  const users = rooms[roomId].users;
+
+  if (!users.has(userId)) {
+    return {
+      status: JSEND_STATUS.FAILURE,
+      code: HttpStatus.NOT_FOUND,
+      data: { userId: "User not found" },
+    };
+  }
+
+  users.delete(userId);
+
+  return {
+    status: "success",
+    code: HttpStatus.OK,
+    data: { userId, roomId },
   };
 };
