@@ -10,7 +10,7 @@ import {
 } from "./helpers/socket.helper";
 import { SOCKET_API, SOCKET_INVALID_ROOM_ID, SOCKET_INVALID_USER_ID } from "./constants/socket";
 import { rooms } from "./db/rooms.db";
-import { joinOneRoom, leaveOneRoom } from "./models/rooms.model";
+import { joinOneRoom, disconnectOneUserFromRoom } from "./models/rooms.model";
 import { LanguageKeyType } from "./constants/language";
 
 const port = process.env.PORT || 80;
@@ -76,7 +76,7 @@ io.on(SOCKET_API.CONNECT, (socket) => {
 
   /* Socket API to disconnect from the server */
   socket.on(SOCKET_API.DISCONNECT, () => {
-    leaveOneRoom(roomId, userId)
+    disconnectOneUserFromRoom(roomId, userId)
     socket.to(roomId).emit(SOCKET_API.DISCONNECT_RESPONSE, userId)
   });
 });
