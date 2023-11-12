@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState, MouseEvent } from "react";
 import { useLocation } from "react-router-dom";
 import { Box, Text, HStack, VStack, Spinner, useToast } from "@chakra-ui/react";
+import { DragHandleIcon } from "@chakra-ui/icons";
 import io, { Socket } from "socket.io-client";
 import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
 import { CustomButton } from "@/components";
 import { Dropdown } from "@/components/Dropdown";
-import { DifficultyType, TopicTagType } from "@/constants/question";
+import { DifficultyType } from "@/constants/question";
 import { SOCKET_API_ENDPOINT, WEBSOCKET_PATH } from "@/constants/api";
 import {
   LANGUAGES,
@@ -22,7 +23,7 @@ import ChatBubble from "../chat/ChatBubble";
 
 interface CollaboratorProps {
   roomId: string;
-  topic: TopicTagType[];
+  topic: string[];
   difficulty: DifficultyType[];
   questionId?: number;
   language: LanguageKeyType;
@@ -225,22 +226,22 @@ export const Collaborator = ({
         <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <Box
-        w={2}
+        w={4}
         height="100%"
-        bg="light.500"
+        bg="dark.700"
         cursor="col-resize"
         _hover={{
-          bg: "light.400",
+          bg: "dark.600",
         }}
         transition="background 0.2s"
         onMouseDown={startResizing}
-      />
-      <VStack
-        position="relative"
-        align="left"
-        flexGrow={1}
-        maxW={`${window.innerWidth - width}`}
+        display="flex"
+        alignItems="center"
+        borderRadius={4}
       >
+        <DragHandleIcon color="dark.300" />
+      </Box>
+      <VStack align="left" position="relative" flexGrow={1} maxW={`${window.innerWidth - width}`}>
         <CodeEditor
           doc={doc}
           setDoc={setDoc}
