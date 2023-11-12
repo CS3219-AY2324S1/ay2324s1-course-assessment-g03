@@ -241,7 +241,12 @@ export const Collaborator = ({
       >
         <DragHandleIcon color="dark.300" />
       </Box>
-      <VStack align="left" position="relative" flexGrow={1} maxW={`${window.innerWidth - width}`}>
+      <VStack
+        align="left"
+        position="relative"
+        flexGrow={1}
+        maxW={`${window.innerWidth - width}`}
+      >
         <CodeEditor
           doc={doc}
           setDoc={setDoc}
