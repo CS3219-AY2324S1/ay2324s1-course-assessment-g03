@@ -28,16 +28,17 @@ const postLeaveRoom = async (
     console.error("Room Id is missing");
     return;
   }
-  const { data } = await backendApi.delete(
-    `${API_ENDPOINT.COLLABORATION_ROOM}/${roomId}/user/${userId}`,
-    {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    },
+  const communicationDeleteResponse = await backendApi.delete(
+    `${API_ENDPOINT.COMMUNICATION_ROOM}/${roomId}/user/${userId}`,
   );
-  return postLeaveRoomResponseSchema.parse(data);
+  if (communicationDeleteResponse.data.status !== "success") {
+    return postLeaveRoomResponseSchema.parse(communicationDeleteResponse.data);
+  }
+
+  const collaborationDeleteResponse = await backendApi.delete(
+    `${API_ENDPOINT.COLLABORATION_ROOM}/${roomId}/user/${userId}`,
+  );
+  return postLeaveRoomResponseSchema.parse(collaborationDeleteResponse.data);
 };
 
 export const usePostLeaveRoom = () => {

@@ -293,7 +293,7 @@ export const Collaborator = ({
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
-        onConfirm={leaveRoom}
+        onConfirm={() => leaveRoom()}
       />
       <VStack align="left" height="80vh" width="full" mt={5} gap={4}>
         {Options}
