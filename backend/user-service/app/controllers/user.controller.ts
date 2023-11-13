@@ -18,7 +18,9 @@ export const userController = {
   getById: async (req: Request, res: Response) => {
     const parsedReq = userGetByIdSchema.parse(req);
     try {
-      const user = await userService.findById(parsedReq.params.userId);
+      const user = await userService.findById(
+        parseInt(parsedReq.params.userId)
+      );
       if (!user) {
         throw new Error("User not found");
       }
@@ -67,7 +69,7 @@ export const userController = {
     try {
       const parsedReq = userPutSchema.parse(req);
       const user = await userService.update(
-        parsedReq.params.userId,
+        parseInt(parsedReq.params.userId),
         parsedReq.body.user
       );
       res.send(successApiResponse({ user }));
@@ -83,7 +85,7 @@ export const userController = {
   delete: async (req: Request, res: Response) => {
     try {
       const parsedReq = userDeleteSchema.parse(req);
-      const user = await userService.delete(parsedReq.params.userId);
+      const user = await userService.delete(parseInt(parsedReq.params.userId));
       res.send(successApiResponse({ user }));
     } catch (e) {
       let message = ERROR_MESSAGE;

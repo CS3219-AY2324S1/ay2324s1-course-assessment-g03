@@ -23,6 +23,7 @@ const failResponseSchema = z.object({
       error_description: z.string().optional(),
     })
     .optional(),
+  message: z.string().optional(),
 });
 
 export const anyApiResponseSchema = z.union([
@@ -61,6 +62,8 @@ function responseHandler(response: AxiosResponse | undefined) {
       errorMessage = parsedResponseData.data.data.error;
     } else if (parsedResponseData.data.data?.message) {
       errorMessage = parsedResponseData.data.data.message;
+    } else if (parsedResponseData.data.message) {
+      errorMessage = parsedResponseData.data.message;
     } else {
       errorMessage = API_ERROR.STATUS_FAIL;
     }

@@ -20,9 +20,17 @@ export const userService = {
   delete: (id: Prisma.UserDeleteArgs["where"]["id"]) =>
     db.user.delete({ where: { id } }),
   findById: (id: Prisma.UserFindUniqueArgs["where"]["id"]) =>
-    db.user.findUnique({ where: { id } }),
+    db.user.findUnique({
+      where: { id },
+      include: { submissions: { include: { users: true } } },
+    }),
   findByEmail: (email: Prisma.UserFindUniqueArgs["where"]["email"]) =>
-    db.user.findUnique({ where: { email } }),
-  update: (id: string, data: Prisma.UserUpdateInput) =>
-    db.user.update({ where: { id }, data }),
+    db.user.findUnique({
+      where: { email },
+      include: { submissions: { include: { users: true } } },
+    }),
+  update: (
+    id: Prisma.UserUpdateArgs["where"]["id"],
+    data: Prisma.UserUpdateInput
+  ) => db.user.update({ where: { id }, data }),
 };

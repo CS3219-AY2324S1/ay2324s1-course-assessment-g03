@@ -12,11 +12,15 @@ export const UserInfo = ({ user }: UserInfoProps) => {
   }
 
   return (
-    <HStack gap="0.75rem">
+    <HStack gap={4}>
       <Avatar name={user?.name} src={user?.avatarUrl} />
-      <VStack alignItems="start" gap="0.2rem">
-        <Text textStyle="heading-sm">{user?.name}</Text>
-        <Text textStyle="text-sm">{user?.email}</Text>
+      <VStack alignItems="start" spacing={0}>
+        {user.name && (
+          <Text fontWeight="medium" fontSize="sm">
+            {user.name}
+          </Text>
+        )}
+        {user.email && <Text fontSize="sm">{user.email}</Text>}
       </VStack>
     </HStack>
   );

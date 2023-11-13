@@ -2,7 +2,7 @@ import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
 const outline = defineStyle({
   border: "1px",
-  borderColor: "dark.800",
+  borderColor: "dark.700",
   borderRadius: "md",
   color: "dark.100",
   _focusVisible: {

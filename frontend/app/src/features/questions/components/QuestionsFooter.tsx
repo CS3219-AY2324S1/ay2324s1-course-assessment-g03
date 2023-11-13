@@ -35,8 +35,8 @@ const QuestionsFooter = () => {
       <Skeleton
         h="32px"
         w="500px"
-        startColor="dark.950"
-        endColor="dark.800"
+        startColor="dark.900"
+        endColor="dark.700"
         borderRadius="md"
         placeSelf="end"
       />
@@ -68,12 +68,12 @@ const QuestionsFooter = () => {
               max={30}
               step={5}
               size="sm"
-              focusBorderColor="dark.800"
+              focusBorderColor="dark.700"
               w="16"
             >
               <NumberInputField
                 border="1px"
-                borderColor="dark.800"
+                borderColor="dark.700"
                 color="dark.100"
                 borderRadius="md"
               />

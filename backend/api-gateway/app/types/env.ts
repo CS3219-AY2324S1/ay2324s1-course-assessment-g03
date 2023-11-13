@@ -34,6 +34,10 @@ export const envSchema = z.object({
     .string()
     .url()
     .default("http://collaboration-service"),
+  COMMUNICATION_SERVICE_URL: z
+    .string()
+    .url()
+    .default("http://communication-service"),
 });
 
 type EnvSchemaType = z.infer<typeof envSchema>;

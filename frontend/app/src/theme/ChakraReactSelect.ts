@@ -17,8 +17,8 @@ export const singleSelectStyles: (
   return {
     container: provided => ({
       ...provided,
-      background: "dark.950",
-      borderColor: "light.500",
+      background: "dark.900",
+      borderColor: "dark.700",
     }),
     control: provided => ({
       ...provided,
@@ -27,9 +27,8 @@ export const singleSelectStyles: (
     dropdownIndicator: provided => ({
       ...provided,
       background: "transparent",
-      color: "light.100",
+      color: "dark.100",
       border: "0px",
-      px: "0.5rem",
     }),
     indicatorSeparator: () => ({
       display: "none",
@@ -37,7 +36,7 @@ export const singleSelectStyles: (
     valueContainer: provided => ({
       ...provided,
       px: "0.5rem",
-      color: "light.100",
+      color: "dark.100",
       fontSize,
       py: valueContainerPy,
     }),
@@ -45,22 +44,23 @@ export const singleSelectStyles: (
       ...provided,
       background: "transparent",
       _hover: {
-        background: "light.500",
+        background: "dark.700",
       },
-      color: "light.100",
+      color: "dark.100",
       fontSize,
       py: "0rem",
     }),
-    menu: provided => ({ ...provided, background: "dark.500" }),
+    menu: provided => ({ ...provided, background: "dark.900" }),
     menuList: provided => ({
       ...provided,
       background: "transparent",
     }),
     noOptionsMessage: provided => ({
       ...provided,
-      color: "light.100",
+      color: "dark.100",
       fontSize,
     }),
+    placeholder: provided => ({ ...provided, color: "dark.300" }),
   };
 };
 
@@ -71,21 +71,21 @@ export const multiSelectStyles: (
   return {
     container: provided => ({
       ...provided,
-      background: "dark.950",
-      borderColor: "light.500",
-      borderRadius: "0.375rem",
+      background: "dark.900",
+      borderColor: "dark.700",
+      borderRadius: "md",
     }),
     clearIndicator: provided => ({
       ...provided,
-      color: "light.100",
+      color: "dark.100",
       _hover: {
-        background: "light.400",
+        background: "dark.700",
       },
     }),
     dropdownIndicator: provided => ({
       ...provided,
       background: "transparent",
-      color: "light.100",
+      color: "dark.100",
       border: "0px",
     }),
     indicatorSeparator: () => ({
@@ -93,27 +93,28 @@ export const multiSelectStyles: (
     }),
     valueContainer: provided => ({
       ...provided,
-      px: "0.5rem",
+      px: 2,
     }),
     multiValue: provided => ({
       ...provided,
       background: "transparent",
-      color: "light.100",
+      color: "dark.100",
     }),
     option: provided => ({
       ...provided,
       background: "transparent",
       _hover: {
-        background: "light.500",
+        background: "dark.700",
       },
-      color: "light.100",
+      color: "dark.100",
     }),
-    menu: provided => ({ ...provided, background: "dark.500" }),
+    menu: provided => ({ ...provided, background: "dark.900" }),
     menuList: provided => ({
       ...provided,
-      background: "dark.500",
-      borderColor: "light.400",
+      background: "dark.900",
+      borderColor: "dark.700",
     }),
-    noOptionsMessage: provided => ({ ...provided, color: "light.100" }),
+    noOptionsMessage: provided => ({ ...provided, color: "dark.100" }),
+    placeholder: provided => ({ ...provided, color: "dark.300" }),
   };
 };

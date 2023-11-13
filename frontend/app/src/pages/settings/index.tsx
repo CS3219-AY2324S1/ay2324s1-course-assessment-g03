@@ -15,7 +15,7 @@ function SettingsPage() {
       >
         <Box
           width="20rem"
-          borderColor="light.500"
+          borderColor="dark.700"
           borderWidth="1px"
           borderRadius="0.5rem"
           p="0.5rem"
@@ -23,7 +23,7 @@ function SettingsPage() {
           <SettingsSidebar />
         </Box>
         <Box
-          borderColor="light.500"
+          borderColor="dark.700"
           borderWidth="1px"
           borderRadius="0.5rem"
           p="0.5rem"

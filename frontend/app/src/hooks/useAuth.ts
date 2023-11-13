@@ -1,6 +1,7 @@
 import { API_ENDPOINT } from "@/constants/api";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { backendApi } from "@/lib/axios";
+import { submissionSchema } from "@/types/submission";
 import { userSchema } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ const getAuthResponseSchema = makeSuccessResponseSchema(
   z.object({
     user: userSchema.extend({
       roomId: z.string().optional(),
+      submissions: z.array(submissionSchema),
     }),
   }),
 );

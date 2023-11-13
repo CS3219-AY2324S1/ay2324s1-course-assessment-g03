@@ -5,25 +5,25 @@ const icon = defineStyle({
   color: "dark.300",
   _hover: {
     color: "dark.100",
-    bg: "dark.800",
+    bg: "dark.700",
   },
   _active: {
-    bg: "dark.800",
+    bg: "dark.700",
   },
 });
 
 const outline = defineStyle({
   bg: "transparent",
   border: "1px",
-  borderColor: "dark.800",
+  borderColor: "dark.700",
   color: "dark.100",
   fontWeight: "medium",
   shadow: "sm",
   _active: {
-    bg: "dark.800",
+    bg: "dark.700",
   },
   _hover: {
-    bg: "dark.800",
+    bg: "dark.700",
   },
 });
 
@@ -31,7 +31,7 @@ const outlineWarning = defineStyle({
   bg: "transparent",
   border: "1px",
   borderColor: "red.900",
-  color: "red.600",
+  color: "red.500",
   fontWeight: "medium",
   shadow: "sm",
   _hover: {

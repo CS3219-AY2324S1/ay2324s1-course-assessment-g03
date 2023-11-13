@@ -5,15 +5,5 @@ interface TopicBadgeProps {
 }
 
 export const TopicBadge = ({ topic }: TopicBadgeProps) => {
-  return (
-    <Tag
-      fontWeight="bold"
-      borderRadius="full"
-      px={3}
-      py={1}
-      textTransform="capitalize"
-    >
-      {topic}
-    </Tag>
-  );
+  return <Tag>{topic}</Tag>;
 };

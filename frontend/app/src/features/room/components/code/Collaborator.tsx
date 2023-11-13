@@ -1,12 +1,22 @@
-import { useCallback, useEffect, useState, MouseEvent } from "react";
+import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
 import { useLocation } from "react-router-dom";
-import { Box, Text, HStack, VStack, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  HStack,
+  VStack,
+  Spinner,
+  useToast,
+  useDisclosure,
+  Button,
+} from "@chakra-ui/react";
+import { DragHandleIcon } from "@chakra-ui/icons";
 import io, { Socket } from "socket.io-client";
 import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
-import { CustomButton } from "@/components";
+import { CustomAlert, CustomButton } from "@/components";
 import { Dropdown } from "@/components/Dropdown";
-import { DifficultyType, TopicTagType } from "@/constants/question";
+import { DifficultyType } from "@/constants/question";
 import { SOCKET_API_ENDPOINT, WEBSOCKET_PATH } from "@/constants/api";
 import {
   LANGUAGES,
@@ -18,14 +28,16 @@ import { InfoBar } from "@/features/room";
 import { CodeEditor, QuestionDetails } from "@/features/room/components/code";
 import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions";
 import { usePostSubmission } from "../../api/usePostSubmission";
+import ChatBubble from "../chat/ChatBubble";
+import { usePostLeaveRoom } from "../../api/usePostLeaveRoom";
 
 interface CollaboratorProps {
   roomId: string;
-  topic: TopicTagType[];
+  topic: string[];
   difficulty: DifficultyType[];
   questionId?: number;
   language: LanguageKeyType;
-  users: { id: string; connected: boolean }[];
+  users: { id: number; connected: boolean }[];
 }
 
 export const Collaborator = ({
@@ -44,8 +56,13 @@ export const Collaborator = ({
   const [activeQuestionId, setActiveQuestionId] = useState(questionId);
   // Lifted state from `CodeEditor` component
   const [doc, setDoc] = useState<string | null>(null);
+  const [currentDocState, setCurrentDocState] = useState("");
   const toast = useToast();
-  const { mutate: markAsComplete } = usePostSubmission();
+  const { mutate: markAsComplete, isLoading: isPostSubmissionLoading } =
+    usePostSubmission();
+  const { mutate: leaveRoom } = usePostLeaveRoom();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const id = useAuth().data?.user?.id;
 
@@ -135,7 +152,7 @@ export const Collaborator = ({
   };
 
   const handleMarkAsComplete = () => {
-    if (!doc || !activeQuestionId) {
+    if (!currentDocState || !activeQuestionId) {
       toast({
         status: "error",
         title: "Cannot submit empty code or question",
@@ -160,7 +177,7 @@ export const Collaborator = ({
 
     markAsComplete({
       submission: {
-        code: doc,
+        code: currentDocState,
         questionId: activeQuestionId.toString(),
         lang: languageKey,
         ...(otherUserId ? { otherUserId } : {}),
@@ -181,6 +198,7 @@ export const Collaborator = ({
             setActiveQuestionId(Number(e?.value ?? 0));
             socket.emit(SOCKET_API_ENDPOINT.CHANGE_QUESTION, e?.value ?? 0);
           }}
+          width={72}
         />
         <Dropdown
           size="sm"
@@ -224,76 +242,94 @@ export const Collaborator = ({
         <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <Box
-        w={2}
+        w={4}
         height="100%"
-        bg="light.500"
+        bg="dark.800"
         cursor="col-resize"
         _hover={{
-          bg: "light.400",
+          bg: "dark.700",
         }}
         transition="background 0.2s"
         onMouseDown={startResizing}
-      />
-      <VStack align="left" flexGrow={1} maxW={`${window.innerWidth - width}`}>
+        display="flex"
+        alignItems="center"
+        borderRadius={4}
+      >
+        <DragHandleIcon color="dark.500" />
+      </Box>
+      <VStack
+        align="left"
+        position="relative"
+        flexGrow={1}
+        maxW={`${window.innerWidth - width}`}
+      >
         <CodeEditor
           doc={doc}
           setDoc={setDoc}
           socket={socket}
           roomId={roomId}
           language={currentLanguage}
+          setCurrentDocState={setCurrentDocState}
         />
+        <ChatBubble roomId={roomId} />
       </VStack>
     </HStack>
   );
 
   const HiddenView = (
-    <VStack align="left" height="100%">
+    <VStack position="relative" align="left" height="100%">
       <CodeEditor
         doc={doc}
         setDoc={setDoc}
         socket={socket}
         roomId={roomId}
         language={currentLanguage}
+        setCurrentDocState={setCurrentDocState}
       />
+      <ChatBubble roomId={roomId} />
     </VStack>
   );
 
   return (
-    <VStack align="left" height="80vh" width="full" mt={5} gap={4}>
-      {Options}
-      {renderQuestion ? VisibleView : HiddenView}
-      <HStack
-        justifyContent="space-between"
-        position="fixed"
-        bottom={0}
-        left={0}
-        w="full"
-        background="light.500"
-        p={4}
-        boxShadow="0 0 12px rgba(0,0,0,.4)"
-      >
-        <CustomButton
-          bg="dark.600"
-          _hover={{ bgColor: "dark.700" }}
-          onClick={() => setRenderQuestion(!renderQuestion)}
+    <>
+      <CustomAlert
+        title="Leave Room"
+        description="Are you sure? You can rejoin via the same link."
+        confirmButtonText="Leave"
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        onConfirm={() => leaveRoom()}
+      />
+      <VStack align="left" height="80vh" width="full" mt={5} gap={4}>
+        {Options}
+        {renderQuestion ? VisibleView : HiddenView}
+        <HStack
+          justifyContent="space-between"
+          position="fixed"
+          bottom={0}
+          left={0}
+          w="full"
+          background="dark.900"
+          p={4}
+          boxShadow="0 0 12px rgba(0,0,0,.4)"
         >
-          {renderQuestion ? "Hide" : "Show"} Question
-        </CustomButton>
-        <HStack gap={3}>
-          <CustomButton onClick={handleMarkAsComplete}>
-            Mark as complete
-          </CustomButton>
-          <CustomButton
-            onClick={() => {
-              // TODO: call leave room route
-            }}
-            colorScheme="red"
-            _hover={{ bgColor: "red.800" }}
-          >
-            Leave Room
-          </CustomButton>
+          <Button onClick={() => setRenderQuestion(!renderQuestion)}>
+            {renderQuestion ? "Hide" : "Show"} Question
+          </Button>
+          <HStack gap={4}>
+            <CustomButton
+              onClick={handleMarkAsComplete}
+              isLoading={isPostSubmissionLoading}
+            >
+              Mark as complete
+            </CustomButton>
+            <Button variant="outlineWarning" onClick={() => onOpen()}>
+              Leave Room
+            </Button>
+          </HStack>
         </HStack>
-      </HStack>
-    </VStack>
+      </VStack>
+    </>
   );
 };

@@ -56,3 +56,12 @@ apiRouter.use(
     ...proxyOptions,
   })
 );
+
+apiRouter.use(
+  "/communication",
+  authMiddleware,
+  createProxyMiddleware({
+    target: process.env.COMMUNICATION_SERVICE_URL,
+    ...proxyOptions,
+  })
+);

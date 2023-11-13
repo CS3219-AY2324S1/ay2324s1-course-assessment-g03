@@ -1,8 +1,8 @@
 export const TABS = [
   {
-    label: "Profile settings",
+    label: "Profile Information",
   },
   {
-    label: "Delete account",
+    label: "Delete Account",
   },
 ];

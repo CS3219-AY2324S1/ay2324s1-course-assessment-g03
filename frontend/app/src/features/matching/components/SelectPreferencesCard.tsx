@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Card, CustomButton } from "@/components";
-import { DIFFICULTY, DifficultyType, TopicTagType } from "@/constants/question";
+import { DIFFICULTY, DifficultyType } from "@/constants/question";
 import { Preferences } from "@/types/matching";
 import {
   FormControl,
@@ -21,8 +21,8 @@ type PreferencesFormValues = {
     label: DifficultyType;
   }[];
   topics: {
-    value: TopicTagType;
-    label: TopicTagType;
+    value: string;
+    label: string;
   }[];
 };
 
@@ -44,8 +44,8 @@ const getTopicsForDifficulty = (
   const topicsSet: Map<
     string,
     {
-      value: TopicTagType;
-      label: TopicTagType;
+      value: string;
+      label: string;
     }
   > = new Map();
 
@@ -56,8 +56,8 @@ const getTopicsForDifficulty = (
     if (topics) {
       topics.forEach(topic =>
         topicsSet.set(topic, {
-          value: topic as TopicTagType,
-          label: topic as TopicTagType,
+          value: topic,
+          label: topic,
         }),
       );
     }
@@ -115,7 +115,7 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
           Select question preferences
         </Text>
         <FormControl isInvalid={!!errors["difficulties"]}>
-          <FormLabel color="light.100">Difficulty</FormLabel>
+          <FormLabel color="dark.100">Difficulty</FormLabel>
           <Controller
             name="difficulties"
             control={control}
@@ -135,7 +135,7 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={!!errors["topics"]}>
-          <FormLabel color="light.100">Category</FormLabel>
+          <FormLabel color="dark.100">Category</FormLabel>
           <Controller
             name="topics"
             control={control}
