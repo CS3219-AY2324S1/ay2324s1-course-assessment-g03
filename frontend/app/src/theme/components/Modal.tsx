@@ -6,9 +6,9 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const baseStyle = definePartsStyle({
   dialog: {
-    bg: "dark.950",
+    bg: "dark.900",
     border: "1px",
-    borderColor: "dark.800",
+    borderColor: "dark.700",
   },
   header: {
     color: "dark.100",

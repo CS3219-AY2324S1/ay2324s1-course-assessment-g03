@@ -5,9 +5,9 @@ const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(parts.keys);
 
 const outline = {
   list: {
-    bg: "dark.950",
+    bg: "dark.900",
     border: "1px",
-    borderColor: "dark.800",
+    borderColor: "dark.700",
     p: 1,
     shadow: "sm",
     minW: 36,
@@ -21,7 +21,7 @@ const outline = {
     py: 2,
     transitionProperty: "common",
     transitionDuration: "normal",
-    _hover: { bg: "dark.800" },
+    _hover: { bg: "dark.700" },
   },
   groupTitle: {
     color: "dark.300",

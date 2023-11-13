@@ -8,6 +8,7 @@ import {
   AlertIcon,
   AlertTitle,
   HStack,
+  VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +45,7 @@ function HomePage() {
         onClose={onClose}
         title="Session in Progress"
         description="Please end your current session before starting a new one."
-      ></CustomModal>
+      />
       <Page
         display="flex"
         flexDir="column"
@@ -53,12 +54,26 @@ function HomePage() {
         gap={8}
       >
         {roomId && (
-          <Alert borderRadius={32} w="2xl" colorScheme="light">
-            <AlertIcon />
-            <AlertTitle>You have an existing session!</AlertTitle>
-            <AlertDescription>
-              End the previous session before creating a new one.
-            </AlertDescription>
+          <Alert
+            bg="transparent"
+            border="1px"
+            borderColor="primary.500"
+            borderRadius="full"
+            color="dark.100"
+            gap={4}
+            py={4}
+            px={8}
+            w="xl"
+          >
+            <AlertIcon color="primary.500" />
+            <VStack alignItems="start" spacing={0}>
+              <AlertTitle fontWeight="medium">
+                You have an existing session!
+              </AlertTitle>
+              <AlertDescription fontSize="sm">
+                End the previous session before creating a new one.
+              </AlertDescription>
+            </VStack>
           </Alert>
         )}
         <HStack gap={8} w="xl">

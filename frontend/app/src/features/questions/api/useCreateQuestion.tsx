@@ -31,16 +31,5 @@ export const useCreateQuestion = () => {
         ),
       });
     },
-    onError: (err: Error) => {
-      toast({
-        render: ({ onClose }) => (
-          <Toast
-            status="error"
-            message={`Error creating question: ${err.message}`}
-            onClose={onClose}
-          />
-        ),
-      });
-    },
   });
 };

@@ -8,7 +8,7 @@ import { useState } from "react";
 interface InfoBarProps {
   difficulty: DifficultyType[];
   topic: string[];
-  users: { id: string; connected: boolean }[];
+  users: { id: number; connected: boolean }[];
   showCopyLink: boolean;
   copyLinkCallback: () => void;
 }
@@ -40,7 +40,7 @@ export const InfoBar = ({
           <TopicBadge key={t} topic={t} />
         ))}
       </HStack>
-      <HStack gap={6}>
+      <HStack gap={4}>
         {users.map(user => (
           <RoomUserInfo key={user.id} user={user} />
         ))}

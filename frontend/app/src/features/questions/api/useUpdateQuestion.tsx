@@ -49,18 +49,6 @@ export const useUpdateQuestion = () => {
 
       return { prevData };
     },
-    onError: (err: Error, _vars, context) => {
-      toast({
-        render: ({ onClose }) => (
-          <Toast
-            status="error"
-            message={`Error updating question: ${err.message}`}
-            onClose={onClose}
-          />
-        ),
-      });
-      queryClient.setQueryData(queryKey, context?.prevData);
-    },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
     },

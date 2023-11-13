@@ -8,6 +8,7 @@ import {
   Spinner,
   useToast,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 import { DragHandleIcon } from "@chakra-ui/icons";
 import io, { Socket } from "socket.io-client";
@@ -36,7 +37,7 @@ interface CollaboratorProps {
   difficulty: DifficultyType[];
   questionId?: number;
   language: LanguageKeyType;
-  users: { id: string; connected: boolean }[];
+  users: { id: number; connected: boolean }[];
 }
 
 export const Collaborator = ({
@@ -56,7 +57,8 @@ export const Collaborator = ({
   // Lifted state from `CodeEditor` component
   const [doc, setDoc] = useState<string | null>(null);
   const toast = useToast();
-  const { mutate: markAsComplete } = usePostSubmission();
+  const { mutate: markAsComplete, isLoading: isPostSubmissionLoading } =
+    usePostSubmission();
   const { mutate: leaveRoom } = usePostLeaveRoom();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -195,6 +197,7 @@ export const Collaborator = ({
             setActiveQuestionId(Number(e?.value ?? 0));
             socket.emit(SOCKET_API_ENDPOINT.CHANGE_QUESTION, e?.value ?? 0);
           }}
+          width={72}
         />
         <Dropdown
           size="sm"
@@ -240,10 +243,10 @@ export const Collaborator = ({
       <Box
         w={4}
         height="100%"
-        bg="dark.700"
+        bg="dark.800"
         cursor="col-resize"
         _hover={{
-          bg: "dark.600",
+          bg: "dark.700",
         }}
         transition="background 0.2s"
         onMouseDown={startResizing}
@@ -251,7 +254,7 @@ export const Collaborator = ({
         alignItems="center"
         borderRadius={4}
       >
-        <DragHandleIcon color="dark.300" />
+        <DragHandleIcon color="dark.500" />
       </Box>
       <VStack
         align="left"
@@ -288,7 +291,7 @@ export const Collaborator = ({
     <>
       <CustomAlert
         title="Leave Room"
-        description="Are you sure? You can rejoin via the same link"
+        description="Are you sure? You can rejoin via the same link."
         confirmButtonText="Leave"
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -304,28 +307,23 @@ export const Collaborator = ({
           bottom={0}
           left={0}
           w="full"
-          background="light.500"
+          background="dark.900"
           p={4}
           boxShadow="0 0 12px rgba(0,0,0,.4)"
         >
-          <CustomButton
-            bg="dark.600"
-            _hover={{ bgColor: "dark.700" }}
-            onClick={() => setRenderQuestion(!renderQuestion)}
-          >
+          <Button onClick={() => setRenderQuestion(!renderQuestion)}>
             {renderQuestion ? "Hide" : "Show"} Question
-          </CustomButton>
-          <HStack gap={3}>
-            <CustomButton onClick={handleMarkAsComplete}>
+          </Button>
+          <HStack gap={4}>
+            <CustomButton
+              onClick={handleMarkAsComplete}
+              isLoading={isPostSubmissionLoading}
+            >
               Mark as complete
             </CustomButton>
-            <CustomButton
-              onClick={() => onOpen()}
-              colorScheme="red"
-              _hover={{ bgColor: "red.800" }}
-            >
+            <Button variant="outlineWarning" onClick={() => onOpen()}>
               Leave Room
-            </CustomButton>
+            </Button>
           </HStack>
         </HStack>
       </VStack>

@@ -9,16 +9,17 @@ interface ToastProps {
 
 export const Toast = ({ status, message, onClose }: ToastProps) => (
   <HStack
-    bg="dark.950"
+    bg="dark.900"
     border="1px"
     borderRadius="md"
     borderColor={`${status === "success" ? "green" : "red"}.900`}
-    color={`${status === "success" ? "green" : "red"}.600`}
+    color={`${status === "success" ? "green" : "red"}.500`}
     justifyContent="space-between"
     p={2}
+    shadow="xl"
   >
     <Icon as={status === "success" ? PiCheckCircleBold : PiXCircleBold} />
-    <Text color={`${status === "success" ? "green" : "red"}.600`} fontSize="sm">
+    <Text color="dark.100" fontSize="sm">
       {message}
     </Text>
     <IconButton

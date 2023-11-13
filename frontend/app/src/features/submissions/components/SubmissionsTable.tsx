@@ -1,104 +1,120 @@
-import { useMemo } from "react";
+import { useAuth } from "@/hooks";
+import { Submission } from "@/types/submission";
 import {
+  SortingState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
+  Avatar,
+  Box,
+  Button,
   HStack,
   IconButton,
+  Table,
   TableContainer,
+  Tbody,
   Td,
   Text,
-  Tag,
-  Box,
-  Skeleton,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { Question } from "@/types/question";
 import {
+  PiCodeBold,
   PiListBold,
   PiSortAscendingBold,
   PiSortDescendingBold,
 } from "react-icons/pi";
-import QuestionsActionsMenu from "./QuestionsActionsMenu";
-import { useQuestions } from "./QuestionsOutlet";
-import { DEFAULT_SORTING_STATE } from "../constants";
-import { useNavigate } from "react-router-dom";
+import SubmissionsCodeModal from "./SubmissionsCodeModal";
+import { LANGUAGES, SUBMISSIONS_DEFAULT_SORTING_STATE } from "../constants";
 
-const columnHelper = createColumnHelper<Question>();
+const columnHelper = createColumnHelper<Submission>();
 
-const QuestionsTable = () => {
-  const { sorting, setSorting, data, refetch, isLoading, setCurrQn } =
-    useQuestions();
-  const navigate = useNavigate();
+interface SubmissionsTableProps {
+  submissions: Submission[];
+}
+
+const SubmissionsTable = ({ submissions }: SubmissionsTableProps) => {
+  const { data } = useAuth();
+  const {
+    isOpen: isCodeModalOpen,
+    onOpen: onCodeModalOpen,
+    onClose: onCodeModalClose,
+  } = useDisclosure();
+  const [currCode, setCurrCode] = useState("");
+  const [sorting, setSorting] = useState<SortingState>(
+    SUBMISSIONS_DEFAULT_SORTING_STATE,
+  );
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("id", {
-        header: "ID",
+      columnHelper.accessor("questionId", {
+        header: "Question ID",
         cell: info => <Text w={8}>{info.getValue()}</Text>,
       }),
-      columnHelper.accessor("title", {
-        header: "Title",
-        cell: info => <Text fontWeight="medium">{info.getValue()}</Text>,
-        size: Number.MAX_SAFE_INTEGER,
-      }),
-      columnHelper.accessor("category", {
-        header: "Category",
-        cell: info => <Text w={20}>{info.getValue()}</Text>,
-      }),
-      columnHelper.accessor("difficulty", {
-        header: "Difficulty",
+      // columnHelper.accessor("title", {
+      //   header: "Title",
+      //   cell: info => <Text fontWeight="medium">{info.getValue()}</Text>,
+      //   size: Number.MAX_SAFE_INTEGER,
+      // }),
+      columnHelper.accessor("createdAt", {
+        header: "Attempted At",
         cell: info => (
-          <Tag
-            variant={
-              info.getValue() === "Easy"
-                ? "green"
-                : info.getValue() === "Medium"
-                ? "yellow"
-                : "red"
-            }
-          >
-            {info.getValue()}
-          </Tag>
+          <Text>
+            {new Date(info.getValue()).toLocaleString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
+          </Text>
         ),
       }),
-      columnHelper.accessor("paid_only", {
-        header: "Status",
-        cell: info => (
-          <Tag variant={info.getValue() ? "red" : "green"} borderRadius="full">
-            {info.getValue() ? "Paid Only" : "Free"}
-          </Tag>
-        ),
+      columnHelper.accessor("users", {
+        header: "Attempted With",
+        cell: info =>
+          info
+            .getValue()
+            ?.filter(user => user.id !== data?.user.id)
+            ?.map(user => (
+              <VStack spacing={0} p={2} alignItems="start">
+                {user.name && <Text fontSize="sm">{user.name}</Text>}
+                {user.email && (
+                  <Text fontSize="sm" color="dark.300">
+                    {user.email}
+                  </Text>
+                )}
+              </VStack>
+            )),
       }),
-      columnHelper.accessor("topic_tags", {
-        header: "Topics",
+      columnHelper.accessor("lang", {
+        header: "Language",
         cell: info => (
-          <HStack w={96}>
-            {Array.isArray(info.getValue())
-              ? info
-                  .getValue()
-                  ?.slice(0, 2)
-                  .map(topic => <Tag key={topic}>{topic}</Tag>)
-              : null}
-            {info.getValue()?.length > 3 ? (
-              <Text color="dark.300" fontSize="xs">
-                & {info.getValue().length - 2} more...
-              </Text>
-            ) : null}
-          </HStack>
+          <Text>{LANGUAGES[info.getValue()] || info.getValue()}</Text>
         ),
-        enableSorting: false,
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <QuestionsActionsMenu row={row} />,
+        cell: ({ row }) => (
+          <Button
+            leftIcon={<PiCodeBold />}
+            onClick={() => {
+              setCurrCode(row.original.code);
+              onCodeModalOpen();
+            }}
+          >
+            View Code
+          </Button>
+        ),
       }),
     ],
     [],
@@ -106,35 +122,18 @@ const QuestionsTable = () => {
 
   const table = useReactTable({
     initialState: {
-      sorting: DEFAULT_SORTING_STATE,
+      sorting: SUBMISSIONS_DEFAULT_SORTING_STATE,
     },
-    data: data?.data.questions,
+    data: submissions,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    pageCount: data?.data?.pagination?.total_pages || -1,
-    manualSorting: true,
     enableSortingRemoval: false,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
     },
-    onSortingChange: async sorting => {
-      await setSorting(sorting);
-      refetch();
-    },
+    onSortingChange: setSorting,
   });
-
-  if (isLoading) {
-    return (
-      <Skeleton
-        h="628px"
-        w="full"
-        startColor="dark.900"
-        endColor="dark.700"
-        borderRadius="md"
-      />
-    );
-  }
 
   return (
     <>
@@ -217,7 +216,7 @@ const QuestionsTable = () => {
           <Tbody>
             {table.getRowModel().rows.length === 0 && (
               <Tr p={4} display="flex">
-                <Text fontSize="sm"> No questions found.</Text>
+                <Text fontSize="sm"> No submissions yet.</Text>
               </Tr>
             )}
             {table.getRowModel().rows.map(row => (
@@ -231,15 +230,7 @@ const QuestionsTable = () => {
                 }}
               >
                 {row.getVisibleCells().map(cell => (
-                  <Td
-                    key={cell.id}
-                    onClick={() => {
-                      if (cell.column.id !== "actions") {
-                        setCurrQn(row.original);
-                        navigate(`${row.original.id}`);
-                      }
-                    }}
-                  >
+                  <Td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Td>
                 ))}
@@ -248,8 +239,13 @@ const QuestionsTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
+      <SubmissionsCodeModal
+        code={currCode}
+        isOpen={isCodeModalOpen}
+        onClose={onCodeModalClose}
+      />
     </>
   );
 };
 
-export default QuestionsTable;
+export default SubmissionsTable;

@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { HTTP_STATUS } from "./http";
 import { userSchema } from "./user";
+import { submissionSchema } from "./submission";
 
 export const getUserSchema = z.union([
   z.object({
     status: z.literal(HTTP_STATUS.SUCCESS),
     data: z.object({
-      user: userSchema,
+      user: userSchema.extend({
+        submissions: z.array(submissionSchema),
+      }),
     }),
   }),
   z.object({

@@ -115,7 +115,7 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
           Select question preferences
         </Text>
         <FormControl isInvalid={!!errors["difficulties"]}>
-          <FormLabel color="light.100">Difficulty</FormLabel>
+          <FormLabel color="dark.100">Difficulty</FormLabel>
           <Controller
             name="difficulties"
             control={control}
@@ -135,7 +135,7 @@ export const SelectPreferencesCard = React.memo(({ joinCallback }: Props) => {
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={!!errors["topics"]}>
-          <FormLabel color="light.100">Category</FormLabel>
+          <FormLabel color="dark.100">Category</FormLabel>
           <Controller
             name="topics"
             control={control}

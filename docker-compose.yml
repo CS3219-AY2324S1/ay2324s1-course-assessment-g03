@@ -31,9 +31,6 @@ services:
     volumes:
       - ./backend/user-service/app:/app:delegated
       - /app/node_modules
-    # depends_on:
-    #   user-service-db:
-    #     condition: service_healthy
     ports:
       - "8002:80"
 
@@ -71,7 +68,7 @@ services:
       - /app/node_modules
     ports:
       - "8005:80"
-  
+
   communication-service:
     container_name: communication-service
     build:
@@ -82,34 +79,6 @@ services:
       - /app/node_modules
     ports:
       - "8006:80"
-
-  # user-service-db:
-  #   container_name: user-service-db
-  #   build:
-  #     context: ./backend/user-service/db
-  #     dockerfile: Dockerfile.dev
-  #   restart: always
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: prisma
-  #     MONGO_REPLICA_HOST: 127.0.0.1
-  #     MONGO_REPLICA_PORT: 27018
-  #   ports:
-  #     - 27018:27018
-  #   healthcheck:
-  #     test:
-  #       [
-  #         "CMD",
-  #         "mongo",
-  #         "admin",
-  #         "--port",
-  #         "27018",
-  #         "--eval",
-  #         "db.adminCommand('ping')",
-  #       ]
-  #     interval: 5s
-  #     timeout: 2s
-  #     retries: 20
 
   question-service-db:
     container_name: question-service-db

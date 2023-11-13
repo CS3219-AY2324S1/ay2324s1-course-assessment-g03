@@ -14,13 +14,19 @@ interface DropdownProps {
   options: Option[];
   placeholder?: string;
   value?: any;
-  onChangeHandler?: ((newValue: SingleValue<{
-    label: string;
-    value: any;
-  }>, actionMeta: ActionMeta<{
-    label: string;
-    value: any;
-  }>) => void) | undefined
+  onChangeHandler?:
+    | ((
+        newValue: SingleValue<{
+          label: string;
+          value: any;
+        }>,
+        actionMeta: ActionMeta<{
+          label: string;
+          value: any;
+        }>,
+      ) => void)
+    | undefined;
+  width?: number;
 }
 
 export const Dropdown = ({
@@ -29,11 +35,14 @@ export const Dropdown = ({
   options,
   placeholder,
   value,
-  onChangeHandler
+  onChangeHandler,
+  width,
 }: DropdownProps) => {
   return (
-    <VStack align="left">
-      <Text textStyle="text-sm" fontWeight="bold">{title}</Text>
+    <VStack align="left" width={width}>
+      <Text fontSize="sm" fontWeight="medium">
+        {title}
+      </Text>
       <Select
         // @ts-expect-error Issue with chakra-react-select types (https://github.com/csandman/chakra-react-select/issues/273)
         chakraStyles={singleSelectStyles(size)}
@@ -43,9 +52,11 @@ export const Dropdown = ({
           value,
         }))}
         onChange={onChangeHandler ?? undefined}
-        value={options.find((option) => {
-          return option.value === value
-        }) ?? undefined}
+        value={
+          options.find(option => {
+            return option.value === value;
+          }) ?? undefined
+        }
       />
     </VStack>
   );

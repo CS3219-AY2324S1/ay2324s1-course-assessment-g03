@@ -41,7 +41,6 @@ const QuestionDetails = () => {
             {currQn.paid_only ? "Paid Only" : "Free"}
           </Tag>
         </HStack>
-        <Divider color="dark.800" />
         <HStack spacing={4}>
           <Text fontSize="sm" fontWeight="medium" color="dark.300">
             Category
@@ -89,43 +88,52 @@ const QuestionDetails = () => {
           </Text>
           {currQn.updated_at && (
             <Text fontSize="sm">
-              {new Date(currQn.updated_at).toUTCString()}
+              {new Date(currQn.updated_at).toLocaleString()}
             </Text>
           )}
         </HStack>
-        <Divider color="dark.800" />
         <Text fontSize="sm" fontWeight="medium" color="dark.300">
           Description
         </Text>
-        <Text fontSize="sm">{currQn.description}</Text>
-        <Text fontSize="sm" fontWeight="medium" color="dark.300">
-          Languages
-        </Text>
+        {currQn.languages && (
+          <>
+            <Text fontSize="sm">{currQn.description}</Text>
+            <Text fontSize="sm" fontWeight="medium" color="dark.300">
+              Languages
+            </Text>
+            <Wrap>
+              {currQn.languages.map(language => (
+                <Tag>{language}</Tag>
+              ))}
+            </Wrap>
+          </>
+        )}
         {/* <Text fontSize="sm" fontWeight="medium" color="dark.300">
           Code Snippets
         </Text>
         {currQn.code_snippets?.map(snippet => (
           <Text fontSize="sm">{snippet.code}</Text>
         ))} */}
-        <Wrap>
-          {currQn.languages?.map(language => (
-            <Tag variant="outline">{language}</Tag>
-          ))}
-        </Wrap>
-        <HStack spacing={4}>
-          <Text fontSize="sm" fontWeight="medium" color="dark.300">
-            Testcases
-          </Text>
-          {currQn.test_cases?.map(testcase => (
-            <Text fontSize="sm">{testcase}</Text>
-          ))}
-        </HStack>
-        <VStack spacing={4} align="start">
-          <Text fontSize="sm" fontWeight="medium" color="dark.300">
-            Hints
-          </Text>
-          {currQn.hints?.map(hint => <Text fontSize="sm">{hint}</Text>)}
-        </VStack>
+        {currQn.test_cases && (
+          <HStack spacing={4}>
+            <Text fontSize="sm" fontWeight="medium" color="dark.300">
+              Testcases
+            </Text>
+            {currQn.test_cases?.map(testcase => (
+              <Text fontSize="sm">{testcase}</Text>
+            ))}
+          </HStack>
+        )}
+        {currQn.hints && (
+          <VStack spacing={4} align="start">
+            <Text fontSize="sm" fontWeight="medium" color="dark.300">
+              Hints
+            </Text>
+            {currQn.hints.map(hint => (
+              <Text fontSize="sm">{hint}</Text>
+            ))}
+          </VStack>
+        )}
       </>
     )
   );

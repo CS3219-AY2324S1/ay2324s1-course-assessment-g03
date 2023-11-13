@@ -8,6 +8,7 @@ import { API_ENDPOINT } from "@/constants/api";
 import { User } from "@/types/user";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "@/constants/route";
+import { Toast } from "@/components/Toast";
 
 const postLeaveRoomResponseSchema = makeSuccessResponseSchema(
   z.object({
@@ -51,12 +52,16 @@ export const usePostLeaveRoom = () => {
 
   return useMutation(() => postLeaveRoom(roomId, userId), {
     onSuccess: () => {
-      navigate(ROUTE.HOME);
       toast({
-        status: "success",
-        title: "You have left the room.",
-        isClosable: true,
+        render: ({ onClose }) => (
+          <Toast
+            status="success"
+            message="You have left the room."
+            onClose={onClose}
+          />
+        ),
       });
+      navigate(ROUTE.HOME);
     },
   });
 };

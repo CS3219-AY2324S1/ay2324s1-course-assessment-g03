@@ -95,7 +95,7 @@ const QuestionsFilters = () => {
               ))}
             </Box>
             <ButtonGroup
-              borderColor="dark.800"
+              borderColor="dark.700"
               borderTop="1px"
               p={2}
               w="full"

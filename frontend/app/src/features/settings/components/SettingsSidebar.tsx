@@ -3,25 +3,31 @@ import { TABS } from "../constants/tabs";
 
 export const SettingsSidebar = () => {
   return (
-    <TabList height="100%" alignItems="start" borderColor="dark.950">
+    <TabList height="100%" alignItems="start" borderColor="dark.900">
       {TABS.map(({ label }) => {
-        const isDelete = label === "Delete account";
+        const isDelete = label === "Delete Account";
 
         return (
           <Tab
-            color="light.300"
-            borderColor="light.300"
+            key={label}
+            color="dark.300"
+            borderColor="dark.300"
             _selected={{
-              color: isDelete ? "red.400" : "light.50",
-              borderColor: isDelete ? "red.400" : "light.50",
+              color: isDelete ? "red.400" : "dark.100",
+              borderColor: isDelete ? "red.400" : "dark.100",
+            }}
+            _active={{
+              color: isDelete ? "red.400" : "dark.100",
+              borderColor: isDelete ? "red.400" : "dark.100",
             }}
             _hover={{
-              color: isDelete ? "red.400" : "light.50",
-              borderColor: isDelete ? "red.400" : "light.50",
+              color: isDelete ? "red.400" : "dark.100",
+              borderColor: isDelete ? "red.400" : "dark.100",
             }}
             width="full"
             justifyContent="start"
             mt={isDelete ? "auto" : undefined}
+            fontSize="sm"
           >
             {label}
           </Tab>
