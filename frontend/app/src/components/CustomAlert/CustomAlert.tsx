@@ -33,18 +33,19 @@ export const CustomAlert = ({
       isOpen={isOpen}
       leastDestructiveRef={leastDestructiveRef}
       onClose={onClose}
+      isCentered
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+          <AlertDialogHeader fontSize="lg" fontWeight="medium">
             {title}
           </AlertDialogHeader>
           <AlertDialogBody>{description}</AlertDialogBody>
           <AlertDialogFooter>
             {!disableCancel && <Button onClick={onClose}>Cancel</Button>}
-            <CustomButton colorScheme="primary" onClick={onConfirm} ml={3}>
+            <Button ml={2} onClick={onConfirm} variant="outlineWarning">
               {confirmButtonText}
-            </CustomButton>
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialogOverlay>

@@ -20,12 +20,10 @@ export const RoomUserInfo = ({ user }: RoomUserInfoProps) => {
   const { name, avatarUrl, email } = data.data.user;
 
   return (
-    <HStack gap={4}>
-      <Avatar name={name} src={avatarUrl} />
+    <HStack gap={2}>
+      <Avatar name={name} src={avatarUrl} size="sm" />
       <VStack alignItems="start" spacing={0}>
-        <Text fontWeight="medium" fontSize="sm">
-          {name ?? email}
-        </Text>
+        <Text fontSize="sm">{name ?? email}</Text>
       </VStack>
     </HStack>
   );

@@ -240,7 +240,7 @@ export const Collaborator = ({
         <QuestionDetails questionId={activeQuestionId} />
       </VStack>
       <Box
-        w={1}
+        w={4}
         height="100%"
         bg="dark.800"
         cursor="col-resize"
@@ -253,7 +253,7 @@ export const Collaborator = ({
         alignItems="center"
         borderRadius={4}
       >
-        <DragHandleIcon color="dark.300" />
+        <DragHandleIcon color="dark.500" />
       </Box>
       <VStack
         align="left"
@@ -290,7 +290,7 @@ export const Collaborator = ({
     <>
       <CustomAlert
         title="Leave Room"
-        description="Are you sure? You can rejoin via the same link"
+        description="Are you sure? You can rejoin via the same link."
         confirmButtonText="Leave"
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
