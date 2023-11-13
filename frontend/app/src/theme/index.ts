@@ -10,7 +10,9 @@ import {
   Link,
   Input,
   Textarea,
+  Popover,
 } from "./components";
+import { pulse } from "./animations";
 
 export const theme = extendTheme({
   components: {
@@ -25,6 +27,7 @@ export const theme = extendTheme({
     Input,
     Textarea,
     FormControl,
+    Popover,
   },
   colors,
   textStyles,
@@ -36,7 +39,11 @@ export const theme = extendTheme({
       },
     },
   },
+  animations: {
+    pulse,
+  },
 });
 
 export * from "./Toast";
 export * from "./ChakraReactSelect";
+export * from "./animations";

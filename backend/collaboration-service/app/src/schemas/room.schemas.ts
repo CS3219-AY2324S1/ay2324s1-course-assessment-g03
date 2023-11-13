@@ -1,10 +1,10 @@
 import { z } from "zod"
-import { DIFFICULTY, TOPIC_TAG } from "../constants/question"
+import { DIFFICULTY } from "../constants/question"
 
 export const postRoomRequestSchema = z.object({
     body: z.object({
         difficulty: z.array(z.nativeEnum(DIFFICULTY)),
-        topic: z.array(z.nativeEnum(TOPIC_TAG))
+        topic: z.array(z.string())
     })
 })
 
@@ -17,5 +17,12 @@ export const getOneRoomByUserIdSchema = z.object({
 export const getOneRoomByIdSchema = z.object({
     params: z.object({
         roomId: z.string()
+    })
+})
+
+export const deleteOneRoomByUserIdSchema = z.object({
+    params: z.object({
+        roomId: z.string(),
+        userId: z.string()
     })
 })

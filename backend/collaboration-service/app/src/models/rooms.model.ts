@@ -6,10 +6,10 @@ import { HttpStatus } from "../utils/HTTP_Status_Codes"
 import { JSEND_STATUS } from "../types/models.type"
 import { DEFAULT_LANGUAGE, LanguageKeyType } from "../constants/language";
 import { v4 } from "uuid";
-import { DifficultyType, TopicType } from "../constants/question";
+import { DifficultyType } from "../constants/question";
 
 export const createOneRoom = (difficulty: DifficultyType[],
-    topic: TopicType[]) => {
+    topic: string[]) => {
 
     const roomId = v4()
 
@@ -153,6 +153,7 @@ export const joinOneRoom = (roomId: string, userId: string) => {
     }
 
     users.set(userId, { id: userId, connected: true })
+    console.log(users)
 
     return {
         status: JSEND_STATUS.SUCCESS,
@@ -163,7 +164,7 @@ export const joinOneRoom = (roomId: string, userId: string) => {
     }
 }
 
-export const leaveOneRoom = (roomId: string, userId: string) => {
+export const disconnectOneUserFromRoom = (roomId: string, userId: string) => {
     if (!(roomId in rooms)) {
         return {
             status: JSEND_STATUS.FAILURE,
@@ -190,6 +191,35 @@ export const leaveOneRoom = (roomId: string, userId: string) => {
         data: {
             user: { id: userId, connected: false }
         }
+    }
+}
+
+export const leaveOneRoom = (roomId: string, userId: string) => {
+    if (!(roomId in rooms)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { roomId: "Room not found" }
+        }
+    }
+
+    const users = rooms[roomId].users
+
+    if (!users.has(userId)) {
+        return {
+            status: JSEND_STATUS.FAILURE,
+            code: HttpStatus.NOT_FOUND,
+            data: { userId: "User not found" }
+        }
+    }
+
+    users.delete(userId)
+    rooms[roomId].userOrder.splice(rooms[roomId].userOrder.indexOf(userId), 1)
+
+    return {
+        status: "success",
+        code: HttpStatus.OK,
+        data: { userId, roomId }
     }
 }
 

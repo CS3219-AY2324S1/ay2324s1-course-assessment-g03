@@ -1,7 +1,7 @@
 import { Update } from "@codemirror/collab";
 import { Text } from "@codemirror/state"
 import { LANGUAGES } from "../../constants/language";
-import { DifficultyType, TopicType } from "../../constants/question";
+import { DifficultyType } from "../../constants/question";
 
 export type User = {
     id: string;
@@ -17,7 +17,7 @@ export type Room = {
     users: Map<string, User>;
     userOrder: string[];
     difficulty: DifficultyType[];
-    topic: TopicType[];
+    topic: string[];
     language: keyof typeof LANGUAGES;
     open: boolean;
     questionId?: number;
