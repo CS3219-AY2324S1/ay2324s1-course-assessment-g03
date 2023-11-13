@@ -60,8 +60,12 @@ export const Navbar = ({ isBorderless }: NavbarProps) => {
                     key={tab.name}
                     as={RouterLink}
                     to={tab.href}
-                    color={tab.href === pathname ? "dark.100" : "dark.300"}
-                    backgroundColor={tab.href === pathname ? "dark.900" : ""}
+                    color={
+                      pathname.includes(tab.href) ? "dark.100" : "dark.300"
+                    }
+                    backgroundColor={
+                      pathname.includes(tab.href) ? "dark.900" : ""
+                    }
                     px={4}
                     py={1.5}
                     borderRadius="full"

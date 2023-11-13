@@ -1,5 +1,5 @@
 import { API_ENDPOINT } from "@/constants/api";
-import { DifficultyType, TopicTagType } from "@/constants/question";
+import { DifficultyType } from "@/constants/question";
 import { makeSuccessResponseSchema } from "@/lib/api";
 import { backendApi } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -20,7 +20,7 @@ const getQuestionOptionsResponseSchema = makeSuccessResponseSchema(
 
 const getQuestionOptions = async (
   difficulty: DifficultyType[],
-  topic: TopicTagType[],
+  topic: string[],
 ) => {
   const { data } = await backendApi.get(`${API_ENDPOINT.QUESTIONS}`, {
     params: {
@@ -33,7 +33,7 @@ const getQuestionOptions = async (
 
 export const useGetQuestionOptions = (
   difficulty: DifficultyType[],
-  topic: TopicTagType[],
+  topic: string[],
 ) => {
   return useQuery({
     queryKey: [GET_QUESTION_OPTIONS_KEY],

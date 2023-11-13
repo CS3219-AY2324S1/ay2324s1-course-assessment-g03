@@ -1,0 +1,34 @@
+name: Communication Service Pulumi Update
+on:
+  push:
+    branches: ["master"]
+    paths: ["backend/communication-service/**"]
+env:
+  WORKING_DIRECTORY_INFRA: ./backend/communication-service/infra
+  STACK_NAME: ${{ github.ref == 'refs/heads/master' && 'cs3219/communication-service-infra/prod' || 'cs3219/communication-service-infra/staging'}}
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY_INFRA }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 16.15.0
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: npm install
+      - uses: pulumi/actions@v3
+        with:
+          work-dir: ${{ env.WORKING_DIRECTORY_INFRA }}
+          command: up
+          stack-name: ${{ env.STACK_NAME }}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}

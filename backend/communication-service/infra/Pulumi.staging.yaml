@@ -1,0 +1,14 @@
+config:
+  communication-service-infra:acmEcsCertificateArn:
+    secure: AAABACQcA9ygW/7ZIzrTaUwqFnqeCklpwNjDVOxLOpVmCGtQY+tY/wfBk2aha583miDwB8keqRFgbUZDwXCKYBm6TeZ90ya4aGWESh4pe7bWgidtPQ7X4uz+yM6TPZUPcP6wW2CdC7ReILB+i1oD0X71NGonf4XU
+  communication-service-infra:apiGatewayAuthSecret:
+    secure: AAABADDs5cPXQXn8EzHkO6fUzmQhqTpd+EIgBF1h6E/ACaFXG9HPuDgo6vd8IKJJsSd85IBZn/U0akQSvRrNmW2a2LKODhdyty9q7gIwLBzElqv+7PLpYyoWVJvE1sGeuE2ymVFfRoCyg1dmzmQ2L196AM0WQlO6Rw+PUHRLS7l4DUbWfM1X+Ra6OzF6EMN2bRC3iwHr31OA07ptao2oxbqVlZKGKdOaMOXRzL52fEXDqbJDxG6lA0wXewLd3FxW
+  communication-service-infra:hostedZoneId:
+    secure: AAABAH/KNJf7PxpqNQMLt+Qok1OCHLSJeVOVnq5vYYvn/gIpgr4mcxA93yeZpLmV58Io+A==
+  aws:region: ap-southeast-1
+  communication-service-infra:containerPort: "80"
+  communication-service-infra:cpu: "256"
+  communication-service-infra:memory: "128"
+  communication-service-infra:path: ../app
+  communication-service-infra:rootDomain: peerprep.net
+  communication-service-infra:subdomain: communication.staging.

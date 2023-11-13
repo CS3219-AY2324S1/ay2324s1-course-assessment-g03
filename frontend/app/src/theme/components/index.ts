@@ -8,3 +8,4 @@ export * from "./Link";
 export * from "./Input";
 export * from "./Textarea";
 export * from "./FormControl";
+export * from "./Popover";

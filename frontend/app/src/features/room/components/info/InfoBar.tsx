@@ -1,13 +1,13 @@
 import { HStack } from "@chakra-ui/react";
 import { DifficultyBadge, TopicBadge } from "@/features/room";
-import { DifficultyType, TopicTagType } from "@/constants/question";
+import { DifficultyType } from "@/constants/question";
 import { RoomUserInfo } from "./RoomUserInfo";
 import { CustomButton } from "@/components";
 import { useState } from "react";
 
 interface InfoBarProps {
   difficulty: DifficultyType[];
-  topic: TopicTagType[];
+  topic: string[];
   users: { id: number; connected: boolean }[];
   showCopyLink: boolean;
   copyLinkCallback: () => void;

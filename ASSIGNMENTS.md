@@ -38,7 +38,9 @@ Read this if you are evaluating our project for the CS3219 Assignments.
 
 ## Assignment 5
 
-- In progress
+- To evaluate this assignment, run the entire project with `docker compose up`
+- It is ideal to have two GitHub accounts running in separate windows, but having only one account in two tabs will work as well.
+- By clicking join on both windows, if the difficulties match and the topics selected are similar, the matching process will be initiated.
 
 ## Assignment 6
 

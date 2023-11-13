@@ -23,16 +23,9 @@ export const RoomUserInfo = ({ user }: RoomUserInfoProps) => {
     <HStack gap={4}>
       <Avatar name={name} src={avatarUrl} />
       <VStack alignItems="start" spacing={0}>
-        {name && (
-          <Text fontWeight="medium" fontSize="sm">
-            {name}
-          </Text>
-        )}
-        {email && (
-          <Text fontSize="sm" color="dark.300">
-            {email}
-          </Text>
-        )}
+        <Text fontWeight="medium" fontSize="sm">
+          {name ?? email}
+        </Text>
       </VStack>
     </HStack>
   );
