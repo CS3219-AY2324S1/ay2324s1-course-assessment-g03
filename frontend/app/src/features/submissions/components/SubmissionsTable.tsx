@@ -10,10 +10,8 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import {
-  Avatar,
   Box,
   Button,
-  HStack,
   IconButton,
   Table,
   TableContainer,

@@ -49,6 +49,7 @@ function RoomPage() {
           topic={topic}
           questionId={questionId}
           language={language}
+          //@ts-expect-error TODO: Fix typing (userId `string` or `number`)
           users={users}
         />
       ) : (

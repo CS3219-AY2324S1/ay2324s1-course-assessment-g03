@@ -6,7 +6,6 @@ import {
   HStack,
   Wrap,
   VStack,
-  Divider,
 } from "@chakra-ui/react";
 import { useQuestions } from "./QuestionsOutlet";
 import { useNavigate, useParams } from "react-router-dom";

@@ -11,7 +11,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { BiCog, BiLogOut, BiUser } from "react-icons/bi";
+import { BiCog, BiLogOut } from "react-icons/bi";
 
 type AvatarMenuProps = {
   user: User;
