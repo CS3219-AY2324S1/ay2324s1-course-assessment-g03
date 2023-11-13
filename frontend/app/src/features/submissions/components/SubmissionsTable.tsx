@@ -86,23 +86,14 @@ const SubmissionsTable = ({ submissions }: SubmissionsTableProps) => {
             .getValue()
             ?.filter(user => user.id !== data?.user.id)
             ?.map(user => (
-              <>
-                <HStack alignItems="center" gap={4} py={2}>
-                  <Avatar
-                    name={data?.user.name}
-                    src={data?.user.avatarUrl}
-                    size="sm"
-                  />
-                  <VStack spacing={0} alignItems="start">
-                    {user.name && <Text fontSize="sm">{user.name}</Text>}
-                    {user.email && (
-                      <Text fontSize="sm" color="dark.300">
-                        {user.email}
-                      </Text>
-                    )}
-                  </VStack>
-                </HStack>
-              </>
+              <VStack spacing={0} p={2} alignItems="start">
+                {user.name && <Text fontSize="sm">{user.name}</Text>}
+                {user.email && (
+                  <Text fontSize="sm" color="dark.300">
+                    {user.email}
+                  </Text>
+                )}
+              </VStack>
             )),
       }),
       columnHelper.accessor("lang", {

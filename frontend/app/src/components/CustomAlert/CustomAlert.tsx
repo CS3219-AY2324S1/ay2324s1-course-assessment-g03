@@ -43,9 +43,15 @@ export const CustomAlert = ({
           <AlertDialogBody>{description}</AlertDialogBody>
           <AlertDialogFooter>
             {!disableCancel && <Button onClick={onClose}>Cancel</Button>}
-            <Button ml={2} onClick={onConfirm} variant="outlineWarning">
-              {confirmButtonText}
-            </Button>
+            {title === "Leave Room" ? (
+              <Button ml={2} onClick={onConfirm} variant="outlineWarning">
+                {confirmButtonText}
+              </Button>
+            ) : (
+              <CustomButton ml={2} onClick={onConfirm}>
+                {confirmButtonText}
+              </CustomButton>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialogOverlay>
