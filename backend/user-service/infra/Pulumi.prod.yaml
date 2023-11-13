@@ -1,7 +1,7 @@
 config:
   aws:region: ap-southeast-1
   user-service-infra:DATABASE_URL:
-    secure: AAABAJWmgVC4M0hydup2IUzq6XzSpzpjShr5TS0XKPur+ODCPEMlk20GPE6rddYLXvZaRKonbrrgYnI3w++Mw80oDF/ei9MLL5VZh4ttBMX3+wu2lEkRMlQz7gn5uBXY0SyTC/sT+6kR+kWsyGhXGt6mfjXATyHTVo+yrpN/a82XCVHf9L4p4W1N6myk1WNnc7VzJUP2wV47TIQuzFEh
+    secure: AAABAOVb2p75vguLgK2Ylo0Tc92yC38HOthiXS8WYSRRi/lv0LJ17xQZtMPFP4gnI/j0XJ7Xtv8yuuia7UP+GVOjJGEV1nsWx3tGxE2HHUwHdxE8nV7dDH6t1MQWkQ6ImrK948nT8Shep+EvQ/e4Y+OpPg3PjjrkomZfTCNK7Bp+bUXls7tnXQ+7GE9hvoszutl1MRmZ2w2jnXluQK/N
   user-service-infra:acmEcsCertificateArn:
     secure: AAABABfVPz1lrxMIq0tHzvKSuWtgOfu2uUxyd0qP4uz0jS7PJjdMgBZIyGsSNywoi97kCh/L15W+sxpQPBOlmCWW0I40xxfYzUDIIkL30gJwoZSAzanNSBN8ii2dw3yCRrDnrDeC9xTxp3QteO4RPB+z6cZqzaXc
   user-service-infra:apiGatewayAuthSecret:
