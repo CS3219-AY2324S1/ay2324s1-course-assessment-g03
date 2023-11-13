@@ -16,7 +16,7 @@ const ChatInput = ({ socket }: ChatInputProps) => {
     e.preventDefault();
     if (inputMessage.trim()) {
       socket.emit(COMMUNICATION_SOCKET_API.CHAT_MESSAGE, {
-        userId: user?.id,
+        userId: user?.id.toString(),
         message: inputMessage,
       });
       setInputMessage("");

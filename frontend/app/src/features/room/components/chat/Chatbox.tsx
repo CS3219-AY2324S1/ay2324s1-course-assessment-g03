@@ -2,7 +2,7 @@ import { WEBSOCKET_PATH } from "@/constants/api";
 import { COMMUNICATION_SOCKET_API } from "@/constants/socket";
 import { useAuth } from "@/hooks";
 import { env } from "@/lib/env";
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, Spinner, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { User } from "@/types/user";
@@ -25,6 +25,7 @@ export const ChatBox = ({ roomId }: ChatBoxProps): JSX.Element => {
       setRoomId: state.setRoomId,
     })),
   );
+  const toast = useToast();
 
   useEffect(() => {
     if (!user?.id) return;
@@ -32,7 +33,7 @@ export const ChatBox = ({ roomId }: ChatBoxProps): JSX.Element => {
     const newSocket = io(`${env.VITE_BACKEND_URL}`, {
       path: WEBSOCKET_PATH.COMMUNICATION,
       withCredentials: true,
-      query: { ...user },
+      query: { ...user, roomId },
     });
 
     newSocket.on(
@@ -41,6 +42,14 @@ export const ChatBox = ({ roomId }: ChatBoxProps): JSX.Element => {
     );
 
     newSocket.on(COMMUNICATION_SOCKET_API.CHAT_MESSAGE_RESPONSE, addMessage);
+
+    newSocket.on(COMMUNICATION_SOCKET_API.ERROR, (error: string) => {
+      toast({
+        status: "error",
+        title: error,
+        isClosable: true,
+      });
+    });
 
     newSocket.emit(COMMUNICATION_SOCKET_API.GET_MESSAGES);
 
@@ -52,7 +61,7 @@ export const ChatBox = ({ roomId }: ChatBoxProps): JSX.Element => {
         newSocket.disconnect();
       }
     };
-  }, [addMessage, populateMessages, setRoomId, roomId, user, user?.id]);
+  }, [addMessage, populateMessages, setRoomId, roomId, user, user?.id, toast]);
 
   if (!socket) {
     return <Spinner />;

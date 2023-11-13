@@ -47,7 +47,7 @@ export const Messages = (): JSX.Element => {
             <UserMessage
               message={message}
               sender={sender}
-              isUser={sender.id === user.id}
+              isUser={sender.id.toString() === user.id.toString()}
               key={index}
             />
           </>
