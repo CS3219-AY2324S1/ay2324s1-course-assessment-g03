@@ -57,7 +57,8 @@ export const Collaborator = ({
   // Lifted state from `CodeEditor` component
   const [doc, setDoc] = useState<string | null>(null);
   const toast = useToast();
-  const { mutate: markAsComplete } = usePostSubmission();
+  const { mutate: markAsComplete, isLoading: isPostSubmissionLoading } =
+    usePostSubmission();
   const { mutate: leaveRoom } = usePostLeaveRoom();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -314,7 +315,10 @@ export const Collaborator = ({
             {renderQuestion ? "Hide" : "Show"} Question
           </Button>
           <HStack gap={4}>
-            <CustomButton onClick={handleMarkAsComplete}>
+            <CustomButton
+              onClick={handleMarkAsComplete}
+              isLoading={isPostSubmissionLoading}
+            >
               Mark as complete
             </CustomButton>
             <Button variant="outlineWarning" onClick={() => onOpen()}>

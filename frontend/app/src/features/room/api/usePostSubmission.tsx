@@ -7,6 +7,7 @@ import { makeSuccessResponseSchema } from "@/lib/api";
 import { API_ENDPOINT } from "@/constants/api";
 import { User } from "@/types/user";
 import { submissionSchema } from "@/types/submission";
+import { Toast } from "@/components/Toast";
 
 const postSubmissionRequestSchema = z.object({
   submission: z.object({
@@ -20,7 +21,7 @@ type PostSubmissionRequestType = z.infer<typeof postSubmissionRequestSchema>;
 
 const postSubmissionResponseSchema = makeSuccessResponseSchema(
   z.object({
-    submission: submissionSchema,
+    submission: submissionSchema.omit({ users: true }),
   }),
 );
 
@@ -51,17 +52,28 @@ export const usePostSubmission = () => {
 
   const userId = data?.user?.id;
 
-  return useMutation(
-    (body: PostSubmissionRequestType) => postSubmission(userId, body),
-    {
-      onSuccess: () => {
-        toast({
-          status: "success",
-          title:
-            "You code submission has been recorded in your profile history successfully",
-          isClosable: true,
-        });
-      },
+  return useMutation({
+    mutationFn: (body: PostSubmissionRequestType) =>
+      postSubmission(userId, {
+        ...body,
+        submission: {
+          ...body.submission,
+          otherUserId:
+            typeof body.submission.otherUserId === "string"
+              ? parseInt(body.submission.otherUserId)
+              : undefined,
+        },
+      }),
+    onSuccess: () => {
+      toast({
+        render: ({ onClose }) => (
+          <Toast
+            status="success"
+            message="Your code has been successfully saved to your profile history."
+            onClose={onClose}
+          />
+        ),
+      });
     },
-  );
+  });
 };
