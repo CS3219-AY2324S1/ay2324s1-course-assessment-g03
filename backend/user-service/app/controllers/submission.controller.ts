@@ -14,7 +14,7 @@ export const submissionController = {
       const parsedReq = submissionPostSchema.parse(req);
       const { otherUserId, ...data } = parsedReq.body.submission;
       const submission = await submissionService.create(
-        parsedReq.params.userId,
+        parseInt(parsedReq.params.userId),
         otherUserId,
         data
       );
@@ -32,7 +32,7 @@ export const submissionController = {
     try {
       const parsedReq = submissionDeleteSchema.parse(req);
       const submission = await submissionService.delete(
-        parsedReq.params.submissionId
+        parseInt(parsedReq.params.submissionId)
       );
       res.send(successApiResponse({ submission }));
     } catch (e) {

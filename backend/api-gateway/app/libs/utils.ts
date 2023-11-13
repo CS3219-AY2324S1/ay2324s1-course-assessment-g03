@@ -27,7 +27,7 @@ export const failApiResponse = (data: any) => {
 /**
  * JWT Utils
  */
-export const wrapJwt = (data: Record<string, string>) => {
+export const wrapJwt = (data: Record<string, string | number>) => {
   return jwt.sign(data, process.env.JWT_SECRET);
 };
 

@@ -11,12 +11,8 @@ export const envSchema = z.object({
     .enum(["development", "staging", "production"])
     .default("development"),
   PORT: z.string().default("80"),
-  DATABASE_URL: z
-    .string()
-    .url()
-    .default(
-      "mongodb://root:prisma@user-service-db:27018/users_db?authSource=admin&directConnection=true"
-    ),
+  DATABASE_URL: z.string().url(),
+
   /**
    * For CORS
    */

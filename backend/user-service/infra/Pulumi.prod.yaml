@@ -1,28 +1,17 @@
 config:
   aws:region: ap-southeast-1
   user-service-infra:DATABASE_URL:
-    secure: AAABAEnIbulpnE13GCElrlzBTgFxE2jfZH0MLx3qhWEXf4534k2yg9hO7MyJh+TbgUP/jGCKVPeWiPCturebRZCGWlO/CjbbM4F1l5d/RI04yKrGEgUBmhtohKKSf1cKmrgMLYVz/InCU7k4CacuSlH+3K0bdjeoMOe9RIiilq7f0dxQcJ/ymGoJL1bVgfEK8E8S9BB5HzpT06yCLQ==
-  user-service-infra:MONGO_ATLAS_DB_NAME: users_db
-  user-service-infra:MONGO_ATLAS_PASSWORD:
-    secure: AAABAP6GfXmxmkGT6ypW3IONbqr5i6Apup2XFraO7BC4uRC8p7qDGA==
-  user-service-infra:MONGO_ATLAS_USERNAME:
-    secure: AAABAHUGQtunx/nI5HT12FM+1otuMc6xhkALxM3DKcNqmqn5BA==
-  user-service-infra:MONGODB_ATLAS_ORG_ID:
-    secure: AAABAAZi/bkqFwRX1WWH+Jzytle3eENjfB3ROJC+kJjz8SbsCK/yJRJ/as+jQV6bvp4Ww8WkTTU=
-  user-service-infra:MONGODB_ATLAS_PRIVATE_KEY:
-    secure: AAABAHVl0ADRvJxSFegzD+Mb4Yb/hVrz7oeKKK1s7hmmZs1vJjOb1j1pD9iH2+tt2/Qf6E0SnTfYqf6YS7NL8QNUQO8=
-  user-service-infra:MONGODB_ATLAS_PUBLIC_KEY:
-    secure: AAABAKjkc+Mnzf35fgJ/IllcjeyYALOReTzd5uegWjkSEQcpDaiEDQ==
+    secure: AAABAJWmgVC4M0hydup2IUzq6XzSpzpjShr5TS0XKPur+ODCPEMlk20GPE6rddYLXvZaRKonbrrgYnI3w++Mw80oDF/ei9MLL5VZh4ttBMX3+wu2lEkRMlQz7gn5uBXY0SyTC/sT+6kR+kWsyGhXGt6mfjXATyHTVo+yrpN/a82XCVHf9L4p4W1N6myk1WNnc7VzJUP2wV47TIQuzFEh
   user-service-infra:acmEcsCertificateArn:
     secure: AAABABfVPz1lrxMIq0tHzvKSuWtgOfu2uUxyd0qP4uz0jS7PJjdMgBZIyGsSNywoi97kCh/L15W+sxpQPBOlmCWW0I40xxfYzUDIIkL30gJwoZSAzanNSBN8ii2dw3yCRrDnrDeC9xTxp3QteO4RPB+z6cZqzaXc
   user-service-infra:apiGatewayAuthSecret:
     secure: AAABALE+SH/FwVzVxxXP1gABIp5/fNUktl+UvZyXsrVrmyD5H1qtwcFvWZPk2korFz4QBUDdm64lS/V09dpm5nQJpXzJ/UGitf+rXTAq8z5v/vsTH1HYUkzMDaWrvPECjaoQR9jRZUn9lsH1bH8Gr1YnEQKiLPNq2jX7DDnIzOxOS/c8L6Eo+65o9tsANboS4/LiPuM6jRJf2CSUy8ccSVWdSmrYI6BwJ9J6Wo4leSsJjotJymL+/kE7qbH/nMjR
   user-service-infra:containerPort: "80"
   user-service-infra:cpu: "256"
-  user-service-infra:hostedZoneID:
-    secure: AAABAHSwRJHb5rGPJk6+3XTvT5pBJcbaTs/2tUBTlL4+JsPts/ZYJdw1yueSp/ccPjKRTA==
   user-service-infra:hostedZoneId:
-    secure: AAABAPo+L6MruYRAe+3DrUVHDytqg9h7GMUj0ofzzxPBoBc6P1/FCfs4kS6qE7K6EqJ0lA==
+    secure: AAABAHSwRJHb5rGPJk6+3XTvT5pBJcbaTs/2tUBTlL4+JsPts/ZYJdw1yueSp/ccPjKRTA==
+  # user-service-infra:hostedZoneId:
+  #   secure: AAABAPo+L6MruYRAe+3DrUVHDytqg9h7GMUj0ofzzxPBoBc6P1/FCfs4kS6qE7K6EqJ0lA==
   user-service-infra:memory: "128"
   user-service-infra:path: ../app
   user-service-infra:rootDomain: peerprep.net
