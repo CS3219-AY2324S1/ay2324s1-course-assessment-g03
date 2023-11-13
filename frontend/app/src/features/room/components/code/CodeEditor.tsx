@@ -13,6 +13,7 @@ interface CodeEditorProps {
   className?: string;
   roomId: string;
   language: LanguageSupport;
+  setCurrentDocState: Dispatch<SetStateAction<string>>;
 }
 
 export const CodeEditor = ({
@@ -21,6 +22,7 @@ export const CodeEditor = ({
   socket,
   roomId,
   language,
+  setCurrentDocState,
 }: CodeEditorProps) => {
   const [version, setVersion] = useState<number | null>(null);
   const [isLoading, setLoading] = useState(true);
@@ -75,6 +77,7 @@ export const CodeEditor = ({
           peerExtension(socket, version),
           EditorView.lineWrapping,
         ]}
+        onChange={value => setCurrentDocState(value)}
         value={doc}
       />
     );

@@ -56,6 +56,7 @@ export const Collaborator = ({
   const [activeQuestionId, setActiveQuestionId] = useState(questionId);
   // Lifted state from `CodeEditor` component
   const [doc, setDoc] = useState<string | null>(null);
+  const [currentDocState, setCurrentDocState] = useState("");
   const toast = useToast();
   const { mutate: markAsComplete, isLoading: isPostSubmissionLoading } =
     usePostSubmission();
@@ -151,7 +152,7 @@ export const Collaborator = ({
   };
 
   const handleMarkAsComplete = () => {
-    if (!doc || !activeQuestionId) {
+    if (!currentDocState || !activeQuestionId) {
       toast({
         status: "error",
         title: "Cannot submit empty code or question",
@@ -176,7 +177,7 @@ export const Collaborator = ({
 
     markAsComplete({
       submission: {
-        code: doc,
+        code: currentDocState,
         questionId: activeQuestionId.toString(),
         lang: languageKey,
         ...(otherUserId ? { otherUserId } : {}),
@@ -268,6 +269,7 @@ export const Collaborator = ({
           socket={socket}
           roomId={roomId}
           language={currentLanguage}
+          setCurrentDocState={setCurrentDocState}
         />
         <ChatBubble roomId={roomId} />
       </VStack>
@@ -282,6 +284,7 @@ export const Collaborator = ({
         socket={socket}
         roomId={roomId}
         language={currentLanguage}
+        setCurrentDocState={setCurrentDocState}
       />
       <ChatBubble roomId={roomId} />
     </VStack>
