@@ -55,6 +55,10 @@ const fallbackCollaborationServiceUrl = isProd
   ? "https://collaboration.peerprep.net"
   : "https://collaboration.staging.peerprep.net";
 
+const fallbackCommunicationServiceUrl = isProd
+  ? "https://communication.peerprep.net"
+  : "https://communication.staging.peerprep.net";
+
 /**
  * Reference the other stacks
  */
@@ -98,6 +102,13 @@ const collaborationServiceStack = new pulumi.StackReference(
 const collaborationServiceUrl = collaborationServiceStack
   .getOutput("url")
   .apply((domain) => `${domain || fallbackCollaborationServiceUrl}`);
+
+const communicationServiceStack = new pulumi.StackReference(
+  `cs3219/communication-service-infra/${currentEnv}`
+);
+const communicationServiceUrl = communicationServiceStack
+  .getOutput("url")
+  .apply((domain) => `${domain || fallbackCommunicationServiceUrl}`);
 
 // An ECS cluster to deploy into
 const cluster = new aws.ecs.Cluster("cluster", {});
@@ -195,6 +206,10 @@ const service = new awsx.ecs.FargateService("service", {
         {
           name: "COLLABORATION_SERVICE_URL",
           value: collaborationServiceUrl,
+        },
+        {
+          name: "COMMUNICATION_SERVICE_URL",
+          value: communicationServiceUrl,
         },
       ],
     },
