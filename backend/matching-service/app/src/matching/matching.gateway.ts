@@ -9,7 +9,6 @@ import {
   comparePreferences,
   getIntersectionPreferences,
 } from "../utils/preferences";
-import { TIMEOUT_DURATION } from "./matching.constants";
 import { createRoomSchema } from "./matching.schemas";
 
 export class MatchingGateway {
@@ -69,7 +68,6 @@ export class MatchingGateway {
   }
 
   async joinRandomRoom(roomParams: RoomParams): Promise<MatchedRoom | null> {
-    console.log("RUNNING");
     for (let i = 0; i < this.waiting.length; i++) {
       const waitingUser = this.waiting[i];
       const intersectionPreferences: Preferences = getIntersectionPreferences(
@@ -96,10 +94,6 @@ export class MatchingGateway {
     };
     this.waiting.push(newWaiting);
     console.log("JOINED QUEUE", this.waiting);
-
-    setTimeout(() => {
-      this.leaveRoom(roomParams.user);
-    }, TIMEOUT_DURATION * 1000);
     return null;
   }
 
@@ -107,7 +101,7 @@ export class MatchingGateway {
     const index = this.waiting.findIndex((w) => w.user.id === user.id);
     if (index !== -1) {
       this.waiting.splice(index, 1);
+      console.log("LEFT QUEUE", this.waiting);
     }
-    console.log("LEFT QUEUE", this.waiting);
   }
 }
