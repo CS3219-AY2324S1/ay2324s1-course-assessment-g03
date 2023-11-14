@@ -44,4 +44,5 @@ Read this if you are evaluating our project for the CS3219 Assignments.
 
 ## Assignment 6
 
-- In progress
+- Following the assignment requirements, Assignment 6 has been uploaded separately to the Github Repository [ay2324s1-assignment-6-g03](https://github.com/CS3219-AY2324S1/ay2324s1-assignment-6-g03/tree/Assignment_6)
+- The lambda code is also located in this repository, under `backend/question-service/lambda`
