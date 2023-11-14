@@ -16,7 +16,6 @@ export interface RoomParams {
 
 export interface WaitingUser {
   user: User;
-  roomId: string;
   preferences: Preferences;
 }
 
