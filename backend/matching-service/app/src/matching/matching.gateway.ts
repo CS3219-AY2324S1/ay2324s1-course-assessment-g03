@@ -69,6 +69,7 @@ export class MatchingGateway {
       preferences: roomParams.preferences,
     };
     this.waiting.push(newWaiting);
+    console.log("JOINED QUEUE", this.waiting);
 
     setTimeout(() => {
       this.leaveRoom(roomParams.user);
@@ -82,7 +83,10 @@ export class MatchingGateway {
       const waitingUser = this.waiting[i];
       if (comparePreferences(waitingUser.preferences, roomParams.preferences)) {
         const { roomId } = waitingUser;
-        this.waiting = this.waiting.filter((waitingUser) => waitingUser.roomId != roomId);
+        this.waiting = this.waiting.filter(
+          (waitingUser) => waitingUser.roomId != roomId
+        );
+        console.log("FOUND MATCH", this.waiting);
         return {
           user1: waitingUser.user,
           user2: roomParams.user,
@@ -99,5 +103,6 @@ export class MatchingGateway {
     if (index !== -1) {
       this.waiting.splice(index, 1);
     }
+    console.log("LEFT QUEUE", this.waiting);
   }
 }
