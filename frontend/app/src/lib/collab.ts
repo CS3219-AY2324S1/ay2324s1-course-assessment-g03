@@ -90,9 +90,17 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
             const version = getSyncedVersion(this.view.state);
 
             try {
-                await pushUpdates(socket, version, updates);
+                const pushStatus = await pushUpdates(socket, version, updates);
                 // Reset the retry count on successful push
-                retryCount = 0;
+                if (pushStatus) {
+                    retryCount = 0;
+                } else {
+                    retryCount++;
+                    if (retryCount >= MAX_RETRY_COUNT) {
+                        await this.refreshDocument()
+                        return;
+                    }
+                }
             } catch (error) {
                 console.error(error);
                 // Increment the retry count on push failure
