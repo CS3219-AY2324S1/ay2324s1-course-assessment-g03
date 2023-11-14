@@ -3,9 +3,12 @@ import {
   RoomParams,
   WaitingUser,
   User,
+  Preferences,
 } from "./matching.interfaces";
-import { comparePreferences } from "../utils/preferences";
-import { TIMEOUT_DURATION } from "./matching.constants";
+import {
+  comparePreferences,
+  getIntersectionPreferences,
+} from "../utils/preferences";
 import { createRoomSchema } from "./matching.schemas";
 
 export class MatchingGateway {
@@ -13,8 +16,7 @@ export class MatchingGateway {
 
   constructor() {}
 
-  async createRoom(roomParams: RoomParams) {
-    // TODO: Clean up string literals @Joel
+  async createRoom(preferences: Preferences): Promise<string> {
     const res = await fetch(
       `${process.env.API_GATEWAY_URL}/api/collaboration/room`,
       {
@@ -28,7 +30,7 @@ export class MatchingGateway {
               }
             : {}),
         },
-        body: JSON.stringify(roomParams.preferences),
+        body: JSON.stringify(preferences),
       }
     );
     const dataJson = await res.json();
@@ -45,7 +47,6 @@ export class MatchingGateway {
     const roomId = dataJson?.data?.roomId;
 
     // Create room in communication service
-    // TODO: Clean up string literals @Joel
     const communicationRes = await fetch(
       `${process.env.API_GATEWAY_URL}/api/communication/room`,
       {
@@ -63,28 +64,20 @@ export class MatchingGateway {
       }
     );
 
-    const newWaiting: WaitingUser = {
-      user: roomParams.user,
-      roomId,
-      preferences: roomParams.preferences,
-    };
-    this.waiting.push(newWaiting);
-    console.log("JOINED QUEUE", this.waiting);
-
-    setTimeout(() => {
-      this.leaveRoom(roomParams.user);
-    }, TIMEOUT_DURATION * 1000);
-
     return roomId;
   }
 
-  joinRandomRoom(roomParams: RoomParams): MatchedRoom | null {
+  async joinRandomRoom(roomParams: RoomParams): Promise<MatchedRoom | null> {
     for (let i = 0; i < this.waiting.length; i++) {
       const waitingUser = this.waiting[i];
-      if (comparePreferences(waitingUser.preferences, roomParams.preferences)) {
-        const { roomId } = waitingUser;
+      const intersectionPreferences: Preferences = getIntersectionPreferences(
+        waitingUser.preferences,
+        roomParams.preferences
+      );
+      if (comparePreferences(intersectionPreferences)) {
+        const roomId = await this.createRoom(intersectionPreferences);
         this.waiting = this.waiting.filter(
-          (waitingUser) => waitingUser.roomId != roomId
+          (waitingUser) => waitingUser.user.id != roomParams.user.id
         );
         console.log("FOUND MATCH", this.waiting);
         return {
@@ -95,6 +88,12 @@ export class MatchingGateway {
         };
       }
     }
+    const newWaiting: WaitingUser = {
+      user: roomParams.user,
+      preferences: roomParams.preferences,
+    };
+    this.waiting.push(newWaiting);
+    console.log("JOINED QUEUE", this.waiting);
     return null;
   }
 
@@ -102,7 +101,7 @@ export class MatchingGateway {
     const index = this.waiting.findIndex((w) => w.user.id === user.id);
     if (index !== -1) {
       this.waiting.splice(index, 1);
+      console.log("LEFT QUEUE", this.waiting);
     }
-    console.log("LEFT QUEUE", this.waiting);
   }
 }
