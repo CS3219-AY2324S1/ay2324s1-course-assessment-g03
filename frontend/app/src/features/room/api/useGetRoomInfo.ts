@@ -11,6 +11,7 @@ const GET_ROOM_INFO_KEY = "get-room-info";
 
 const getRoomInfoResponseSchema = makeSuccessResponseSchema(
   z.object({
+    doc: z.array(z.string()),
     difficulty: z.array(z.nativeEnum(DIFFICULTY)),
     topic: z.array(z.string()),
     users: z.array(
@@ -24,7 +25,7 @@ const getRoomInfoResponseSchema = makeSuccessResponseSchema(
   }),
 );
 
-const getRoomInfo = async (roomId: string) => {
+export const getRoomInfo = async (roomId: string) => {
   const { data } = await backendApi.get(
     `${API_ENDPOINT.COLLABORATION_ROOM}/${roomId}`,
   );

@@ -30,6 +30,7 @@ import { useGetQuestionOptions } from "@/features/room/api/useGetQuestionOptions
 import { usePostSubmission } from "../../api/usePostSubmission";
 import ChatBubble from "../chat/ChatBubble";
 import { usePostLeaveRoom } from "../../api/usePostLeaveRoom";
+import { getRoomInfo } from "../../api/useGetRoomInfo";
 
 interface CollaboratorProps {
   roomId: string;
@@ -56,7 +57,6 @@ export const Collaborator = ({
   const [activeQuestionId, setActiveQuestionId] = useState(questionId);
   // Lifted state from `CodeEditor` component
   const [doc, setDoc] = useState<string | null>(null);
-  const [currentDocState, setCurrentDocState] = useState("");
   const toast = useToast();
   const { mutate: markAsComplete, isLoading: isPostSubmissionLoading } =
     usePostSubmission();
@@ -151,11 +151,11 @@ export const Collaborator = ({
     navigator.clipboard.writeText(window.location.href);
   };
 
-  const handleMarkAsComplete = () => {
-    if (!currentDocState || !activeQuestionId) {
+  const handleMarkAsComplete = async () => {
+    if (!activeQuestionId) {
       toast({
         status: "error",
-        title: "Cannot submit empty code or question",
+        title: "Cannot submit when no question is selected",
       });
       return;
     }
@@ -172,12 +172,24 @@ export const Collaborator = ({
       return;
     }
 
+    const roomInfoResponse = await getRoomInfo(roomId);
+
+    if (roomInfoResponse.status !== "success") {
+      toast({
+        status: "error",
+        title: "Error fetching doc state from collaborator service",
+      });
+      return;
+    }
+
+    const code = roomInfoResponse.data.doc.join("\n");
+
     // Get first user that is NOT the current user
     const otherUserId = users.find(user => user.id !== id)?.id;
 
     markAsComplete({
       submission: {
-        code: currentDocState,
+        code,
         questionId: activeQuestionId.toString(),
         lang: languageKey,
         ...(otherUserId ? { otherUserId } : {}),
@@ -269,7 +281,6 @@ export const Collaborator = ({
           socket={socket}
           roomId={roomId}
           language={currentLanguage}
-          setCurrentDocState={setCurrentDocState}
         />
         <ChatBubble roomId={roomId} />
       </VStack>
@@ -284,7 +295,6 @@ export const Collaborator = ({
         socket={socket}
         roomId={roomId}
         language={currentLanguage}
-        setCurrentDocState={setCurrentDocState}
       />
       <ChatBubble roomId={roomId} />
     </VStack>
