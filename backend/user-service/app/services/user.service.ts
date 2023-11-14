@@ -7,7 +7,14 @@ const userPersonalData: Prisma.UserSelect = {
   email: true,
   name: true,
   role: true,
-  submissions: true,
+  submissions: {
+    select: {
+      id: true,
+      code: true,
+      lang: true,
+      createdAt: true,
+    },
+  },
 };
 
 export const userService = {
