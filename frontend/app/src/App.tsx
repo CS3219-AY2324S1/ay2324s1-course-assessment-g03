@@ -21,6 +21,7 @@ function App() {
         <title>
           PeerPrep - Let your peers help you ace technical interviews
         </title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
         <meta
           name="title"
           content="PeerPrep - Let your peers help you ace technical interviews"
