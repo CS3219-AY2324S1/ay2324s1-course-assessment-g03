@@ -335,6 +335,6 @@ authRouter.get("/github/login", async (req: Request, res: Response) => {
 });
 
 authRouter.post("/logout", (req: Request, res: Response) => {
-  res.clearCookie(process.env.JWT_COOKIE_NAME);
+  res.clearCookie(process.env.JWT_COOKIE_NAME, cookieOptions);
   return res.send(successApiResponse({ message: "Successfully logged out" }));
 });
