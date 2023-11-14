@@ -1,19 +1,19 @@
 import _ from "lodash";
 import { Preferences } from "../matching/matching.interfaces";
 
-export const comparePreferences = (
+export const getIntersectionPreferences = (
   p1: Preferences,
   p2: Preferences
-): boolean => {
-  // Check if difficulty matches
-  if (_.isEqual(p1.difficulty, p2.difficulty)) {
-    // Check if object1's topics are a subset of or equal to object2's topics and vice versa
-    if (
-      _.intersection(p1.topic, p2.topic).length === p1.topic.length ||
-      _.intersection(p1.topic, p2.topic).length === p2.topic.length
-    ) {
-      return true;
-    }
-  }
-  return false;
+): Preferences => {
+  return {
+    difficulty: _.intersection(p1.difficulty, p2.difficulty),
+    topic: _.intersection(p1.topic, p2.topic),
+  };
+};
+
+export const comparePreferences = (preferences: Preferences): boolean => {
+  return (
+    (!!preferences.difficulty.length && !!preferences.topic.length) ||
+    (preferences.difficulty.length === 0 && preferences.topic.length === 0)
+  );
 };

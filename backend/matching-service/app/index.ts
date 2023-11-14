@@ -57,17 +57,16 @@ io.on("connection", (socket) => {
     MATCHING_EVENTS.JOIN_ROOM,
     async (user: User, preferences: Preferences) => {
       try {
-        const matched = matchingGateway.joinRandomRoom({ user, preferences });
+        const matched = await matchingGateway.joinRandomRoom({
+          user,
+          preferences,
+        });
 
         if (matched) {
-          socket.join(matched.roomId);
-          io.to(matched.roomId).emit(MATCHING_EVENTS.FOUND_ROOM, matched);
+          socket.join(matched.user1.id);
+          io.to(matched.user1.id).emit(MATCHING_EVENTS.FOUND_ROOM, matched);
         } else {
-          const newRoom = await matchingGateway.createRoom({
-            user,
-            preferences,
-          });
-          socket.join(newRoom);
+          socket.join(user.id);
         }
       } catch (error: any) {
         socket.emit(MATCHING_EVENTS.ERROR, error.message);
