@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   Box,
   Text,
@@ -309,7 +309,7 @@ export const Collaborator = ({
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
-        onConfirm={() => leaveRoom()}
+        onConfirm={() => leaveRoom({ userId: id, roomId })}
       />
       <VStack align="left" height="80vh" width="full" mt={5} gap={4}>
         {Options}
