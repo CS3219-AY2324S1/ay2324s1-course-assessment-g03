@@ -2,7 +2,7 @@ import { CustomAlert, Page } from "@/components";
 import { ROUTE } from "@/constants/route";
 import { Collaborator } from "@/features/room";
 import { Spinner, Text, useDisclosure } from "@chakra-ui/react";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useGetRoomInfo } from "@/features/room/api/useGetRoomInfo";
 import { API_RESPONSE_STATUS } from "@/constants/api";
 import { useAuth } from "@/hooks";
@@ -16,6 +16,7 @@ function RoomPage() {
   const { refetch: loginWithGithub } = useGetGithubAuthUrl();
   const { roomId } = useParams();
   const { isLoading, isError, data } = useGetRoomInfo(roomId);
+  const navigate = useNavigate();
 
   if (!user) {
     return (
@@ -28,6 +29,20 @@ function RoomPage() {
         leastDestructiveRef={cancelRef}
         onClose={onClose}
         onConfirm={() => loginWithGithub()}
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <CustomAlert
+        title="Error"
+        description="The room does not exist or has been closed."
+        confirmButtonText="Go back"
+        isOpen={true}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        onConfirm={() => navigate(ROUTE.ROOT)}
       />
     );
   }
