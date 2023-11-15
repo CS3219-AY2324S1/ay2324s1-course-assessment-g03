@@ -44,13 +44,18 @@ const postLeaveRoom = async (
 
 export const usePostLeaveRoom = () => {
   const toast = useToast();
-  const { data } = useAuth();
   const navigate = useNavigate();
 
-  const userId = data?.user?.id;
-  const roomId = data?.user?.roomId;
-
-  return useMutation(() => postLeaveRoom(roomId, userId), {
+  return useMutation({
+    mutationFn: async ({
+      roomId,
+      userId,
+    }: {
+      roomId: string | undefined;
+      userId: User["id"] | undefined;
+    }) => {
+      return postLeaveRoom(roomId, userId);
+    },
     onSuccess: () => {
       toast({
         render: ({ onClose }) => (
