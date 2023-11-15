@@ -5,3 +5,5 @@ export const MATCHING_EVENTS = {
   FOUND_ROOM: "found_room",
   LEAVE_ROOM: "leave_room",
 };
+
+export const TIMEOUT_DURATION = 30;

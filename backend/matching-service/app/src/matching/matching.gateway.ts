@@ -9,6 +9,7 @@ import {
   comparePreferences,
   getIntersectionPreferences,
 } from "../utils/preferences";
+import { TIMEOUT_DURATION } from "./matching.constants";
 import { createRoomSchema } from "./matching.schemas";
 
 export class MatchingGateway {
@@ -94,6 +95,10 @@ export class MatchingGateway {
     };
     this.waiting.push(newWaiting);
     console.log("JOINED QUEUE", this.waiting);
+
+    setTimeout(() => {
+      this.leaveRoom(roomParams.user);
+    }, TIMEOUT_DURATION * 1000);
     return null;
   }
 
