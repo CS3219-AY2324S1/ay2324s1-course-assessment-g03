@@ -72,7 +72,7 @@ export const CodeEditor = ({
           indentUnit.of("\t"),
           basicSetup(),
           language,
-          peerExtension(socket, version, roomId),
+          peerExtension(socket, version),
           EditorView.lineWrapping,
         ]}
         value={doc}

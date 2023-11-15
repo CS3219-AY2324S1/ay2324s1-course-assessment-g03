@@ -53,11 +53,7 @@ export function getDocument(socket: Socket, roomId: string): Promise<{ version: 
     });
 }
 
-export const peerExtension = (socket: Socket, startVersion: number, roomId: string) => {
-
-    const MAX_RETRY_COUNT = 5;
-    let retryCount = 0;
-    let pullRetryCount = 0
+export const peerExtension = (socket: Socket, startVersion: number) => {
     const plugin = ViewPlugin.fromClass(class {
         private pushing = false
         private done = false
@@ -72,62 +68,26 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
             const updates = sendableUpdates(this.view.state)
             if (this.pushing || !updates.length) return
             this.pushing = true
-            const version = getSyncedVersion(this.view.state);
-
-            try {
-                const pushStatus = await pushUpdates(socket, version, updates);
-                // Reset the retry count on successful push
-                if (pushStatus) {
-                    retryCount = 0;
-                } else {
-                    retryCount++;
-                    if (retryCount >= MAX_RETRY_COUNT) {
-                        await this.refreshDocument()
-                        return;
-                    }
-                }
-            } catch (error) {
-                // Increment the retry count on push failure
-                retryCount++;
-                if (retryCount >= MAX_RETRY_COUNT) {
-                    // If pushing fails 5 times, refresh the document state
-                    await this.refreshDocument();
-                    retryCount = 0
-                    return;
-                }
-            } finally {
-                this.pushing = false;
-                // Regardless of whether the push failed or new updates came in
-                // while it was running, try again if there are updates remaining
-                if (sendableUpdates(this.view.state).length)
-                    setTimeout(() => this.push(), 100);
-            }
+            const version = getSyncedVersion(this.view.state)
+            await pushUpdates(socket, version, updates)
+            this.pushing = false
+            // Regardless of whether the push failed or new updates came in
+            // while it was running, try again if there's updates remaining
+            if (sendableUpdates(this.view.state).length)
+                setTimeout(() => this.push(), 100)
         }
 
         async pull() {
             while (!this.done) {
                 const version = getSyncedVersion(this.view.state)
+                const updates = await pullUpdates(socket, version)
                 try {
-                    const updates = await pullUpdates(socket, version);
-                    // Reset the retry count on successful pull
-                    pullRetryCount = 0;
-                    this.view.dispatch(receiveUpdates(this.view.state, updates));
-                } catch (error) {
-                    // Increment the retry count on pull failure
-                    pullRetryCount++;
-                    if (pullRetryCount >= MAX_RETRY_COUNT) {
-                        // If pulling fails 5 times, refresh the document state
-                        await this.refreshDocument();
-                        return;
-                    }
+                    this.view.dispatch(receiveUpdates(this.view.state, updates))
+                } catch (e) {
+                    console.error(e)
                 }
             }
         }
-
-        async refreshDocument() {
-            this.view = new EditorView()
-        }
-
 
         destroy() { this.done = true }
     })
