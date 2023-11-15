@@ -19,7 +19,6 @@ function pushUpdates(
 
     return new Promise(function (resolve) {
         socket.emit(COLLABORATION_SOCKET_API.PUSH_UPDATES, version, JSON.stringify(updates));
-
         socket.once(COLLABORATION_SOCKET_API.PUSH_UPDATES_RESPONSE, function (status: boolean) {
             resolve(status);
         });
@@ -45,7 +44,6 @@ function pullUpdates(
 export function getDocument(socket: Socket, roomId: string): Promise<{ version: number, doc: Text }> {
     return new Promise(function (resolve) {
         socket.emit(COLLABORATION_SOCKET_API.GET_DOCUMENT, roomId);
-
         socket.once(COLLABORATION_SOCKET_API.GET_DOCUMENT_RESPONSE, function (version: number, doc: string) {
             resolve({
                 version,
@@ -70,19 +68,6 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
             if (update.docChanged || update.transactions.length) this.push()
         }
 
-        // async push() {
-        //     const updates = sendableUpdates(this.view.state)
-        //     if (this.pushing || !updates.length) return
-        //     this.pushing = true
-        //     const version = getSyncedVersion(this.view.state)
-        //     await pushUpdates(socket, version, updates)
-        //     this.pushing = false
-        //     // Regardless of whether the push failed or new updates came in
-        //     // while it was running, try again if there's updates remaining
-        //     if (sendableUpdates(this.view.state).length)
-        //         setTimeout(() => this.push(), 100)
-        // }
-
         async push() {
             const updates = sendableUpdates(this.view.state)
             if (this.pushing || !updates.length) return
@@ -102,12 +87,12 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
                     }
                 }
             } catch (error) {
-                console.error(error);
                 // Increment the retry count on push failure
                 retryCount++;
                 if (retryCount >= MAX_RETRY_COUNT) {
                     // If pushing fails 5 times, refresh the document state
                     await this.refreshDocument();
+                    retryCount = 0
                     return;
                 }
             } finally {
@@ -140,11 +125,7 @@ export const peerExtension = (socket: Socket, startVersion: number, roomId: stri
         }
 
         async refreshDocument() {
-            const { doc } = await getDocument(socket, roomId);
-            this.view.dispatch({
-                changes: { from: 0, to: this.view.state.doc.length, insert: doc },
-                selection: { anchor: 0, head: 0 },
-            });
+            this.view = new EditorView()
         }
 
 
