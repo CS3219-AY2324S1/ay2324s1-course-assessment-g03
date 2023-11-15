@@ -216,6 +216,11 @@ export const leaveOneRoom = (roomId: string, userId: string) => {
     users.delete(userId)
     rooms[roomId].userOrder.splice(rooms[roomId].userOrder.indexOf(userId), 1)
 
+    // if room no longer has any users, delete the room
+    if (rooms[roomId].userOrder.length === 0) {
+        delete rooms[roomId]
+    }
+
     return {
         status: "success",
         code: HttpStatus.OK,
