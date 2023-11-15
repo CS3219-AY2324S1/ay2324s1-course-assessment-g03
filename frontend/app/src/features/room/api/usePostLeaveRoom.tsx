@@ -1,6 +1,5 @@
 import { backendApi } from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
 import { makeSuccessResponseSchema } from "@/lib/api";

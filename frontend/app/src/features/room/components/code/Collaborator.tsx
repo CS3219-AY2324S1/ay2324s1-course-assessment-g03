@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   Box,
   Text,
