@@ -42,7 +42,7 @@ export const useDeleteUser = () => {
         title: "You have successfully deleted your profile",
         isClosable: true,
       });
-      queryClient.setQueryData([GET_AUTH_QUERY_KEY], undefined);
+      queryClient.removeQueries([GET_AUTH_QUERY_KEY]);
       navigate(ROUTE.ROOT);
     },
   });
