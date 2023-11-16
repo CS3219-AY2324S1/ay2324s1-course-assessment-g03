@@ -1,0 +1,1 @@
+export const METHOD_NOT_ALLOWED_ERROR = "Method not allowed"

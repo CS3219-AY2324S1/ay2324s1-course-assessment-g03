@@ -1,0 +1,10 @@
+config:
+  aws:region: ap-southeast-1
+  frontend-infra:acmCloudfrontCertificateArn:
+    secure: AAABAM2P5yrLVJDJbIycBrjzPE2gAG3k1vTLitx4lQlVCse2BHyWvcW2LskFuxDyvDM05+ZMpvmXbwZxbhGJgZoaDUL2x7kYNo20rxkNK1hmpiSeT56+4mlzHpkQWztwkQtpZJpS7L5guQaTh2QaNvIIEQ==
+  frontend-infra:hostedZoneId:
+    secure: AAABAPo6NsEOMyUGu7GdzuP0n2T3GDalkj5a0fijLuhNHDh9wKvrUNHS9VKGGJtfc2QT6Q==
+  frontend:indexDocument: index.html
+  frontend:path: ../app/dist
+  frontend:rootDomain: peerprep.net
+  frontend:subdomain: staging.

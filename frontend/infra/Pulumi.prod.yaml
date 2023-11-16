@@ -1,0 +1,9 @@
+config:
+  aws:region: ap-southeast-1
+  frontend-infra:acmCloudfrontCertificateArn:
+    secure: AAABAN5/lNE45iKORed7xOvjBDYaBMqdQpLb0iLaF6/px4ZehVBeCaeSZt4PUt3RAwM83tYoWIkJNgkuMJ6/ub+CJo4GcLnZPiceSsZN8XjUwGhVHBPOEYgcPqjfR3xHkOAjqEnBWzBz/wLQ/ksEzfwhKw==
+  frontend-infra:hostedZoneId:
+    secure: AAABAO5mgLm1+EwgigWkVxR1mj7EDRBQeL+y2S+OgiI9id/Iy3L9l+U9RiU06iHf8+o9Sg==
+  frontend:indexDocument: index.html
+  frontend:path: ../app/dist
+  frontend:rootDomain: peerprep.net
